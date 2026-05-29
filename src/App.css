@@ -83,7 +83,7 @@
 
 @font-face {
   font-family: 'Griffy';
-  src: url('../fonts/Griffy-Regular.ttf') format('truetype');
+  src: url('./fonts/Griffy-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

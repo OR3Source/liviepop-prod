@@ -1,0 +1,147 @@
+.footer-wave {
+  display: block;
+  width: 100%;
+  height: 17px;                    /* exact height of pink-dash.png */
+  background-repeat: repeat-x;
+  background-size: auto 100%;       /* tile horizontally, fit height */
+  background-position: left top;    /* anchor to left edge */
+  margin-bottom: -8px;      /* overlap footer top edge */
+  position: relative;
+  z-index: 5001;
+}
+
+.footer {
+  background-color: #d8e9fa;
+  position: relative;
+  z-index: 5000;;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Top row: logo + nav ── */
+.footer-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 1.5rem;
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: #2d2d2d;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+}
+
+/* ── Divider ── */
+.footer-divider {
+  border: none;
+  border-top: 3px solid #2d2d2d;
+  margin: 0;
+}
+
+.footer-stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  color: #2d2d2d;
+  font-size: 1rem;
+}
+
+.footer-stars span:nth-child(2),
+.footer-stars span:nth-child(4) {
+  font-size: 0.6rem;
+  opacity: 0.5;
+}
+
+/* ── Bottom row: copyright + disclaimer ── */
+.footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-copy {
+  margin: 0;
+  font-family: "Griffy", cursive;
+  font-weight: bolder;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.disclaimer-line {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.disclaimer-footer {
+  background-color: #000;
+  color: #fff;
+  padding: 0 3px;
+  font-size: 0.9rem;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-weight: bolder;
+  letter-spacing: 0.08rem;
+}
+
+.disclaimer-text {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000000;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .footer-top-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-nav {
+    justify-content: center;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .disclaimer-line {
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .footer-wave {
+    height: 15px;     
+  }
+}

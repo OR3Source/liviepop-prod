@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+.landing {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  width: 100%;
+  max-width: 95vw;
+  margin-top: 10px;
+}
+
+/* ── Default (desktop 1025px+): rip2.svg ── */
+.rip-mask-container {
+  width: 100%;
+  max-width: 1275px;
+  aspect-ratio: 2000 / 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.rip-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  -webkit-mask: url('../assets/rip2.svg') no-repeat center;
+  mask: url('../assets/rip2.svg') no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* ── Tablet ≤1024px: rip2.svg ── */
+@media (max-width: 1024px) {
+  .rip-mask-container {
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  .rip-image {
+    -webkit-mask: url('../assets/rip2.svg') no-repeat center;
+    mask: url('../assets/rip2.svg') no-repeat center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+}
+
+/* ── Mobile ≤768px ── */
+@media (max-width: 768px) {
+  .rip-mask-container {
+    max-width: 100%;
+    aspect-ratio: 3 / 2;
+  }
+
+  .rip-image {
+    -webkit-mask: url('../assets/rip2.svg') no-repeat center;
+    mask: url('../assets/rip2.svg') no-repeat center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+}
+
+/* ── Small phones ≤480px ── */
+@media (max-width: 480px) {
+  .landing-content {
+    margin-top: 10px;
+  }
+
+  .rip-mask-container {
+    aspect-ratio: 3 / 4;
+  }
+
+  .rip-image {
+    -webkit-mask: url('../assets/rip2.svg') no-repeat center;
+    mask: url('../assets/rip2.svg') no-repeat center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+}
+
+/* ── Title ── */
+.landing-title {
+  margin: 0;
+  font-family: 'Griffy', cursive;
+  font-weight: 900;
+  line-height: 1.1;
+  display: flex;
+  justify-content: center;
+}
+
+.title-wrapper {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  position: relative;
+}
+
+.landing-yarn {
+  font-size: clamp(1.2rem, 3vw, 2.4rem);
+  position: relative;
+  top: -0.5em;
+  margin-right: -0.05em;
+  flex-shrink: 0;
+}
+
+.title-main {
+  font-size: clamp(1.8rem, 4.5vw, 4rem);
+  color: black;
+}
+
+.title-phrase {
+  font-size: clamp(2rem, 6vw, 5rem);
+  color: #f49dbb;
+}
+
+@media (max-width: 768px) {
+  .title-wrapper {
+    white-space: normal;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .landing-yarn {
+    font-size: clamp(1.2rem, 6vw, 2rem);
+  }
+
+  .title-main {
+    font-size: clamp(1.8rem, 9vw, 3.5rem);
+  }
+
+  .title-phrase {
+    font-size: clamp(2.2rem, 11vw, 4.5rem);
+  }
+}
+
+/* ── Buttons ── */
+.landing-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.btn-outline {
+  background: transparent;
+  font-family: "BM HANNA Air OTF", sans-serif;
+  color: darkred;
+  border: none;
+  padding: clamp(2px, 2vw, 14px) clamp(10px, 4vw, 32px) 30px;
+  width: 250px;
+  max-width: 245px;
+  font-size: clamp(17px, 2vw, 21px);
+  letter-spacing: .05rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  line-height: 1;
+}
+
+.btn-outline::after {
+  content: '';
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 25px;
+  background: url('../assets/scissor-line.png') left center / 100% 25px no-repeat;
+  pointer-events: none;
+}
+
+.btn-solid {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  background: black;
+  color: white;
+  border: 2px solid black;
+  border-radius: 50px;
+  padding: clamp(10px, 2vw, 14px) clamp(20px, 4vw, 32px);
+  font-size: clamp(17px, 2vw, 21px);
+  letter-spacing: .05rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-solid:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .landing-content {
+    padding: 15px;
+  }
+
+  .landing-buttons {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-outline,
+  .btn-solid {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+  }
+
+  .title-wrapper {
+    margin-top: -15px;
+  }
+}
+
+/* ── Desktop only ── */
+@media (min-width: 1025px) {
+  .landing-buttons {
+    margin-top: 20px;
+  }
+}

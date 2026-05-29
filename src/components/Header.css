@@ -1,0 +1,311 @@
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 5004;
+  width: 100%;
+  overflow: hidden;
+}
+
+.header {
+  background-color: #d8e9fa;
+  padding: 2rem 1.75rem;
+  box-sizing: border-box;
+}
+
+.header-container {
+  max-width: none;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.logo {
+  font-size: clamp(1.5rem, 6.5vw, 3.5rem);
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  letter-spacing: -1px;
+  white-space: nowrap;
+  font-family: 'Griffy', cursive;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo span {
+  color: #A92E43;
+  font-size: clamp(1.8rem, 7vw, 3.7rem);
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a92e43;
+  padding: 0.5rem;
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  
+}
+
+.hamburger-btn:hover {
+  opacity: 0.7;
+}
+
+.profile-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  padding: 0.5rem;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.help-btn
+{
+    margin-top: -20px;
+}
+
+.profile-icon-btn:hover {
+  opacity: 0.7;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6000;
+}
+
+.side-menu--open {
+  pointer-events: auto;
+}
+
+.side-menu-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.side-menu--open .side-menu-overlay {
+  opacity: 1;
+}
+
+.side-menu-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  max-width: 85vw;
+  height: 100%;
+  background-color: #d8e9fa;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-menu--open .side-menu-panel {
+  transform: translateX(0);
+}
+
+.side-menu-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: darkred;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.side-menu-close:hover {
+  opacity: 0.7;
+}
+
+.side-menu-tagline {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-weight: bolder;
+  font-size: 1.15rem;
+  color: #000;
+  padding: 6rem 1.5rem 1rem;
+  line-height: 1.4;
+  border-bottom: 1px solid #000;
+}
+
+.side-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.side-menu-list li {
+  width: 100%;
+}
+
+.side-menu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #252525;
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.02rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #000;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.side-menu-link:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.side-menu-link--active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Auth link — no bottom border */
+.side-menu-link--auth {
+  border-bottom: none;
+}
+
+.side-menu-auth {
+  border-bottom: none;
+}
+
+/* Sublist — no borders, just spaced text */
+.side-menu-sublist {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.side-menu-sublist li {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-size: 0.85rem;
+  color: #1b1b1b;
+}
+
+.header-wave {
+  display: block;
+  width: 100%;
+  height: 17px;
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: left top;
+  margin-top: -10px;
+  z-index: 199;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .logo {
+    font-size: clamp(1.5rem, 6.5vw, 3.5rem);
+  }
+  .logo span {
+    font-size: clamp(1.8rem, 7vw, 3.7rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .hamburger-btn {
+    margin-left: -1.25rem;
+  }
+
+  .profile-icon-btn {
+    margin-right: -1.25rem;
+  }
+
+  .logo {
+    font-size: clamp(2.5rem, 10vw, 4.25rem);
+  }
+
+  .logo span {
+    font-size: clamp(2.7rem, 11vw, 4.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 1.25rem 0.75rem;
+  }
+  
+
+  .hamburger-btn {
+    margin-left: -0.75rem;
+  }
+
+  .profile-icon-btn {
+    margin-right: -0.50rem;
+  }
+
+  .logo {
+    font-size: clamp(1.8rem, 12vw, 2.5rem);
+  }
+
+  .logo span {
+    font-size: clamp(2rem, 13vw, 2.7rem);
+  }
+
+  .logo svg
+  {
+    width: 35px;
+    height: auto;
+  }
+  .help-btn
+{
+    margin-top: -5px;
+}
+}
+
+@media (max-width: 320px) {
+  .logo {
+    font-size: clamp(1.5rem, 14vw, 2rem);
+  }
+}

@@ -1,0 +1,105 @@
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: "BM HANNA Air OTF", sans-serif;
+  box-sizing: border-box;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.keyboard-key {
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-size: clamp(12px, 2.5vw, 18px);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  height: clamp(45px, 10vw, 65px);
+  padding: 0;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.keyboard-key:hover {
+  opacity: 0.8;
+}
+
+.key-enter,
+.key-backspace {
+  flex: 1.5;
+  font-size: clamp(9px, 2vw, 13px);
+}
+
+.key-backspace {
+  font-size: clamp(14px, 3vw, 22px);
+}
+
+/* Guess feedback colors — match grid */
+.key-correct {
+  background-color: #A92E43;
+}
+
+.key-present {
+  background-color: #FDB1CB;
+}
+
+.key-absent {
+  background-color: #97A3AF;
+}
+
+.key-disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* ── Tablet ≤768px ── */
+@media (max-width: 768px) {
+  .keyboard {
+    gap: 5px;
+    padding: 8px;
+  }
+
+  .keyboard-row {
+    gap: 4px;
+  }
+
+  .keyboard-key {
+    height: clamp(40px, 11vw, 55px);
+    font-size: clamp(11px, 3vw, 16px);
+    border-radius: 4px;
+  }
+}
+
+/* ── Small phones ≤480px ── */
+@media (max-width: 480px) {
+  .keyboard {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .keyboard-row {
+    gap: 3px;
+  }
+
+  .keyboard-key {
+    height: clamp(38px, 12vw, 50px);
+    font-size: clamp(10px, 3.5vw, 15px);
+    border-radius: 3px;
+  }
+}

@@ -1,0 +1,264 @@
+.leaderboard-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+}
+
+/* ── Header ── */
+.leaderboard-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.leaderboard-title {
+  font-family: 'Griffy', cursive;
+  font-size: 2.4rem;
+  color: #1a1a2e;
+  margin: 0 0 0.3rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.leaderboard-subtitle {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.95rem;
+  color: #888;
+  margin: 0 0 1.25rem 0;
+}
+
+/* ── Tabs ── */
+.leaderboard-tabs {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  background: #FDB1CB;
+  border: 2px solid #A92E43;
+  border-radius: 8px;
+  padding: 0.35rem;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.leaderboard-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid transparent;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #1a1a2e;
+  transition: all 0.2s;
+}
+
+.leaderboard-tab svg {
+  color: white;
+}
+
+.leaderboard-tab:hover {
+  color: #A92E43;
+}
+
+.leaderboard-tab.active {
+  background: #1a1a2e;
+  color: #ffffff;
+  border-color: #1a1a2e;
+}
+
+.leaderboard-tab.active svg {
+  color: #FDB1CB;
+}
+
+/* ── Card ── */
+.leaderboard-card {
+  background: #fff;
+  border: 1px solid #f0b9cd;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ── Rows ── */
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 110px 110px;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1.5px solid #fce4ee;
+  transition: background 0.15s;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-row:hover:not(.leaderboard-header-row) {
+  background: rgba(253, 177, 203, 0.12);
+}
+
+/* ── Header row ── */
+.leaderboard-header-row {
+  background: #1a1a2e;
+  padding: 0.7rem 1.25rem;
+  border-bottom: none;
+}
+
+.leaderboard-header-row .col-rank {
+  color: #FDB1CB;
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.leaderboard-header-row .col-user {
+  color: #FDB1CB;
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.leaderboard-header-row .col-points {
+  color: #FDB1CB;
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.leaderboard-header-row .col-streak {
+  color: #FDB1CB;
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* ── Current user highlight ── */
+.leaderboard-row.current-user {
+  background: rgba(253, 177, 203, 0.2);
+  border-left: 3px solid #A92E43;
+}
+
+/* ── Columns ── */
+.col-rank {
+  text-align: center;
+}
+
+.rank-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rank-number {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #aaa;
+}
+
+.col-user {
+  font-weight: bold;
+  color: #1a1a2e;
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.col-points {
+  text-align: right;
+  font-weight: bold;
+  color: #A92E43;
+  font-size: 0.92rem;
+}
+
+.col-streak {
+  text-align: right;
+  font-weight: bold;
+  color: #555;
+  font-size: 0.88rem;
+}
+
+.streak-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+/* ── Top 3 rows special treatment ── */
+.leaderboard-row:nth-child(2) .col-user {
+  color: #b8860b;
+}
+.leaderboard-row:nth-child(3) .col-user {
+  color: #7a7a7a;
+}
+.leaderboard-row:nth-child(4) .col-user {
+  color: #8B4513;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .leaderboard-page {
+    padding: 1.25rem 1rem 3rem;
+    margin-top: 20px;
+  }
+
+  .leaderboard-title {
+    font-size: 1.9rem;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 48px 1fr 80px 75px;
+    padding: 0.75rem 1rem;
+  }
+
+  .col-user {
+    font-size: 0.82rem;
+  }
+
+  .col-points {
+    font-size: 0.82rem;
+  }
+
+  .col-streak {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .leaderboard-row {
+    grid-template-columns: 42px 1fr 65px 62px;
+    padding: 0.65rem 0.75rem;
+    margin-top: 50px;
+  }
+
+  .leaderboard-header-row {
+    font-size: 0.68rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .leaderboard-title {
+    font-size: 1.55rem;
+  }
+}
+
+.leaderboard-countdown {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 1.25rem;
+  color: #A92E43;
+  margin: 0 0 1.25rem 0;
+  font-weight: bold;
+}

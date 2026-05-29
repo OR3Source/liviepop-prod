@@ -1,0 +1,208 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 0;
+  height: 100%;
+  max-height: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #FDB1CB transparent;
+  scroll-behavior: smooth;
+}
+
+.grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.grid::-webkit-scrollbar-thumb {
+  background: #FDB1CB;
+  border-radius: 3px;
+}
+
+.grid-word-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.grid-word {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* SMALL boxes — older submitted guesses */
+.grid-word-group--submitted .grid-cell {
+  width: clamp(28px, 5vw, 40px);
+  height: clamp(28px, 5vw, 40px);
+}
+.grid-word-group--submitted .grid-cell-letter {
+  font-size: clamp(11px, 2.2vw, 15px);
+}
+
+/* BIG boxes — most recent submitted guess */
+.grid-word-group--recent .grid-cell {
+  width: clamp(56px, 12vw, 72px);
+  height: clamp(56px, 12vw, 72px);
+}
+.grid-word-group--recent .grid-cell-letter {
+  font-size: clamp(22px, 5vw, 30px);
+}
+
+/* MEDIUM boxes — active input row */
+.grid-word-group--active .grid-cell {
+  width: clamp(42px, 8vw, 56px);
+  height: clamp(42px, 8vw, 56px);
+}
+.grid-word-group--active .grid-cell-letter {
+  font-size: clamp(16px, 3.8vw, 22px);
+}
+
+.grid-cell {
+  background: white;
+  border: 2px solid #f0b9cd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.grid-cell--filled  { border-color: #e88ac1; }
+.grid-cell--correct { background: #A92E43; border-color: #A92E43; }
+.grid-cell--present { background: #FDB1CB; border-color: #FDB1CB; }
+.grid-cell--absent  { background: #1a1a2e; border-color: #1a1a2e; }
+
+.grid-cell-letter {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-weight: 700;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.grid-cell--correct .grid-cell-letter,
+.grid-cell--present .grid-cell-letter,
+.grid-cell--absent  .grid-cell-letter {
+  color: white;
+}
+
+/* ── Small phones ≤360px — shrink grid cells so keyboard stays visible ── */
+@media (max-width: 360px) {
+  .grid {
+    gap: 6px;
+  }
+
+  .grid-word-group--recent .grid-cell {
+    width: 44px;
+    height: 44px;
+  }
+  .grid-word-group--recent .grid-cell-letter {
+    font-size: 18px;
+  }
+
+  .grid-word-group--submitted .grid-cell {
+    width: 24px;
+    height: 24px;
+  }
+  .grid-word-group--submitted .grid-cell-letter {
+    font-size: 10px;
+  }
+
+  .grid-word-group--active .grid-cell {
+    width: 34px;
+    height: 34px;
+  }
+  .grid-word-group--active .grid-cell-letter {
+    font-size: 13px;
+  }
+}
+
+/* Gap between words on same row */
+.grid-word-gap {
+  width: clamp(20px, 3vw, 22px);
+  flex-shrink: 0;
+}
+
+@media (max-width: 360px) {
+  .grid-word-gap {
+    width: 8px;
+  }
+}
+
+/* ── Win heart ── */
+.win-heart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0;
+  flex-shrink: 0;
+}
+
+.win-heart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(290px, 30vw, 180px);
+  height: clamp(200px, 28vw, 160px);
+}
+
+.win-heart-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.win-heart-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.win-heart-text {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-weight: bolder;
+  font-size: clamp(20px, 3vw, 16px);
+  color: #A92E43;
+  text-align: center;
+  letter-spacing: 0.3px;
+  line-height: 1;
+}
+
+.win-heart-subtext {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-weight: bold;
+  font-size: clamp(15px, 2.2vw, 13px);
+  color: #A92E43;
+  text-align: center;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  margin-top: 8px;
+}
+
+.grid-cell--selected {
+  border-color: #FDB1CB !important;
+  border-width: 3px !important;
+  box-shadow: 0 0 0 2px rgba(169, 46, 67, 0.25);
+}

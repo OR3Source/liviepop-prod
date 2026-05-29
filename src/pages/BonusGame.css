@@ -1,0 +1,11 @@
+.bonus-badge {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  color: darkred;
+  background: transparent;
+  padding: 4px 0;
+  text-align: center;
+  width: 100%;
+}

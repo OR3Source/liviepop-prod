@@ -1,0 +1,263 @@
+/* ── Page ── */
+.login-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+}
+
+/* ── Header ── */
+.login-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.login-title {
+  font-family: 'Griffy', cursive;
+  font-size: 3rem;
+  color: #2d2d2d;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.login-subtitle {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  color: #303030;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+/* ── Card ── */
+.login-card {
+  width: 100%;
+  background: #fff;
+  border: 3px solid #2d2d2d;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 6px 6px 0px #97A3AF;
+}
+
+/* ── Tabs ── */
+.login-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  background: #FDB1CB;
+  border: 2px solid #a92e43;
+  border-radius: 8px;
+  padding: 0.4rem;
+}
+
+.login-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border: 2px solid transparent;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: black;
+  transition: all 0.2s;
+}
+
+.login-tab.active {
+  background: #2d2d2d;
+  color: #fff;
+  border-color: #2d2d2d;
+}
+
+/* ── Form ── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.input-label {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid #2d2d2d;
+  border-radius: 6px;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: #A92E43;
+  box-shadow: 0 0 0 3px rgba(169, 46, 67, 0.12);
+}
+
+.input-icon-svg {
+  position: absolute;
+  left: 0.85rem;
+  color: #A92E43;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.login-input {
+  width: 100%;
+  padding: 0.85rem 2.75rem;
+  border: none;
+  outline: none;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.95rem;
+  color: #2d2d2d;
+  background: transparent;
+  border-radius: 4px;
+}
+
+.login-input::placeholder {
+  color: #999;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.85rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.8rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.toggle-password:hover {
+  color: #A92E43;
+}
+
+/* ── Forgot ── */
+.forgot-link-wrapper {
+  text-align: right;
+  margin-top: -0.5rem;
+}
+
+.forgot-link {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.82rem;
+  color: #363434;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.forgot-link:hover {
+  color: #A92E43;
+}
+
+/* ── Error ── */
+.login-error {
+  background: #fff0f5;
+  border: 1.5px solid #FDB1CB;
+  border-radius: 6px;
+  padding: 0.65rem 1rem;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.85rem;
+  color: #A92E43;
+  margin: 0;
+}
+
+/* ── Submit ── */
+.login-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  background: #2d2d2d;
+  color: white;
+  border: 3px solid #2d2d2d;
+  border-radius: 4px;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.login-submit-btn:hover {
+  background: #FDB1CB;
+  border-color: #A92E43;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(169, 46, 67, 0.3);
+}
+
+/* ── Switch ── */
+.login-switch {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.88rem;
+  color: #5f5959;
+}
+
+.switch-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.88rem;
+  font-weight: bold;
+  color: #A92E43;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .login-page {
+    padding: 1.25rem 1.25rem 4rem;
+  }
+  .login-title {
+    font-size: 2.25rem;
+  }
+  .login-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 0.5rem 1rem 2.5rem;
+    margin-top: 30px;
+  }
+  .login-title {
+    font-size: 1.85rem;
+  }
+  .login-tab {
+    font-size: 0.85rem;
+    padding: 0.55rem 0.75rem;
+  }
+  .login-submit-btn {
+    font-size: 1rem;
+  }
+}

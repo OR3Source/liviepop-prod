@@ -4,12 +4,13 @@ import flower1 from '../assets/flower1.png';
 import flower2 from '../assets/flower2.png';
 import flower3 from '../assets/flower3.png';
 
+const flowersArray = [flower1, flower2, flower3];
+
 const FallingFlowers = ({ enabled = true }) => {
   const [flowers, setFlowers] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const maxFlowers = isMobile ? 7 : 20;
-  const flowersArray = [flower1, flower2, flower3];
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -26,24 +27,11 @@ const FallingFlowers = ({ enabled = true }) => {
     const size = 40 + Math.random() * 40;
     const duration = 6 + Math.random() * 7;
     const delay = Math.random() * 2;
-
-    // MUCH less rotation — gentle wobble instead of wild spinning
-    const rotationAmount = 13 + Math.random() * 19; // 15-40 degrees max
-
+    const rotationAmount = 13 + Math.random() * 19;
     const swayAmount = 10 + Math.random() * 40;
 
-    return {
-      id,
-      side,
-      image,
-      horizontalOffset,
-      size,
-      duration,
-      delay,
-      rotationAmount,
-      swayAmount,
-    };
-  }, [flowersArray]);
+    return { id, side, image, horizontalOffset, size, duration, delay, rotationAmount, swayAmount };
+  }, []);
 
   useEffect(() => {
     if (!enabled) {

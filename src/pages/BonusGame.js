@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Keyboard from '../components/Keyboard'
 import Grid from '../components/Grid'
 import HowToPlay from '../components/HowToPlay'
@@ -15,7 +15,6 @@ import './BonusGame.css'
 const getGuestStorageKey = (puzzleId) => `wordle_bonus_guest_${puzzleId}`
 
 function BonusGame() {
-  const navigate = useNavigate()
   const { date } = useParams()
 
   const [guess, setGuess] = useState('')
@@ -43,7 +42,7 @@ function BonusGame() {
   useEffect(() => {
     const check = () => {
       const now = new Date()
-      const resetHour = 5 
+      const resetHour = 5
       const reset = new Date()
       reset.setUTCHours(resetHour, 0, 0, 0)
       if (reset <= now) return
@@ -262,7 +261,7 @@ function BonusGame() {
     fetchBonusPuzzle()
   }, [date, applySavedGuesses])
 
-  const submitWin = async (attemptsCount) => {
+  const submitWin = useCallback(async (attemptsCount) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -295,7 +294,7 @@ function BonusGame() {
     } catch (err) {
       console.error('submitWin bonus crashed:', err)
     }
-  }
+  }, [puzzleId, clearProgress])
 
   const checkWord = async (word) => {
     try {
@@ -311,7 +310,7 @@ function BonusGame() {
     }
   }
 
-  const validateWords = async (guessStr) => {
+  const validateWords = useCallback(async (guessStr) => {
     if (!phrase) return null
     const phraseWordLengths = phrase.split(' ').map(w => w.length)
     let idx = 0
@@ -325,7 +324,7 @@ function BonusGame() {
       if (!isValid) return word
     }
     return null
-  }
+  }, [phrase])
 
   const updateKeyboardStatus = useCallback((guessStr, evaluation) => {
     setKeyboardStatus(prev => {
@@ -379,8 +378,6 @@ function BonusGame() {
       setCursorPos(null)
 
       const isWin = evaluation.every(s => s === 'correct')
-      const newGameOver = isWin || newGuesses.length >= maxGuesses
-      const newWon = isWin
 
       if (isWin) {
         setWon(true)
@@ -393,7 +390,7 @@ function BonusGame() {
         await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
       }
     }
-  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId])
+  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin, validateWords])
 
   const handleDelete = useCallback(() => {
     if (gameOver || showHelp || loading || alreadySubmitted) return
@@ -451,7 +448,6 @@ function BonusGame() {
         )}
 
         {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
-
 
         {alreadySubmitted ? (
           <div className="answer-tiles">

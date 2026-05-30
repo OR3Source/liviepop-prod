@@ -29,6 +29,12 @@
 }
 
 
+@media (min-width: 380px) and (max-width: 480px) {
+  .main-content {
+    min-height: 90vh;
+  }
+}
+
 
 @font-face {
  font-family: 'JustLikeHeaven';

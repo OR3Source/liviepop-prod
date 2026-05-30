@@ -9,7 +9,7 @@ import Footer from './components/Footer'
 import HowToPlay from './components/HowToPlay'
 import Login from './pages/Login'
 import Leaderboard from './pages/Leaderboard'
-import Profile from './pages/Profile';
+import Profile from './pages/Profile'
 
 function App() {
   const [showHelp, setShowHelp] = useState(false)
@@ -17,21 +17,19 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Header onOpenHelp={() => setShowHelp(true)} />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/play/:date" element={<Game />} />
-              <Route path="/play/prev/:date" element={<BonusGame />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </main>
-          <Footer />
-          {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
-        </div>
+        <Header onOpenHelp={() => setShowHelp(true)} />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/play/:date" element={<Game />} />
+            <Route path="/play/prev/:date" element={<BonusGame />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </main>
+        <Footer />
+        {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
       </BrowserRouter>
     </AuthProvider>
   )

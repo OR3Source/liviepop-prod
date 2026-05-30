@@ -2,13 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Remove this: height: calc(100vh - 90px); */
-  height: 100%; /* Let flexbox handle it */
+  height: 100%;
   padding: 20px 20px 0;
   overflow: hidden;
   margin-bottom: 10px;
 }
-
 
 .help-btn {
   position: absolute;
@@ -53,8 +51,6 @@
   margin-top: auto;
   flex-shrink: 0;
   padding-top: 30px;
-  /* Add safe area bottom padding */
-  padding-bottom: env(safe-area-inset-bottom, 10px);
 }
 
 .guess-row {
@@ -65,22 +61,19 @@
   min-height: 50px;
 }
 
-
-.game-over
-{
+.game-over {
   padding-top: 20px;
 }
-.lose-message
-{
-font-family: "BM HANNA Air OTF", sans-serif;
+
+.lose-message {
+  font-family: "BM HANNA Air OTF", sans-serif;
   font-weight: bolder;
   font-size: 24px;
 }
 
-.lose-message span
-{
-font-family: "BM HANNA Air OTF", sans-serif;
-font-size: 21px;
+.lose-message span {
+  font-family: "BM HANNA Air OTF", sans-serif;
+  font-size: 21px;
 }
 
 @media (max-width: 768px) {
@@ -98,8 +91,8 @@ font-size: 21px;
     padding-top: 30px;
   }
 
-      .keyboard-anchor{
-  padding-top: 20px;
+  .keyboard-anchor {
+    padding-top: 20px;
   }
 
   .help-btn {
@@ -109,12 +102,13 @@ font-size: 21px;
     height: 30px;
     font-size: 0.9rem;
   }
-      .lose-message
-  {
-font-size: 22px;
+
+  .lose-message {
+    font-size: 22px;
   }
+
   .lose-message span {
-    font-size: 19px;  
+    font-size: 19px;
   }
 }
 
@@ -124,8 +118,8 @@ font-size: 22px;
     padding: 5px 10px 0;
   }
 
-    .keyboard-anchor{
-  padding-top: 20px;
+  .keyboard-anchor {
+    padding-top: 20px;
   }
 
   .help-btn {
@@ -133,51 +127,50 @@ font-size: 22px;
     right: 10px;
   }
 
-    .lose-message
-  {
-font-size: 20px;
+  .lose-message {
+    font-size: 20px;
   }
+
   .lose-message span {
-    font-size: 17px;  
+    font-size: 17px;
   }
 }
 
 @media (max-width: 360px) {
-
-
   .game {
     padding-top: 5px;
-      height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
   }
-  .keyboard-anchor{
-  padding-top: 20px;
+
+  .keyboard-anchor {
+    padding-top: 20px;
   }
-  .lose-message
-  {
-font-size: 18px;
+
+  .lose-message {
+    font-size: 18px;
   }
+
   .lose-message span {
-    font-size: 15px;  
+    font-size: 15px;
   }
 }
 
-/* Grid tile colors */
 .cell {
- font-family: "BM HANNA Air OTF", sans-serif;
+  font-family: "BM HANNA Air OTF", sans-serif;
 }
 
 .cell.correct {
-  background-color: #A92E43; /* dark red/maroon */
+  background-color: #A92E43;
   color: white;
 }
 
 .cell.present {
-  background-color: #FDB1CB; /* pink/light purple */
+  background-color: #FDB1CB;
   color: white;
 }
 
 .cell.absent {
-  background-color: #1a1a2e; /* dark navy */
+  background-color: #1a1a2e;
   color: white;
 }
 

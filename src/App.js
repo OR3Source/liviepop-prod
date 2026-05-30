@@ -17,6 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header onOpenHelp={() => setShowHelp(true)} />
           <main className="main-content">
             <Routes>
@@ -30,6 +31,7 @@ function App() {
           </main>
           <Footer />
           {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
+        </div>
       </BrowserRouter>
     </AuthProvider>
   )

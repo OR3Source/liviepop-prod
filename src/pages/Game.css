@@ -40,7 +40,7 @@
   padding-top: 20px;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .keyboard-anchor {
@@ -51,6 +51,9 @@
   margin-top: auto;
   flex-shrink: 0;
   padding-top: 30px;
+  position: relative;
+  z-index: 201;
+  background: #d8e9fa;
 }
 
 .guess-row {
@@ -176,7 +179,7 @@
 
 .game { position: relative; z-index: 200; }
 .game-grid-area { position: relative; z-index: 200; }
-.keyboard-anchor { position: relative; z-index: 200; }
+.keyboard-anchor { position: relative; z-index: 201; }
 
 .answer-grid {
   display: flex;

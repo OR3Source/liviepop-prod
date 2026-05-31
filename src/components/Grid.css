@@ -1,3 +1,10 @@
+.grid-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .grid {
   display: flex;
   flex-direction: column;
@@ -5,25 +12,6 @@
   gap: 10px;
   width: 100%;
   padding: 8px 0;
-  height: auto;
-  max-height: 100%;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #FDB1CB transparent;
-  scroll-behavior: smooth;
-}
-
-.grid::-webkit-scrollbar {
-  width: 6px;
-}
-
-.grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.grid::-webkit-scrollbar-thumb {
-  background: #FDB1CB;
-  border-radius: 3px;
 }
 
 .grid-word-group {
@@ -68,6 +56,17 @@
   font-size: clamp(16px, 3.8vw, 22px);
 }
 
+/* EMPTY placeholder rows */
+.grid-word-group--empty .grid-cell {
+  width: clamp(42px, 8vw, 56px);
+  height: clamp(42px, 8vw, 56px);
+  background: transparent;
+  border-color: rgba(240, 185, 205, 0.3);
+}
+.grid-word-group--empty .grid-cell-letter {
+  font-size: clamp(16px, 3.8vw, 22px);
+}
+
 .grid-cell {
   background: white;
   border: 2px solid #f0b9cd;
@@ -100,7 +99,7 @@
   color: white;
 }
 
-/* ── Small phones ≤360px — shrink grid cells so keyboard stays visible ── */
+/* ── Small phones ≤360px ── */
 @media (max-width: 360px) {
   .grid {
     gap: 6px;
@@ -122,11 +121,13 @@
     font-size: 10px;
   }
 
-  .grid-word-group--active .grid-cell {
+  .grid-word-group--active .grid-cell,
+  .grid-word-group--empty .grid-cell {
     width: 34px;
     height: 34px;
   }
-  .grid-word-group--active .grid-cell-letter {
+  .grid-word-group--active .grid-cell-letter,
+  .grid-word-group--empty .grid-cell-letter {
     font-size: 13px;
   }
 }
@@ -141,64 +142,6 @@
   .grid-word-gap {
     width: 8px;
   }
-}
-
-/* ── Win heart ── */
-.win-heart-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 0;
-  flex-shrink: 0;
-}
-
-.win-heart-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(290px, 30vw, 180px);
-  height: clamp(200px, 28vw, 160px);
-}
-
-.win-heart-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.win-heart-content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-}
-
-.win-heart-text {
-  font-family: "BM HANNA Air OTF", sans-serif;
-  font-weight: bolder;
-  font-size: clamp(20px, 3vw, 16px);
-  color: #A92E43;
-  text-align: center;
-  letter-spacing: 0.3px;
-  line-height: 1;
-}
-
-.win-heart-subtext {
-  font-family: "BM HANNA Air OTF", sans-serif;
-  font-weight: bold;
-  font-size: clamp(15px, 2.2vw, 13px);
-  color: #A92E43;
-  text-align: center;
-  letter-spacing: 0.2px;
-  line-height: 1;
-  margin-top: 8px;
 }
 
 .grid-cell--selected {

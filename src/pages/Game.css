@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   height: 100%;
+  padding: 20px 20px 0;
+  overflow: hidden;
+}
+
+.grid-area {
+  width: 100%;
+  max-width: 600px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }

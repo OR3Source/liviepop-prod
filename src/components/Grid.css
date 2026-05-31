@@ -4,8 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* Constrained height so keyboard has room */
-  max-height: calc(100vh - 260px);
+  /* Much smaller max-height */
+  max-height: 50vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #FDB1CB transparent;
@@ -48,39 +48,31 @@
   gap: 6px;
 }
 
-/* SMALL boxes — older submitted guesses */
+/* SMALL — previous guesses (many) */
 .grid-word-group--submitted .grid-cell {
-  width: clamp(28px, 5vw, 40px);
-  height: clamp(28px, 5vw, 40px);
+  width: clamp(32px, 6vw, 48px);
+  height: clamp(32px, 6vw, 48px);
 }
 .grid-word-group--submitted .grid-cell-letter {
-  font-size: clamp(11px, 2.2vw, 15px);
+  font-size: clamp(13px, 2.8vw, 18px);
 }
 
-/* BIG boxes — most recent submitted guess */
+/* BIG — most recent guess (ONE only) */
 .grid-word-group--recent .grid-cell {
-  width: clamp(56px, 12vw, 72px);
-  height: clamp(56px, 12vw, 72px);
+  width: clamp(64px, 14vw, 84px);
+  height: clamp(64px, 14vw, 84px);
 }
 .grid-word-group--recent .grid-cell-letter {
-  font-size: clamp(22px, 5vw, 30px);
+  font-size: clamp(26px, 6vw, 36px);
 }
 
-/* MEDIUM boxes — active input row AND empty placeholders */
-.grid-word-group--active .grid-cell,
-.grid-word-group--empty .grid-cell {
-  width: clamp(42px, 8vw, 56px);
-  height: clamp(42px, 8vw, 56px);
+/* MEDIUM — next/active guess (ONE only) */
+.grid-word-group--active .grid-cell {
+  width: clamp(48px, 10vw, 64px);
+  height: clamp(48px, 10vw, 64px);
 }
-.grid-word-group--active .grid-cell-letter,
-.grid-word-group--empty .grid-cell-letter {
-  font-size: clamp(16px, 3.8vw, 22px);
-}
-
-/* Empty placeholders — transparent background */
-.grid-word-group--empty .grid-cell {
-  background: transparent;
-  border-color: rgba(240, 185, 205, 0.35);
+.grid-word-group--active .grid-cell-letter {
+  font-size: clamp(18px, 4.2vw, 26px);
 }
 
 .grid-cell {
@@ -115,7 +107,6 @@
   color: white;
 }
 
-/* Gap between words on same row */
 .grid-word-gap {
   width: clamp(20px, 3vw, 22px);
   flex-shrink: 0;
@@ -127,16 +118,16 @@
   box-shadow: 0 0 0 2px rgba(169, 46, 67, 0.25);
 }
 
-/* ── Responsive max-height adjustments ── */
+/* Responsive */
 @media (max-width: 768px) {
   .grid-wrapper {
-    max-height: calc(100vh - 240px);
+    max-height: 45vh;
   }
 }
 
 @media (max-width: 480px) {
   .grid-wrapper {
-    max-height: calc(100vh - 220px);
+    max-height: 42vh;
   }
   
   .grid {
@@ -144,29 +135,27 @@
   }
   
   .grid-word-group--recent .grid-cell {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
   }
   .grid-word-group--recent .grid-cell-letter {
-    font-size: 20px;
+    font-size: 22px;
   }
   
-  .grid-word-group--active .grid-cell,
-  .grid-word-group--empty .grid-cell {
-    width: 38px;
-    height: 38px;
+  .grid-word-group--active .grid-cell {
+    width: 44px;
+    height: 44px;
   }
-  .grid-word-group--active .grid-cell-letter,
-  .grid-word-group--empty .grid-cell-letter {
-    font-size: 14px;
+  .grid-word-group--active .grid-cell-letter {
+    font-size: 16px;
   }
   
   .grid-word-group--submitted .grid-cell {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
   }
   .grid-word-group--submitted .grid-cell-letter {
-    font-size: 12px;
+    font-size: 14px;
   }
   
   .grid-word-gap {
@@ -176,7 +165,7 @@
 
 @media (max-width: 360px) {
   .grid-wrapper {
-    max-height: calc(100vh - 200px);
+    max-height: 40vh;
   }
   
   .grid {
@@ -184,29 +173,27 @@
   }
   
   .grid-word-group--recent .grid-cell {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
   }
   .grid-word-group--recent .grid-cell-letter {
-    font-size: 18px;
+    font-size: 20px;
   }
   
-  .grid-word-group--active .grid-cell,
-  .grid-word-group--empty .grid-cell {
-    width: 34px;
-    height: 34px;
+  .grid-word-group--active .grid-cell {
+    width: 40px;
+    height: 40px;
   }
-  .grid-word-group--active .grid-cell-letter,
-  .grid-word-group--empty .grid-cell-letter {
-    font-size: 13px;
+  .grid-word-group--active .grid-cell-letter {
+    font-size: 15px;
   }
   
   .grid-word-group--submitted .grid-cell {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
   .grid-word-group--submitted .grid-cell-letter {
-    font-size: 10px;
+    font-size: 12px;
   }
   
   .grid-word-gap {

@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import './Grid.css';
 
-// Test data with proper phrase
 const TEST_PHRASE = 'WHAT THE HELL WHOM THE BEARS LIKE TOO WHILE WHAT ARE SNAKE';
 
 const TEST_GUESSES = [
@@ -18,7 +17,6 @@ const Grid = ({
   currentGuess = '', 
   guesses = TEST_GUESSES, 
   maxGuesses = 6,
-  gameOver = false,
   won = false,
   cursorPos = null,
   onCellClick
@@ -106,58 +104,37 @@ const Grid = ({
 
   const paddedGuess = currentGuess.padEnd(totalLetters, ' ').split('');
 
-  // Build all rows
-  const rows = [];
-  
-  // Older guesses (smallest)
-  olderGuesses.forEach((guess, i) => {
-    rows.push(renderWordGroup(
-      guess.word.toUpperCase().replace(/\s/g, '').split(''),
-      guess.evaluation || [],
-      'submitted',
-      `old-guess-${i}`,
-      false
-    ));
-  });
-
-  // Most recent guess (biggest)
-  if (mostRecentGuess) {
-    rows.push(renderWordGroup(
-      mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
-      mostRecentGuess.evaluation || [],
-      'recent',
-      'recent-guess',
-      false
-    ));
-  }
-
-  // Active/pending guess (medium)
-  if (guesses.length < maxGuesses && !won) {
-    rows.push(renderWordGroup(
-      paddedGuess,
-      [],
-      'active',
-      'active',
-      true
-    ));
-  }
-
-  // Empty placeholder rows (medium size, but empty/transparent)
-  const remainingRows = maxGuesses - guesses.length - (won ? 0 : 1);
-  for (let i = 0; i < remainingRows; i++) {
-    rows.push(renderWordGroup(
-      Array(totalLetters).fill(' '),
-      [],
-      'empty',
-      `empty-${i}`,
-      false
-    ));
-  }
-
   return (
     <div className="grid-wrapper">
       <div className="grid" ref={gridRef}>
-        {rows}
+        {/* Previous guesses — SMALL */}
+        {olderGuesses.map((guess, i) => (
+          renderWordGroup(
+            guess.word.toUpperCase().replace(/\s/g, '').split(''),
+            guess.evaluation || [],
+            'submitted',
+            `old-${i}`,
+            false
+          )
+        ))}
+
+        {/* Most recent guess — LARGE (only one) */}
+        {mostRecentGuess && renderWordGroup(
+          mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
+          mostRecentGuess.evaluation || [],
+          'recent',
+          'recent',
+          false
+        )}
+
+        {/* Next/active guess — MEDIUM (only one) */}
+        {guesses.length < maxGuesses && !won && renderWordGroup(
+          paddedGuess,
+          [],
+          'active',
+          'active',
+          true
+        )}
       </div>
     </div>
   );

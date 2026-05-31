@@ -7,6 +7,9 @@ function Game() {
       <div className="grid-area">
         <Grid />
       </div>
+      <div className="keyboard-area">
+        {/* Keyboard will go here */}
+      </div>
     </div>
   )
 }

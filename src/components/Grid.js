@@ -1,6 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import './Grid.css';
 
+// Test data with proper phrase
+const TEST_PHRASE = 'WHAT THE HELL WHOM THE BEARS LIKE TOO WHILE WHAT ARE SNAKE';
+
 const TEST_GUESSES = [
   { word: 'WHATHTE', evaluation: ['correct','absent','absent','correct','absent','absent','absent'] },
   { word: 'HELLYWHO', evaluation: ['absent','absent','correct','correct','absent','correct','present','absent'] },
@@ -9,8 +12,6 @@ const TEST_GUESSES = [
   { word: 'WHILEWHAT', evaluation: ['correct','absent','present','correct','absent','correct','absent','absent','correct'] },
   { word: 'ARESNAKE', evaluation: ['absent','correct','present','present','correct','absent','correct','present'] },
 ];
-
-const TEST_PHRASE = 'WHAT THE HELL WHOM THE BEARS LIKE TOO WHILE WHAT ARE SNAKE';
 
 const Grid = ({ 
   phrase = TEST_PHRASE, 
@@ -105,10 +106,10 @@ const Grid = ({
 
   const paddedGuess = currentGuess.padEnd(totalLetters, ' ').split('');
 
-  // Build all rows that should be visible
+  // Build all rows
   const rows = [];
   
-  // Older guesses (small)
+  // Older guesses (smallest)
   olderGuesses.forEach((guess, i) => {
     rows.push(renderWordGroup(
       guess.word.toUpperCase().replace(/\s/g, '').split(''),
@@ -119,7 +120,7 @@ const Grid = ({
     ));
   });
 
-  // Most recent guess (large)
+  // Most recent guess (biggest)
   if (mostRecentGuess) {
     rows.push(renderWordGroup(
       mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
@@ -135,13 +136,13 @@ const Grid = ({
     rows.push(renderWordGroup(
       paddedGuess,
       [],
-      guesses.length === 0 ? 'recent' : 'active',
+      'active',
       'active',
       true
     ));
   }
 
-  // Empty placeholder rows for remaining guesses
+  // Empty placeholder rows (medium size, but empty/transparent)
   const remainingRows = maxGuesses - guesses.length - (won ? 0 : 1);
   for (let i = 0; i < remainingRows; i++) {
     rows.push(renderWordGroup(

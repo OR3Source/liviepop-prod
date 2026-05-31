@@ -9,8 +9,15 @@
 
 .grid-area {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.keyboard-area {
+  width: 100%;
   max-width: 600px;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
+  min-height: 180px; /* Reserve space for keyboard */
+  flex-shrink: 0;
+  margin-top: auto;
 }

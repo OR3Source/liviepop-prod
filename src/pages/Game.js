@@ -10,6 +10,7 @@ import { supabase } from '../lib/supabase'
 import { ActivitySquare } from 'lucide-react'
 import './Game.css'
 
+// ── LOCALSTORAGE KEY BUILDER (guests only, scoped to puzzle) ──
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
 
 function Game() {
@@ -38,7 +39,7 @@ function Game() {
   useEffect(() => {
     const check = () => {
       const now = new Date()
-      const resetHour = 5
+      const resetHour = 5 
       const reset = new Date()
       reset.setUTCHours(resetHour, 0, 0, 0)
       if (reset <= now) return
@@ -49,14 +50,18 @@ function Game() {
     return () => clearInterval(interval)
   }, [])
 
+  // ── EVALUATE GUESS ──
   const evaluateGuess = useCallback((guessStr, targetPhrase = phrase) => {
     const result = []
+
     const cleanPhrase = targetPhrase.replace(/ /g, '')
     const targetChars = cleanPhrase.split('')
     const guessChars = guessStr.split('')
+
     const targetUsed = new Array(targetChars.length).fill(false)
     const guessUsed = new Array(guessChars.length).fill(false)
 
+    // correct
     for (let i = 0; i < guessChars.length; i++) {
       if (guessChars[i] === targetChars[i]) {
         result[i] = 'correct'
@@ -65,11 +70,16 @@ function Game() {
       }
     }
 
+    // present / absent
     for (let i = 0; i < guessChars.length; i++) {
       if (guessUsed[i]) continue
+
       const targetIndex = targetChars.findIndex(
-        (char, idx) => char === guessChars[i] && !targetUsed[idx]
+        (char, idx) =>
+          char === guessChars[i] &&
+          !targetUsed[idx]
       )
+
       if (targetIndex !== -1) {
         result[i] = 'present'
         targetUsed[targetIndex] = true
@@ -81,21 +91,39 @@ function Game() {
     return result
   }, [phrase])
 
-  const rebuildStateFromGuesses = useCallback((savedGuesses, targetPhrase = phrase) => {
+  // ── REBUILD STATE FROM SAVED GUESSES ──
+  const rebuildStateFromGuesses = useCallback((
+    savedGuesses,
+    targetPhrase = phrase
+  ) => {
+
     const rebuiltGuesses = []
     let rebuiltKeyboard = {}
+
     let rebuiltGameOver = false
     let rebuiltWon = false
 
     for (let i = 0; i < savedGuesses.length; i++) {
       const guessStr = savedGuesses[i].word
-      const evaluation = evaluateGuess(guessStr, targetPhrase)
-      rebuiltGuesses.push({ word: guessStr, evaluation })
+
+      // IMPORTANT FIX:
+      // evaluate against actual phrase immediately
+      // instead of stale phrase state
+      const evaluation = evaluateGuess(
+        guessStr,
+        targetPhrase
+      )
+
+      rebuiltGuesses.push({
+        word: guessStr,
+        evaluation
+      })
 
       for (let j = 0; j < guessStr.length; j++) {
         const letter = guessStr[j]
         const status = evaluation[j]
         const current = rebuiltKeyboard[letter]
+
         if (
           status === 'correct' ||
           (status === 'present' && current !== 'correct') ||
@@ -105,12 +133,16 @@ function Game() {
         }
       }
 
-      const isWin = evaluation.every(s => s === 'correct')
+      const isWin = evaluation.every(
+        s => s === 'correct'
+      )
+
       if (isWin) {
         rebuiltGameOver = true
         rebuiltWon = true
         break
       }
+
       if (i >= maxGuesses - 1) {
         rebuiltGameOver = true
         rebuiltWon = false
@@ -118,52 +150,98 @@ function Game() {
       }
     }
 
-    return { guesses: rebuiltGuesses, keyboardStatus: rebuiltKeyboard, gameOver: rebuiltGameOver, won: rebuiltWon }
+    return {
+      guesses: rebuiltGuesses,
+      keyboardStatus: rebuiltKeyboard,
+      gameOver: rebuiltGameOver,
+      won: rebuiltWon
+    }
+
   }, [evaluateGuess, maxGuesses, phrase])
 
+  // ── SAVE PROGRESS ──
   const saveProgress = useCallback(async (state, user, pid) => {
-    const guessesPayload = state.guesses.map(g => ({ word: g.word }))
+    const guessesPayload = state.guesses.map(g => ({
+      word: g.word
+    }))
+
     if (user) {
-      await supabase.from('game_progress').upsert({
-        user_id: user.id,
-        puzzle_id: pid,
-        guesses: guessesPayload,
-        current_guess: state.guess,
-        cursor_pos: state.cursorPos,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id,puzzle_id' })
+      await supabase
+        .from('game_progress')
+        .upsert({
+          user_id: user.id,
+          puzzle_id: pid,
+          guesses: guessesPayload,
+          current_guess: state.guess,
+          cursor_pos: state.cursorPos,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,puzzle_id'
+        })
     } else {
-      localStorage.setItem(getGuestStorageKey(pid), JSON.stringify({
+      const data = {
         guesses: guessesPayload,
         guess: state.guess,
         cursorPos: state.cursorPos,
         savedAt: new Date().toISOString()
-      }))
+      }
+
+      localStorage.setItem(
+        getGuestStorageKey(pid),
+        JSON.stringify(data)
+      )
     }
   }, [])
 
+  // ── CLEAR PROGRESS ──
   const clearProgress = useCallback(async (user, pid) => {
     if (user) {
-      await supabase.from('game_progress').delete().eq('user_id', user.id).eq('puzzle_id', pid)
+      await supabase
+        .from('game_progress')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('puzzle_id', pid)
     } else {
-      localStorage.removeItem(getGuestStorageKey(pid))
+      localStorage.removeItem(
+        getGuestStorageKey(pid)
+      )
     }
   }, [])
 
-  const applySavedGuesses = useCallback((savedGuesses, savedGuess, savedCursorPos, targetPhrase = phrase) => {
-    if (savedGuesses && Array.isArray(savedGuesses) && savedGuesses.length > 0) {
-      const rebuilt = rebuildStateFromGuesses(savedGuesses, targetPhrase)
+  // ── APPLY SAVED GUESSES ──
+  const applySavedGuesses = useCallback((
+    savedGuesses,
+    savedGuess,
+    savedCursorPos,
+    targetPhrase = phrase
+  ) => {
+
+    if (
+      savedGuesses &&
+      Array.isArray(savedGuesses) &&
+      savedGuesses.length > 0
+    ) {
+
+      const rebuilt = rebuildStateFromGuesses(
+        savedGuesses,
+        targetPhrase
+      )
+
       setGuesses(rebuilt.guesses)
       setKeyboardStatus(rebuilt.keyboardStatus)
       setGameOver(rebuilt.gameOver)
       setWon(rebuilt.won)
+
       setGuess(savedGuess || '')
       setCursorPos(savedCursorPos ?? null)
     }
+
   }, [rebuildStateFromGuesses, phrase])
 
   useEffect(() => {
+
     const fetchPuzzleAndCheckSubmission = async () => {
+
       const now = new Date()
       const nyNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
       const nyHour = nyNow.getHours()
@@ -172,7 +250,10 @@ function Game() {
         ? new Date(nyNow.getTime() - 86400000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
         : nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
 
-      const { data: puzzleData, error: puzzleError } = await supabase
+      const {
+        data: puzzleData,
+        error: puzzleError
+      } = await supabase
         .from('puzzles')
         .select('phrase, puzzle_id')
         .eq('puzzle_date', targetDate)
@@ -184,14 +265,21 @@ function Game() {
         return
       }
 
+      // IMPORTANT:
+      // use local variable immediately
       const fetchedPhrase = puzzleData.phrase
+
       setPhrase(fetchedPhrase)
       setPuzzleId(puzzleData.puzzle_id)
 
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
+
       setCurrentUser(user ?? null)
 
       if (user) {
+
         const { data: existing } = await supabase
           .from('submissions')
           .select('status, attempts, points_earned')
@@ -200,35 +288,57 @@ function Game() {
           .maybeSingle()
 
         if (existing) {
+
           setAlreadySubmitted(true)
           setSubmissionResult(existing)
           setGameOver(true)
           setWon(existing.status === 'completed')
-          await supabase.from('game_progress').delete()
+
+          await supabase
+            .from('game_progress')
+            .delete()
             .eq('user_id', user.id)
             .eq('puzzle_id', puzzleData.puzzle_id)
+
           setLoading(false)
           return
         }
 
-        const guestSave = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
+        // ── MIGRATE GUEST SAVE ──
+        const guestSave = localStorage.getItem(
+          getGuestStorageKey(puzzleData.puzzle_id)
+        )
+
         if (guestSave) {
+
           try {
+
             const parsed = JSON.parse(guestSave)
+
             if (parsed.guesses?.length > 0) {
-              await supabase.from('game_progress').upsert({
-                user_id: user.id,
-                puzzle_id: puzzleData.puzzle_id,
-                guesses: parsed.guesses,
-                current_guess: parsed.guess || '',
-                cursor_pos: parsed.cursorPos ?? null,
-                updated_at: new Date().toISOString()
-              }, { onConflict: 'user_id,puzzle_id' })
+
+              await supabase
+                .from('game_progress')
+                .upsert({
+                  user_id: user.id,
+                  puzzle_id: puzzleData.puzzle_id,
+                  guesses: parsed.guesses,
+                  current_guess: parsed.guess || '',
+                  cursor_pos: parsed.cursorPos ?? null,
+                  updated_at: new Date().toISOString()
+                }, {
+                  onConflict: 'user_id,puzzle_id'
+                })
             }
+
           } catch (e) {}
-          localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
+
+          localStorage.removeItem(
+            getGuestStorageKey(puzzleData.puzzle_id)
+          )
         }
 
+        // ── LOAD PROGRESS ──
         const { data: progress } = await supabase
           .from('game_progress')
           .select('guesses, current_guess, cursor_pos')
@@ -237,17 +347,41 @@ function Game() {
           .maybeSingle()
 
         if (progress?.guesses?.length > 0) {
-          applySavedGuesses(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
+
+          // IMPORTANT FIX
+          applySavedGuesses(
+            progress.guesses,
+            progress.current_guess,
+            progress.cursor_pos,
+            fetchedPhrase
+          )
         }
 
       } else {
-        const saved = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
+
+        // ── GUEST LOAD ──
+        const saved = localStorage.getItem(
+          getGuestStorageKey(puzzleData.puzzle_id)
+        )
+
         if (saved) {
+
           try {
+
             const parsed = JSON.parse(saved)
-            applySavedGuesses(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
+
+            applySavedGuesses(
+              parsed.guesses,
+              parsed.guess,
+              parsed.cursorPos,
+              fetchedPhrase
+            )
+
           } catch (e) {
-            localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
+
+            localStorage.removeItem(
+              getGuestStorageKey(puzzleData.puzzle_id)
+            )
           }
         }
       }
@@ -256,12 +390,18 @@ function Game() {
     }
 
     fetchPuzzleAndCheckSubmission()
+
   }, [applySavedGuesses])
 
-  const submitWin = useCallback(async (attemptsCount) => {
+  // KEEP THE REST OF YOUR FILE EXACTLY THE SAME
+
+  const submitWin = async (attemptsCount) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      if (!user) {
+        console.error('No user logged in')
+        return
+      }
 
       const now = new Date()
       const nyNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
@@ -271,13 +411,18 @@ function Game() {
         ? new Date(nyNow.getTime() - 86400000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
         : nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
 
+      const today = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+
       const { data: puzzle, error: puzzleError } = await supabase
         .from('puzzles')
         .select('puzzle_id')
         .eq('puzzle_date', targetDate)
         .single()
 
-      if (puzzleError || !puzzle) return
+      if (puzzleError || !puzzle) {
+        console.error('Puzzle lookup failed:', puzzleError)
+        return
+      }
 
       const { data: existing, error: existingError } = await supabase
         .from('submissions')
@@ -286,8 +431,15 @@ function Game() {
         .eq('puzzle_id', puzzle.puzzle_id)
         .maybeSingle()
 
-      if (existingError) return
-      if (existing) return
+      if (existingError) {
+        console.error('Existing check failed:', existingError)
+        return
+      }
+
+      if (existing) {
+        console.log('Already submitted')
+        return
+      }
 
       const { data: userData, error: userError } = await supabase
         .from('users')
@@ -295,11 +447,16 @@ function Game() {
         .eq('id', user.id)
         .single()
 
-      if (userError) return
+      if (userError) {
+        console.error('User data fetch failed:', userError)
+        return
+      }
 
       const yesterday = new Date()
       yesterday.setDate(yesterday.getDate() - 1)
-      const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+      const yesterdayStr = yesterday.toLocaleDateString('en-CA', {
+        timeZone: 'America/New_York'
+      })
 
       const streakContinues = userData?.last_completed_date === yesterdayStr
       const newStreak = streakContinues ? (userData?.current_streak || 0) + 1 : 1
@@ -317,29 +474,36 @@ function Game() {
         status: 'completed'
       })
 
-      if (!insertError) {
+      if (insertError) {
+        console.error('Submission insert failed:', insertError)
+      } else {
+        console.log('Submission created successfully')
+        // ── CLEAR PROGRESS ON WIN ──
         await clearProgress(user, puzzle.puzzle_id)
       }
     } catch (err) {
       console.error('submitWin crashed:', err)
     }
-  }, [clearProgress])
+  }
 
   const checkWord = async (word) => {
     try {
-      const res = await fetch(`https://api.datamuse.com/words?sp=${word.toLowerCase()}&md=f&max=1`)
+      const res = await fetch(
+        `https://api.datamuse.com/words?sp=${word.toLowerCase()}&md=f&max=1`
+      )
       const data = await res.json()
       if (data.length === 0) return false
       if (data[0].word.toLowerCase() !== word.toLowerCase()) return false
       const freq = data[0].tags?.find(t => t.startsWith('f:'))
       if (!freq) return false
-      return parseFloat(freq.split(':')[1]) > 0.5
+      const score = parseFloat(freq.split(':')[1])
+      return score > 0.5
     } catch (e) {
       return true
     }
   }
 
-  const validateWords = useCallback(async (guessStr) => {
+  const validateWords = async (guessStr) => {
     if (!phrase) return null
     const phraseWordLengths = phrase.split(' ').map(w => w.length)
     let idx = 0
@@ -353,7 +517,7 @@ function Game() {
       if (!isValid) return word
     }
     return null
-  }, [phrase])
+  }
 
   const updateKeyboardStatus = useCallback((guessStr, evaluation) => {
     setKeyboardStatus(prev => {
@@ -407,6 +571,8 @@ function Game() {
       setCursorPos(null)
 
       const isWin = evaluation.every(s => s === 'correct')
+      const newGameOver = isWin || newGuesses.length >= maxGuesses
+      const newWon = isWin
 
       if (isWin) {
         setWon(true)
@@ -414,12 +580,18 @@ function Game() {
         submitWin(newGuesses.length)
       } else if (newGuesses.length >= maxGuesses) {
         setGameOver(true)
+        // ── CLEAR PROGRESS ON LOSS TOO ──
         await clearProgress(currentUser, puzzleId)
       } else {
-        await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
+        // ── SAVE PROGRESS AFTER EACH GUESS ──
+        await saveProgress({
+          guesses: newGuesses,
+          guess: '',
+          cursorPos: null
+        }, currentUser, puzzleId)
       }
     }
-  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin, validateWords])
+  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId])
 
   const handleDelete = useCallback(() => {
     if (gameOver || showHelp || loading || alreadySubmitted) return
@@ -473,7 +645,11 @@ function Game() {
         {showExpiry && <PuzzleExpiryPopup onClose={() => setShowExpiry(false)} />}
 
         {invalidWord && (
-          <WordErrorPopup key={popupKey} word={invalidWord} onClose={() => setInvalidWord(null)} />
+          <WordErrorPopup
+            key={popupKey}
+            word={invalidWord}
+            onClose={() => setInvalidWord(null)}
+          />
         )}
 
         {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}

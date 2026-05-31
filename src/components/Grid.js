@@ -1,28 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import './Grid.css';
 
-const TEST_PHRASE = 'WHAT THE HELL WHOM THE BEARS LIKE TOO WHILE WHAT ARE SNAKE';
-
-const TEST_GUESSES = [
-  { word: 'WHATHTE', evaluation: ['correct','absent','absent','correct','absent','absent','absent'] },
-  { word: 'HELLYWHO', evaluation: ['absent','absent','correct','correct','absent','correct','present','absent'] },
-  { word: 'THEBEARS', evaluation: ['correct','absent','present','correct','present','absent','correct','present'] },
-  { word: 'LIKETOO', evaluation: ['present','correct','present','absent','correct','correct','correct'] },
-  { word: 'WHILEWHAT', evaluation: ['correct','absent','present','correct','absent','correct','absent','absent','correct'] },
-  { word: 'ARESNAKE', evaluation: ['absent','correct','present','present','correct','absent','correct','present'] },
-];
-
-const Grid = ({ 
-  phrase = TEST_PHRASE, 
-  currentGuess = '', 
-  guesses = TEST_GUESSES, 
-  maxGuesses = 6,
-  won = false,
-  cursorPos = null,
-  onCellClick
-}) => {
+const Grid = ({ phrase = '', currentGuess = '', guesses = [], maxGuesses = 6, gameOver = false, won = false, cursorPos = null, onCellClick }) => {
   const gridRef = useRef(null);
-  
   const cleanPhrase = phrase.trim().toUpperCase().replace(/\s+/g, ' ');
   const totalLetters = cleanPhrase.replace(/ /g, '').length;
 
@@ -71,6 +51,7 @@ const Grid = ({
                           isSelected ? 'grid-cell--selected' : '',
                         ].filter(Boolean).join(' ')}
                         onClick={isActive ? () => onCellClick?.(cellIndex) : undefined}
+                        style={isActive ? { cursor: 'pointer' } : {}}
                       >
                         <span className="grid-cell-letter">
                           {letter && letter.trim() ? letter : ''}
@@ -105,37 +86,32 @@ const Grid = ({
   const paddedGuess = currentGuess.padEnd(totalLetters, ' ').split('');
 
   return (
-    <div className="grid-wrapper">
-      <div className="grid" ref={gridRef}>
-        {/* Previous guesses — SMALL */}
-        {olderGuesses.map((guess, i) => (
-          renderWordGroup(
-            guess.word.toUpperCase().replace(/\s/g, '').split(''),
-            guess.evaluation || [],
-            'submitted',
-            `old-${i}`,
-            false
-          )
-        ))}
-
-        {/* Most recent guess — LARGE (only one) */}
-        {mostRecentGuess && renderWordGroup(
-          mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
-          mostRecentGuess.evaluation || [],
-          'recent',
-          'recent',
+    <div className="grid" ref={gridRef}>
+      {olderGuesses.map((guess, i) =>
+        renderWordGroup(
+          guess.word.toUpperCase().replace(/\s/g, '').split(''),
+          guess.evaluation || [],
+          'submitted',
+          `old-guess-${i}`,
           false
-        )}
+        )
+      )}
 
-        {/* Next/active guess — MEDIUM (only one) */}
-        {guesses.length < maxGuesses && !won && renderWordGroup(
-          paddedGuess,
-          [],
-          'active',
-          'active',
-          true
-        )}
-      </div>
+      {mostRecentGuess && renderWordGroup(
+        mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
+        mostRecentGuess.evaluation || [],
+        'recent',
+        'recent-guess',
+        false
+      )}
+
+      {guesses.length < maxGuesses && !won && renderWordGroup(
+        paddedGuess,
+        [],
+        guesses.length === 0 ? 'recent' : 'active',
+        'active',
+        true
+      )}
     </div>
   );
 };

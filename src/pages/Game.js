@@ -654,6 +654,7 @@ function Game() {
 
         {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
 
+        {/* GRID TEMPORARILY HIDDEN — restore later
         {alreadySubmitted ? (
           <div className="answer-tiles">
             <Grid
@@ -683,6 +684,7 @@ function Game() {
             />
           </div>
         )}
+        */}
 
         {alreadySubmitted && submissionResult && (
           <div className="already-submitted">

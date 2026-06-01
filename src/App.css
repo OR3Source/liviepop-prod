@@ -6,12 +6,12 @@
 }
 
 .main-content {
+  /* flex: 1 means "take all remaining height after the header" — header height is accounted for automatically by flexbox, no calc needed */
   flex: 1;
   position: relative;
-  margin-top: -60px;
-  padding-top: 30px;
-  margin-bottom: -40px;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   z-index: 0;
 }
 

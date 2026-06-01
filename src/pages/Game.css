@@ -2,11 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Remove this: height: calc(100vh - 90px); */
-  height: 100%; /* Let flexbox handle it */
+  height: 100%;
   padding: 20px 20px 0;
   overflow: hidden;
-  margin-bottom: 10px;
 }
 
 
@@ -85,7 +83,7 @@ font-size: 21px;
 
 @media (max-width: 768px) {
   .game {
-    height: calc(100vh - 220px);
+    height: 100%;
     padding: 15px 15px 0;
   }
 
@@ -120,7 +118,7 @@ font-size: 22px;
 
 @media (max-width: 480px) {
   .game {
-    height: calc(100vh - 190px);
+    height: 100%;
     padding: 5px 10px 0;
   }
 
@@ -143,11 +141,9 @@ font-size: 20px;
 }
 
 @media (max-width: 360px) {
-
-
   .game {
     padding-top: 5px;
-      height: calc(100vh - 80px);
+    height: 100%;
   }
   .keyboard-anchor{
   padding-top: 20px;

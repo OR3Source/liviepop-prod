@@ -393,7 +393,7 @@ function Game() {
 
   // KEEP THE REST OF YOUR FILE EXACTLY THE SAME
 
-  const submitWin = async (attemptsCount) => {
+  const submitWin = useCallback(async (attemptsCount) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -480,9 +480,9 @@ function Game() {
     } catch (err) {
       console.error('submitWin crashed:', err)
     }
-  }
+  }, [clearProgress])
 
-  const checkWord = async (word) => {
+  const checkWord = useCallback(async (word) => {
     try {
       const res = await fetch(
         `https://api.datamuse.com/words?sp=${word.toLowerCase()}&md=f&max=1`
@@ -497,9 +497,9 @@ function Game() {
     } catch (e) {
       return true
     }
-  }
+  }, [])
 
-  const validateWords = async (guessStr) => {
+  const validateWords = useCallback(async (guessStr) => {
     if (!phrase) return null
     const phraseWordLengths = phrase.split(' ').map(w => w.length)
     let idx = 0
@@ -513,7 +513,7 @@ function Game() {
       if (!isValid) return word
     }
     return null
-  }
+  }, [phrase, checkWord])
 
   const updateKeyboardStatus = useCallback((guessStr, evaluation) => {
     setKeyboardStatus(prev => {
@@ -585,7 +585,7 @@ function Game() {
         }, currentUser, puzzleId)
       }
     }
-  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin, validateWords])
+  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId])
 
   const handleDelete = useCallback(() => {
     if (gameOver || showHelp || loading || alreadySubmitted) return

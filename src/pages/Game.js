@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 import Keyboard from '../components/Keyboard'
-import Grid from '../components/Grid'
 import HowToPlay from '../components/HowToPlay'
 import FallingFlowers from '../components/FallingFlowers'
 import WordErrorPopup from '../components/WordErrorPopup'
@@ -31,7 +30,6 @@ function Game() {
   const [currentUser, setCurrentUser] = useState(null)
   const [showExpiry, setShowExpiry] = useState(false)
 
-  const words = phrase ? phrase.split(' ') : []
   const phraseLetters = phrase ? phrase.replace(/ /g, '') : ''
   const totalLetters = phraseLetters.length
   const maxGuesses = 6
@@ -411,8 +409,6 @@ function Game() {
         ? new Date(nyNow.getTime() - 86400000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
         : nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
 
-      const today = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
-
       const { data: puzzle, error: puzzleError } = await supabase
         .from('puzzles')
         .select('puzzle_id')
@@ -571,8 +567,6 @@ function Game() {
       setCursorPos(null)
 
       const isWin = evaluation.every(s => s === 'correct')
-      const newGameOver = isWin || newGuesses.length >= maxGuesses
-      const newWon = isWin
 
       if (isWin) {
         setWon(true)
@@ -591,7 +585,7 @@ function Game() {
         }, currentUser, puzzleId)
       }
     }
-  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId])
+  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin, validateWords])
 
   const handleDelete = useCallback(() => {
     if (gameOver || showHelp || loading || alreadySubmitted) return
@@ -608,11 +602,6 @@ function Game() {
       return arr.join('').trimEnd()
     })
   }, [cursorPos, guess.length, totalLetters, gameOver, showHelp, loading, alreadySubmitted])
-
-  const handleCellClick = useCallback((index) => {
-    if (gameOver || loading || alreadySubmitted) return
-    setCursorPos(index)
-  }, [gameOver, loading, alreadySubmitted])
 
   useEffect(() => {
     const handleKeyDown = (e) => {

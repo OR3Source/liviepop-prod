@@ -11,7 +11,7 @@ const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
 function Game() {
   const [guess, setGuess] = useState('')
   const [guesses, setGuesses] = useState([])
-  const [showHelp, setShowHelp] = useState(false)
+  const [showHelp] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const [keyboardStatus, setKeyboardStatus] = useState({})
   const [phrase, setPhrase] = useState('')

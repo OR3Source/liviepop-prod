@@ -276,16 +276,15 @@ function BonusGame() {
       if (existing) return
 
       const { error: insertError } = await supabase.from('submissions').insert({
-      user_id: user.id,
-      puzzle_id: puzzleId,
-      attempts: attemptsCount,
-      points_earned: 15,
-      is_current_day: false,
-      completed_at: new Date().toISOString(),
-      streak_bonus: 0,
-      puzzle_date: date,  
-      status: 'completed'
-    })
+        user_id: user.id,
+        puzzle_id: puzzleId,
+        attempts: attemptsCount,
+        points_earned: 15,
+        is_current_day: false,
+        completed_at: new Date().toISOString(),
+        streak_bonus: 0,
+        status: 'completed'
+      })
 
       if (!insertError) {
         await clearProgress(user, puzzleId)

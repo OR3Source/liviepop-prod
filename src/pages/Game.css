@@ -37,7 +37,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 20px;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -119,7 +118,7 @@ font-size: 21px;
   }
 
   .game-grid-area {
-    padding-top: 30px;
+    padding-top: 0;
   }
 
       .keyboard-anchor{

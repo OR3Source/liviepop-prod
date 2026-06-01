@@ -11,7 +11,7 @@ const Grid = ({
   cursorPos = null,
   onCellClick
 }) => {
-  const gridRef = useRef(null);
+  const wrapperRef = useRef(null);
   const cleanPhrase = phrase.trim().toUpperCase().replace(/\s+/g, ' ');
   const totalLetters = cleanPhrase.replace(/ /g, '').length;
 
@@ -84,9 +84,9 @@ const Grid = ({
   const olderGuesses = guesses.length > 1 ? guesses.slice(0, -1) : [];
 
   useEffect(() => {
-    if (gridRef.current) {
-      gridRef.current.scrollTo({
-        top: gridRef.current.scrollHeight,
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollTo({
+        top: wrapperRef.current.scrollHeight,
         behavior: 'smooth'
       });
     }
@@ -95,32 +95,34 @@ const Grid = ({
   const paddedGuess = currentGuess.padEnd(totalLetters, ' ').split('');
 
   return (
-    <div className="grid" ref={gridRef}>
-      {olderGuesses.map((guess, i) =>
-        renderWordGroup(
-          guess.word.toUpperCase().replace(/\s/g, '').split(''),
-          guess.evaluation || [],
-          'submitted',
-          `old-guess-${i}`,
+    <div className="grid-wrapper" ref={wrapperRef}>
+      <div className="grid">
+        {olderGuesses.map((guess, i) =>
+          renderWordGroup(
+            guess.word.toUpperCase().replace(/\s/g, '').split(''),
+            guess.evaluation || [],
+            'submitted',
+            `old-guess-${i}`,
+            false
+          )
+        )}
+
+        {mostRecentGuess && renderWordGroup(
+          mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
+          mostRecentGuess.evaluation || [],
+          'recent',
+          'recent-guess',
           false
-        )
-      )}
+        )}
 
-      {mostRecentGuess && renderWordGroup(
-        mostRecentGuess.word.toUpperCase().replace(/\s/g, '').split(''),
-        mostRecentGuess.evaluation || [],
-        'recent',
-        'recent-guess',
-        false
-      )}
-
-      {guesses.length < maxGuesses && !won && renderWordGroup(
-        paddedGuess,
-        [],
-        guesses.length === 0 ? 'recent' : 'active',
-        'active',
-        true
-      )}
+        {guesses.length < maxGuesses && !won && renderWordGroup(
+          paddedGuess,
+          [],
+          guesses.length === 0 ? 'recent' : 'active',
+          'active',
+          true
+        )}
+      </div>
     </div>
   );
 };

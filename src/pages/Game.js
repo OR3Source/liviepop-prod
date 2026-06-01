@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Keyboard from '../components/Keyboard'
+import FallingFlowers from '../components/FallingFlowers'
 import Grid from '../components/Grid'
 import WordErrorPopup from '../components/WordErrorPopup'
 import PuzzleExpiryPopup from '../components/PuzzleExpiryPopup'
@@ -347,6 +348,7 @@ function Game() {
 
   return (
     <>
+      <FallingFlowers enabled={true} />
       <div className="game">
         {showExpiry && <PuzzleExpiryPopup onClose={() => setShowExpiry(false)} />}
         {invalidWord && <WordErrorPopup key={popupKey} word={invalidWord} onClose={() => setInvalidWord(null)} />}

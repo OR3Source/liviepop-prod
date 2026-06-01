@@ -5,6 +5,11 @@
   background-color: #d8e9fa;
 }
 
+#root:has(.game) {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .main-content {
   /* flex: 1 means "take all remaining height after the header" — header height is accounted for automatically by flexbox, no calc needed */
   flex: 1;

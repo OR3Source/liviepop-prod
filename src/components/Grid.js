@@ -1,7 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 import './Grid.css';
 
-const Grid = ({ phrase = '', currentGuess = '', guesses = [], maxGuesses = 6, gameOver = false, won = false, cursorPos = null, onCellClick }) => {
+const Grid = ({
+  phrase = '',
+  currentGuess = '',
+  guesses = [],
+  maxGuesses = 6,
+  gameOver = false,
+  won = false,
+  cursorPos = null,
+  onCellClick
+}) => {
   const gridRef = useRef(null);
   const cleanPhrase = phrase.trim().toUpperCase().replace(/\s+/g, ' ');
   const totalLetters = cleanPhrase.replace(/ /g, '').length;

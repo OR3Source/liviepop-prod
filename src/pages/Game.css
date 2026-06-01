@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
   height: 100%;
   padding: 20px 20px 0;
   overflow: hidden;
@@ -42,6 +41,32 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+}
+
+/* NEW: scroll wrapper inside game-grid-area */
+.grid-wrapper {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  scrollbar-width: thin;
+  scrollbar-color: #FDB1CB transparent;
+}
+
+.grid-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.grid-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.grid-wrapper::-webkit-scrollbar-thumb {
+  background: #FDB1CB;
+  border-radius: 2px;
 }
 
 .keyboard-anchor {
@@ -142,6 +167,8 @@ font-size: 20px;
 }
 
 @media (max-width: 360px) {
+
+
   .game {
     padding-top: 5px;
     height: 100%;

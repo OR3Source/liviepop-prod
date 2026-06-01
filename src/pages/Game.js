@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import Keyboard from '../components/Keyboard'
+import Grid from '../components/Grid'
 import WordErrorPopup from '../components/WordErrorPopup'
 import PuzzleExpiryPopup from '../components/PuzzleExpiryPopup'
+import heartCutout from '../assets/WINDOW2.png'
 import { supabase } from '../lib/supabase'
+import { ActivitySquare } from 'lucide-react'
 import './Game.css'
 
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
@@ -12,6 +15,7 @@ function Game() {
   const [guesses, setGuesses] = useState([])
   const [showHelp] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+  const [won, setWon] = useState(false)
   const [keyboardStatus, setKeyboardStatus] = useState({})
   const [phrase, setPhrase] = useState('')
   const [loading, setLoading] = useState(true)
@@ -19,10 +23,12 @@ function Game() {
   const [popupKey, setPopupKey] = useState(0)
   const [cursorPos, setCursorPos] = useState(null)
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
+  const [submissionResult, setSubmissionResult] = useState(null)
   const [puzzleId, setPuzzleId] = useState(null)
   const [currentUser, setCurrentUser] = useState(null)
   const [showExpiry, setShowExpiry] = useState(false)
 
+  const words = phrase ? phrase.split(' ') : []
   const phraseLetters = phrase ? phrase.replace(/ /g, '') : ''
   const totalLetters = phraseLetters.length
   const maxGuesses = 6
@@ -127,6 +133,7 @@ function Game() {
       setGuesses(rebuilt.guesses)
       setKeyboardStatus(rebuilt.keyboardStatus)
       setGameOver(rebuilt.gameOver)
+      setWon(rebuilt.won)
       setGuess(savedGuess || '')
       setCursorPos(savedCursorPos ?? null)
     }
@@ -160,7 +167,9 @@ function Game() {
 
         if (existing) {
           setAlreadySubmitted(true)
+          setSubmissionResult(existing)
           setGameOver(true)
+          setWon(existing.status === 'completed')
           await supabase.from('game_progress').delete().eq('user_id', user.id).eq('puzzle_id', puzzleData.puzzle_id)
           setLoading(false)
           return
@@ -281,6 +290,7 @@ function Game() {
 
       const isWin = evaluation.every(s => s === 'correct')
       if (isWin) {
+        setWon(true)
         setGameOver(true)
       } else if (newGuesses.length >= maxGuesses) {
         setGameOver(true)
@@ -307,6 +317,11 @@ function Game() {
       return arr.join('').trimEnd()
     })
   }, [cursorPos, guess.length, totalLetters, gameOver, showHelp, loading, alreadySubmitted])
+
+  const handleCellClick = useCallback((index) => {
+    if (gameOver || loading || alreadySubmitted) return
+    setCursorPos(index)
+  }, [gameOver, loading, alreadySubmitted])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -335,6 +350,88 @@ function Game() {
       <div className="game">
         {showExpiry && <PuzzleExpiryPopup onClose={() => setShowExpiry(false)} />}
         {invalidWord && <WordErrorPopup key={popupKey} word={invalidWord} onClose={() => setInvalidWord(null)} />}
+
+        {alreadySubmitted ? (
+          <div className="answer-tiles">
+            <Grid
+              phrase={phrase}
+              words={words}
+              currentGuess={''}
+              guesses={[{ word: phrase.replace(/ /g, ''), evaluation: Array(phrase.replace(/ /g, '').length).fill('correct') }]}
+              maxGuesses={1}
+              gameOver={true}
+              won={true}
+              cursorPos={null}
+              onCellClick={() => {}}
+            />
+          </div>
+        ) : (
+          <div className="game-grid-area">
+            <div className="grid-wrapper">
+              <Grid
+                phrase={phrase}
+                words={words}
+                currentGuess={guess}
+                guesses={guesses}
+                maxGuesses={maxGuesses}
+                gameOver={gameOver}
+                won={won}
+                cursorPos={cursorPos}
+                onCellClick={handleCellClick}
+              />
+            </div>
+          </div>
+        )}
+
+        {alreadySubmitted && submissionResult && (
+          <div className="already-submitted">
+            {submissionResult.status === 'completed' ? (
+              <div className="win-heart-wrapper">
+                <div className="win-heart-container">
+                  <img src={heartCutout} alt="" className="win-heart-img" />
+                  <div className="win-heart-content">
+                    <span className="win-heart-text">YOU WON</span>
+                    <span className="win-heart-subtext">
+                      <ActivitySquare size={32} color='black' fill='white' strokeWidth={3} />
+                    </span>
+                    <span className="win-heart-subtext">ATTEMPTS: {submissionResult.attempts}</span>
+                    <span className="win-heart-subtext">POINTS: {submissionResult.points_earned}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="game-over">
+                <p className="lose-message">You already played today</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!alreadySubmitted && won && (
+          <div className="win-heart-wrapper">
+            <div className="win-heart-container">
+              <img src={heartCutout} alt="" className="win-heart-img" />
+              <div className="win-heart-content">
+                <span className="win-heart-text">YOU WON</span>
+                <span className="win-heart-subtext">
+                  <ActivitySquare size={32} color='black' fill='white' strokeWidth={3} />
+                </span>
+                <span className="win-heart-subtext">ATTEMPTS: {guesses.length}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!alreadySubmitted && gameOver && !won && (
+          <div className="game-over">
+            <p className="lose-message">
+              The phrase was:{' '}
+              <span style={{ fontFamily: "Griffy", color: 'darkred', fontWeight: 'bolder', letterSpacing: '1px' }}>
+                {phrase}
+              </span>
+            </p>
+          </div>
+        )}
 
         {!alreadySubmitted && (
           <div className="keyboard-anchor">

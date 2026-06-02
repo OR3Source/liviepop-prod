@@ -18,6 +18,8 @@
 }
 
 .keyboard-key {
+  position: relative;
+  z-index: 160;
   background: black;
   color: white;
   border: none;

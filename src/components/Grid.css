@@ -51,7 +51,7 @@
 
 .grid-cell {
   position: relative;
-  z-index: 160;
+  z-index: 180;
   background: white;
   border: 2px solid #f0b9cd;
   border-radius: 8px;

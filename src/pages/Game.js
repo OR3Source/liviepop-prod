@@ -226,7 +226,6 @@ function Game() {
       const targetDate = nyHour < 12
         ? new Date(nyNow.getTime() - 86400000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
         : nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
-      const today = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
       const { data: puzzle, error: puzzleError } = await supabase
         .from('puzzles')
         .select('puzzle_id')

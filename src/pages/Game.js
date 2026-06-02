@@ -4,9 +4,7 @@ import FallingFlowers from '../components/FallingFlowers'
 import Grid from '../components/Grid'
 import WordErrorPopup from '../components/WordErrorPopup'
 import PuzzleExpiryPopup from '../components/PuzzleExpiryPopup'
-import heartCutout from '../assets/WINDOW2.png'
 import { supabase } from '../lib/supabase'
-import { ActivitySquare } from 'lucide-react'
 import './Game.css'
 
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
@@ -215,6 +213,80 @@ function Game() {
     fetchPuzzle()
   }, [applySavedGuesses])
 
+  const submitWin = async (attemptsCount) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        console.error('No user logged in')
+        return
+      }
+      const now = new Date()
+      const nyNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
+      const nyHour = nyNow.getHours()
+      const targetDate = nyHour < 12
+        ? new Date(nyNow.getTime() - 86400000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+        : nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+      const today = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+      const { data: puzzle, error: puzzleError } = await supabase
+        .from('puzzles')
+        .select('puzzle_id')
+        .eq('puzzle_date', targetDate)
+        .single()
+      if (puzzleError || !puzzle) {
+        console.error('Puzzle lookup failed:', puzzleError)
+        return
+      }
+      const { data: existing, error: existingError } = await supabase
+        .from('submissions')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('puzzle_id', puzzle.puzzle_id)
+        .maybeSingle()
+      if (existingError) {
+        console.error('Existing check failed:', existingError)
+        return
+      }
+      if (existing) {
+        console.log('Already submitted')
+        return
+      }
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('current_streak, last_completed_date')
+        .eq('id', user.id)
+        .single()
+      if (userError) {
+        console.error('User data fetch failed:', userError)
+        return
+      }
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+      const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+      const streakContinues = userData?.last_completed_date === yesterdayStr
+      const newStreak = streakContinues ? (userData?.current_streak || 0) + 1 : 1
+      const streakBonus = newStreak * 2.5
+      const { error: insertError } = await supabase.from('submissions').insert({
+        user_id: user.id,
+        puzzle_id: puzzle.puzzle_id,
+        attempts: attemptsCount,
+        points_earned: 50,
+        is_current_day: true,
+        completed_at: new Date().toISOString(),
+        streak_bonus: streakBonus,
+        puzzle_date: targetDate,
+        status: 'completed'
+      })
+      if (insertError) {
+        console.error('Submission insert failed:', insertError)
+      } else {
+        console.log('Submission created successfully')
+        await clearProgress(user, puzzle.puzzle_id)
+      }
+    } catch (err) {
+      console.error('submitWin crashed:', err)
+    }
+  }
+
   const checkWord = useCallback(async (word) => {
     try {
       const res = await fetch(`https://api.datamuse.com/words?sp=${word.toLowerCase()}&md=f&max=1`)
@@ -293,6 +365,7 @@ function Game() {
       if (isWin) {
         setWon(true)
         setGameOver(true)
+        submitWin(newGuesses.length)
       } else if (newGuesses.length >= maxGuesses) {
         setGameOver(true)
         await clearProgress(currentUser, puzzleId)
@@ -388,18 +461,10 @@ function Game() {
         {alreadySubmitted && submissionResult && (
           <div className="already-submitted">
             {submissionResult.status === 'completed' ? (
-              <div className="win-heart-wrapper">
-                <div className="win-heart-container">
-                  <img src={heartCutout} alt="" className="win-heart-img" />
-                  <div className="win-heart-content">
-                    <span className="win-heart-text">YOU WON</span>
-                    <span className="win-heart-subtext">
-                      <ActivitySquare size={32} color='black' fill='white' strokeWidth={3} />
-                    </span>
-                    <span className="win-heart-subtext">ATTEMPTS: {submissionResult.attempts}</span>
-                    <span className="win-heart-subtext">POINTS: {submissionResult.points_earned}</span>
-                  </div>
-                </div>
+              <div className="win-text-wrapper">
+                <span className="win-text">YOU WON</span>
+                <span className="win-subtext">ATTEMPTS: {submissionResult.attempts}</span>
+                <span className="win-subtext">POINTS: {submissionResult.points_earned}</span>
               </div>
             ) : (
               <div className="game-over">
@@ -410,17 +475,9 @@ function Game() {
         )}
 
         {!alreadySubmitted && won && (
-          <div className="win-heart-wrapper">
-            <div className="win-heart-container">
-              <img src={heartCutout} alt="" className="win-heart-img" />
-              <div className="win-heart-content">
-                <span className="win-heart-text">YOU WON</span>
-                <span className="win-heart-subtext">
-                  <ActivitySquare size={32} color='black' fill='white' strokeWidth={3} />
-                </span>
-                <span className="win-heart-subtext">ATTEMPTS: {guesses.length}</span>
-              </div>
-            </div>
+          <div className="win-text-wrapper">
+            <span className="win-text">YOU WON</span>
+            <span className="win-subtext">ATTEMPTS: {guesses.length}</span>
           </div>
         )}
 

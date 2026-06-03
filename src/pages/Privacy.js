@@ -59,8 +59,9 @@ const Privacy = () => {
           <h2 className="gabout-heading">6. Third-Party Services</h2>
           <p className="gabout-text">We use the following third-party services:</p>
           <ul className="gabout-list">
-            <li><strong>Supabase</strong> — Authentication, database, and hosting infrastructure</li>
-            <li><strong>Cloudflare</strong> — Website hosting and deployment</li>
+            <li><strong>Supabase</strong> - Authentication, database, and hosting infrastructure</li>
+            <li><strong>Cloudflare</strong> - Website hosting and deployment</li>
+            <li><strong>EmailJS</strong> - Email delivery and contact form integration</li>
           </ul>
           <p className="gabout-text">Each of these services has their own privacy policies. We encourage you to review them if you have concerns.</p>
         </div>

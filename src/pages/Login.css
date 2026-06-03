@@ -131,6 +131,10 @@
   border-radius: 4px;
 }
 
+.login-input[type="password"] {
+  font-family: 'Griffy', cursive;
+}
+
 .login-input::placeholder {
   color: #999;
 }

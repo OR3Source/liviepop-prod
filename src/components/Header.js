@@ -72,7 +72,7 @@ const Header = ({ onOpenHelp }) => {
             aria-label="Menu"
           >
             {menuOpen ? (
-              <X size={24} strokeWidth={2} />
+              <X size={24} strokeWidth={2.75} />
             ) : (
               <Menu size={24} strokeWidth={2.75} />
             )}

@@ -230,7 +230,7 @@ function Game() {
       const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
       const streakContinues = userData?.last_completed_date === yesterdayStr
       const newStreak = streakContinues ? (userData?.current_streak || 0) + 1 : 1
-      const streakBonus = newStreak * 2.5
+      const streakBonus = newStreak * 2.50
       const { error: insertError } = await supabase.from('submissions').insert({
         user_id: user.id, puzzle_id: puzzle.puzzle_id, attempts: attemptsCount,
         points_earned: 50, is_current_day: true, completed_at: new Date().toISOString(),

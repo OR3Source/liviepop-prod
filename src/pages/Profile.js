@@ -12,7 +12,6 @@ function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Wait for auth to finish loading before checking user
     if (authLoading) return;
 
     if (!user) {
@@ -41,7 +40,6 @@ function Profile() {
     navigate('/');
   };
 
-  // Show loading while auth initializes
   if (authLoading || loading) {
     return (
       <div className="profile-page" style={{ justifyContent: 'center' }}>
@@ -66,6 +64,7 @@ function Profile() {
 
       <div className="profile-card">
         <div className="profile-card-inner">
+
           <div className="profile-info">
             <div className="profile-row">
               <span className="profile-label">Username</span>
@@ -79,15 +78,18 @@ function Profile() {
               <span className="profile-label">Member Since</span>
               <span className="profile-value">{memberSince}</span>
             </div>
-            <div className="profile-row">
-              <span className="profile-label">Total Points</span>
-              <span className="profile-value" style={{ color: '#A92E43' }}>
+          </div>
+
+          <div className="profile-stats">
+            <div className="profile-stat-box">
+              <span className="profile-stat-label">Total Points</span>
+              <span className="profile-stat-value points">
                 {(profile?.total_points ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
-            <div className="profile-row">
-              <span className="profile-label">Current Streak</span>
-              <span className="profile-value">{profile?.current_streak || '0'}</span>
+            <div className="profile-stat-box">
+              <span className="profile-stat-label">Current Streak</span>
+              <span className="profile-stat-value">{profile?.current_streak || '0'} 🔥</span>
             </div>
           </div>
 
@@ -95,6 +97,7 @@ function Profile() {
             <LogOut size={16} />
             SIGN OUT
           </button>
+
         </div>
       </div>
     </div>

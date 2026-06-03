@@ -3,17 +3,9 @@ import emailjs from '@emailjs/browser';
 import './Contact.css';
 import { Mail, MessageSquare, Send, AlertTriangle, CheckCircle } from 'lucide-react';
 
-const InstagramIcon = ({ size = 18 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="2" y="2" width="20" height="20" rx="6" stroke="#E5457E" strokeWidth="2"/>
-    <circle cx="12" cy="12" r="5" stroke="#E5457E" strokeWidth="2"/>
-    <circle cx="17.5" cy="6.5" r="1.5" fill="#E5457E"/>
-  </svg>
-);
-
 const XIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.5 2H21L14.5 10.5L22 22H16L11 15.5L5.5 22H2L9 13L2 2H8L12.5 8L17.5 2Z" fill="#E5457E"/>
+    <path d="M17.5 2H21L14.5 10.5L22 22H16L11 15.5L5.5 22H2L9 13L2 2H8L12.5 8L17.5 2Z" fill="#A92E43"/>
   </svg>
 );
 
@@ -46,7 +38,7 @@ const Contact = () => {
       <div className="contact-header">
         <p className="section-label">Get in Touch</p>
         <h1 className="contact-title">
-          Contact <span style={{ color: '#E5457E' }}>Us</span>
+          Contact <span style={{ color: '#A92E43' }}>Us</span>
         </h1>
       </div>
 

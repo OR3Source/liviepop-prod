@@ -10,7 +10,7 @@ import HowToPlay from './components/HowToPlay'
 import Login from './pages/Login'
 import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
-
+import About from './pages/About'
 function App() {
   const [showHelp, setShowHelp] = useState(false)
 
@@ -26,6 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<About />} />
           </Routes>
         </main>
         <Footer />

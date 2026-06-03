@@ -82,7 +82,7 @@ function Profile() {
             <div className="profile-row">
               <span className="profile-label">Total Points</span>
               <span className="profile-value" style={{ color: '#A92E43' }}>
-                {profile?.total_points?.toLocaleString() || '0'}
+                {(profile?.total_points ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
             <div className="profile-row">

@@ -206,7 +206,7 @@ font-size: 18px;
 
 .game { position: relative; z-index: 200; }
 .game-grid-area { position: relative; z-index: 200; }
-.keyboard-anchor { position: relative; }
+.keyboard-anchor { position: relative; z-index: 200; }
 
 .answer-grid {
   display: flex;

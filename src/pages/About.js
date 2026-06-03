@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircleQuestionMark } from 'lucide-react';
+import { MessageCircleQuestionMark, Gamepad2 } from 'lucide-react';
 import './About.css';
 
 const About = () => {
@@ -14,13 +14,13 @@ const About = () => {
 
         <div className="gabout-manifesto">
           <p className="gabout-manifesto-text">
-            Guess the Olivia Rodrigo lyric.<br />
+            Can you unravel it?<br />
             <span className="gabout-manifesto-pink">One phrase. Every day.</span>
           </p>
         </div>
 
         <div className="gabout-section">
-          <h2 className="gabout-heading">How To Play</h2>
+          <h2 className="gabout-heading"><Gamepad2 size={18} /> How To Play</h2>
           <p className="gabout-text">
             Every day there's a new phrase to figure out. Type your guess using the keyboard and hit ENTER. Each letter will get colored to help you narrow it down.
           </p>

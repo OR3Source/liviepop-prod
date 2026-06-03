@@ -132,7 +132,7 @@ function Login() {
         </form>
 
         <p className="login-switch">
-          {isSignUp ? 'Already have an account?' : 'not a member yet?'}{' '}
+          {isSignUp ? 'already have an account?' : 'not a member yet?'}{' '}
           <button className="switch-btn" onClick={() => setIsSignUp(!isSignUp)}>
             {isSignUp ? 'Sign in' : 'Join now'}
           </button>

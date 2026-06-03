@@ -74,7 +74,7 @@ const Header = ({ onOpenHelp }) => {
             {menuOpen ? (
               <X size={24} strokeWidth={2} />
             ) : (
-              <Menu size={24} strokeWidth={2} />
+              <Menu size={24} strokeWidth={2.75} />
             )}
           </button>
 

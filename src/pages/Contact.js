@@ -68,10 +68,6 @@ const Contact = () => {
               <Mail size={18} />
               <span>support@liviepop.com</span>
             </a>
-            <a href="https://instagram.com/liviepop" target="_blank" rel="noopener noreferrer" className="social-link">
-              <InstagramIcon size={18} />
-              <span>@liviepop</span>
-            </a>
             <a href="https://x.com/0R3Source" target="_blank" rel="noopener noreferrer" className="social-link">
               <XIcon size={18} />
               <span>@0R3Source</span>
@@ -154,7 +150,7 @@ const Contact = () => {
             <MessageSquare size={14} />
             <p>
               <strong>Note:</strong> We're not affiliated with Olivia Rodrigo or her team.
-              This form is for <span style={{ fontFamily: 'Griffy, cursive' }}>CR</span> inquiries only. For official matters,
+              This form is for <span style={{ fontFamily: 'Griffy, cursive' }}>LiviePop</span> inquiries only. For official matters,
               please reach out to her team.
             </p>
           </div>

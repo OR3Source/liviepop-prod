@@ -2,16 +2,14 @@
 .contact-page { max-width: 720px; margin: 0 auto; padding: 1rem 2rem 5rem; display: flex; flex-direction: column; align-items: center; font-family: 'BM HANNA Air OTF', sans-serif; }
 
 /* ── Header ── */
-.contact-header { text-align: center; margin-top: 1.25rem; }
+.contact-header { text-align: center; }
 
 .section-label { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.78rem; font-weight: bold; letter-spacing: 0.15rem; text-transform: uppercase; color: #888; }
 
-.contact-title { font-family: 'Griffy', cursive; font-size: 2.8rem; color: #2d2d2d; margin: 0; letter-spacing: -1px; }
+.contact-title { font-family: 'Griffy', cursive; font-size: 2.8rem; color: #1a1a2e; margin: 0; letter-spacing: -1px; }
 
 /* ── Card ── */
-.contact-card { width: 100%; background: #fff; border: 3px solid #2d2d2d; border-radius: 8px; overflow: hidden; box-shadow: 6px 6px 0px #FDB1CB; }
-
-.contact-card-inner { padding: 2rem; display: flex; flex-direction: column; gap: 2rem; }
+.contact-card { width: 100%; background: #fff; border: 3px solid #1a1a2e; border-radius: 8px; padding: 2rem; box-shadow: 6px 6px 0px #FDB1CB; display: flex; flex-direction: column; gap: 2rem; }
 
 /* ── Intro ── */
 .contact-intro { text-align: center; }
@@ -21,11 +19,11 @@
 /* ── Social Links ── */
 .contact-socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem; }
 
-.social-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; background: #fff; border: 2px solid #2d2d2d; border-radius: 8px; text-decoration: none; color: #2d2d2d; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.9rem; font-weight: bold; transition: all 0.2s; }
+.social-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; background: #fff; border: 2px solid #1a1a2e; border-radius: 8px; text-decoration: none; color: #1a1a2e; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.9rem; font-weight: bold; transition: all 0.2s; }
 
-.social-link:hover { background: #FDB1CB; border-color: #E5457E; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(229, 69, 126, 0.2); }
+.social-link:hover { background: #FDB1CB; border-color: #A92E43; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(169, 46, 67, 0.2); }
 
-.social-link svg { color: #E5457E; flex-shrink: 0; }
+.social-link svg { color: #A92E43; flex-shrink: 0; }
 
 /* ── Divider ── */
 .contact-divider { display: flex; align-items: center; gap: 1rem; margin: 0.5rem 0; }
@@ -43,36 +41,36 @@
 
 .contact-label { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.85rem; font-weight: bold; letter-spacing: 0.1rem; text-transform: uppercase; color: #000000; }
 
-.contact-input, .contact-textarea { width: 100%; padding: 0.85rem 1rem; border: 2px solid #2d2d2d; border-radius: 6px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.95rem; color: #2d2d2d; background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; box-sizing: border-box; }
+.contact-input, .contact-textarea { width: 100%; padding: 0.85rem 1rem; border: 2px solid #1a1a2e; border-radius: 6px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.95rem; color: #2d2d2d; background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; box-sizing: border-box; }
 
 .contact-input::placeholder, .contact-textarea::placeholder { font-family: 'BM HANNA Air OTF', sans-serif; color: #2d2d2d; opacity: 0.5; }
 
-.contact-input:focus, .contact-textarea:focus { border-color: #E5457E; box-shadow: 0 0 0 3px rgba(229, 69, 126, 0.12); }
+.contact-input:focus, .contact-textarea:focus { border-color: #A92E43; box-shadow: 0 0 0 3px rgba(169, 46, 67, 0.12); }
 
 /* ── Error / Success ── */
 .contact-error, .contact-success { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; border-radius: 6px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.85rem; font-weight: bold; }
 
-.contact-error { background: #fff0f5; border: 1.5px solid #FDB1CB; color: #E5457E; }
+.contact-error { background: #fff0f5; border: 1.5px solid #FDB1CB; color: #A92E43; }
 
 .contact-success { background: #f0fff4; border: 1.5px solid #86efac; color: #22c55e; }
 
 /* ── Submit Button ── */
-.contact-submit-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 1rem; background: #2d2d2d; color: white; border: 3px solid #2d2d2d; border-radius: 4px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+.contact-submit-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 1rem; background: #1a1a2e; color: white; border: 3px solid #1a1a2e; border-radius: 4px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
 
-.contact-submit-btn:hover { background: #E5457E; border-color: #E5457E; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 69, 126, 0.3); }
+.contact-submit-btn:hover { background: #A92E43; border-color: #A92E43; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(169, 46, 67, 0.3); }
 
 /* ── Disclaimer ── */
 .contact-disclaimer { display: flex; align-items: flex-start; gap: 0.75rem; padding: 1rem 1.25rem; background: #fff8fb; border: 2px dashed #ecdde6; border-radius: 6px; }
 
-.contact-disclaimer svg { color: #E5457E; flex-shrink: 0; margin-top: 0.1rem; }
+.contact-disclaimer svg { color: #A92E43; flex-shrink: 0; margin-top: 0.1rem; }
 
 .contact-disclaimer p { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.82rem; color: #292828; line-height: 1.6; margin: 0; }
 
-.contact-disclaimer strong { color: #2d2d2d; }
+.contact-disclaimer strong { color: #1a1a2e; }
 
 /* ── Responsive ── */
-@media (max-width: 768px) { .contact-page { padding: .75rem 1.5rem 5rem; } .contact-title { font-size: 2.25rem; } .contact-card-inner { padding: 1.75rem; } .contact-form-row { grid-template-columns: 1fr; gap: 1.25rem; } .social-link { font-size: 0.85rem; padding: 0.5rem 1rem; } }
+@media (max-width: 768px) { .contact-page { padding: .75rem 1.5rem 5rem; } .contact-title { font-size: 2.25rem; } .contact-card { padding: 1.75rem; } .contact-form-row { grid-template-columns: 1fr; gap: 1.25rem; } .social-link { font-size: 0.85rem; padding: 0.5rem 1rem; } }
 
-@media (max-width: 480px) { .contact-page { padding: .50rem 1rem 4rem; } .contact-title { font-size: 1.9rem; } .contact-card-inner { padding: 1.5rem 1.25rem; gap: 1.75rem; } .contact-submit-btn { font-size: 1rem; } .contact-input, .contact-textarea { font-size: 16px; } }
+@media (max-width: 480px) { .contact-page { padding: .50rem 1rem 4rem; } .contact-title { font-size: 1.9rem; } .contact-card { padding: 1.5rem 1.25rem; gap: 1.75rem; } .contact-submit-btn { font-size: 1rem; } .contact-input, .contact-textarea { font-size: 16px; } }
 
-@media (max-width: 360px) { .contact-title { font-size: 1.65rem; } .contact-card-inner { padding: 1.25rem 1rem; } .social-link { width: 100%; justify-content: center; } }
+@media (max-width: 360px) { .contact-title { font-size: 1.65rem; } .contact-card { padding: 1.25rem 1rem; } .social-link { width: 100%; justify-content: center; } }

@@ -9,7 +9,7 @@
 /* ── Card ── */
 .profile-card { width: 100%; background: #fff; border: 3px solid #2d2d2d; border-radius: 12px; padding: 2.5rem; box-shadow: 6px 6px 0px #FDB1CB; }
 
-.profile-card-inner { display: flex; flex-direction: column; gap: 2rem; }
+.profile-card-inner { display: flex; flex-direction: column; gap: 0.75rem; }
 
 /* ── Info rows ── */
 .profile-info { width: 100%; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -21,24 +21,24 @@
 .profile-value { font-family: 'Courier New', monospace; font-size: 1rem; color: #2d2d2d; font-weight: bold; text-align: right; word-break: break-all; min-width: 0; }
 
 /* ── Stats grid ── */
-.profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.25rem; }
 
 .profile-stat-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; padding: 1.25rem 1rem; border: 2px solid #ecdde6; border-radius: 8px; background: #fbe5ed; text-align: center; }
 
 .profile-stat-label { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.12rem; text-transform: uppercase; color: #8599A8; }
 
-.profile-stat-value { font-family: 'Griffy', cursive; font-size: 2rem; color: #2d2d2d; line-height: 1; }
+.profile-stat-value { font-family: 'Griffy', cursive; font-size: 1.55rem; color: #2d2d2d; line-height: 1.5; }
 
 .profile-stat-value.points { color: #A92E43; }
 
 /* ── Logout ── */
-.logout-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 1rem; background: #2d2d2d; color: white; border: 3px solid #2d2d2d; border-radius: 6px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+.logout-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 1rem; background: #2d2d2d; color: white; border: 3px solid #2d2d2d; border-radius: 6px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; margin-top: 0.25rem; }
 
 .logout-btn:hover { background: #A92E43; border-color: #A92E43; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(169, 46, 67, 0.3); }
 
 /* ── Responsive ── */
 @media (max-width: 768px) { .profile-page { padding: 0.75rem 1.25rem 4rem; } .profile-title { font-size: 2.25rem; } .profile-card { padding: 1.75rem; } .profile-row { padding: 0.9rem 1.1rem; gap: 1rem; } }
 
-@media (max-width: 480px) { .profile-page { padding: 0.5rem 1rem 3rem; } .profile-header { margin-top: 0.5rem; margin-bottom: 1rem; } .profile-title { font-size: 2rem; } .profile-card { padding: 1.25rem; } .profile-stat-value { font-size: 1.65rem; } }
+@media (max-width: 480px) { .profile-page { padding: 0.5rem 1rem 3rem; } .profile-header { margin-top: 0.5rem; margin-bottom: 1rem; } .profile-title { font-size: 2rem; } .profile-card { padding: 1.25rem; } .profile-stat-value { font-size: 1.25rem; } }
 
 @media (max-width: 360px) { .profile-title { font-size: 1.75rem; } .profile-stats { grid-template-columns: 1fr; } }

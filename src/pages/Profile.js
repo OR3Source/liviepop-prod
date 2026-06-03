@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
-import { LogOut } from 'lucide-react';
+import { LogOut, Flame } from 'lucide-react';
 import './Profile.css';
 
 function Profile() {
@@ -89,7 +89,10 @@ function Profile() {
             </div>
             <div className="profile-stat-box">
               <span className="profile-stat-label">Current Streak</span>
-              <span className="profile-stat-value">{profile?.current_streak || '0'} 🔥</span>
+              <span className="profile-stat-value" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                {profile?.current_streak || '0'}
+                <Flame size={20} color="#A92E43" />
+              </span>
             </div>
           </div>
 

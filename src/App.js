@@ -11,6 +11,8 @@ import Login from './pages/Login'
 import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
 import About from './pages/About'
+import Privacy from './pages/Privacy'
+
 function App() {
   const [showHelp, setShowHelp] = useState(false)
 
@@ -27,6 +29,7 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/about" element={<About />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </main>
         <Footer />

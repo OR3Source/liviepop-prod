@@ -1,5 +1,5 @@
 /* ── Page ── */
-.gabout-page { max-width: 720px; margin: 0 auto; padding: 2rem 2rem 5rem; display: flex; flex-direction: column; align-items: center; font-family: 'BM HANNA Air OTF', sans-serif; }
+.gabout-page { max-width: 720px; margin: 0 auto; padding: 1rem 2rem 5rem; display: flex; flex-direction: column; align-items: center; font-family: 'BM HANNA Air OTF', sans-serif; }
 
 /* ── Header ── */
 .gabout-header { text-align: center; }
@@ -27,6 +27,6 @@
 .gabout-footer-date { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.8rem; color: #999; margin: 0; }
 
 /* ── Responsive ── */
-@media (max-width: 768px) { .gabout-page { padding: 1.5rem 1.5rem 5rem; } .gabout-title { font-size: 2.25rem; } .gabout-card { padding: 1.75rem; } }
-@media (max-width: 480px) { .gabout-page { padding: 1rem 1rem 4rem; } .gabout-title { font-size: 1.9rem; } .gabout-card { padding: 1.5rem 1.25rem; gap: 1.75rem; } .gabout-text { font-size: 0.9rem; } .gabout-list { font-size: 0.9rem; } }
+@media (max-width: 768px) { .gabout-page { padding: .75rem 1.5rem 5rem; } .gabout-title { font-size: 2.25rem; } .gabout-card { padding: 1.75rem; } }
+@media (max-width: 480px) { .gabout-page { padding: .50rem 1rem 4rem; } .gabout-title { font-size: 1.9rem; } .gabout-card { padding: 1.5rem 1.25rem; gap: 1.75rem; } .gabout-text { font-size: 0.9rem; } .gabout-list { font-size: 0.9rem; } }
 @media (max-width: 360px) { .gabout-title { font-size: 1.65rem; } .gabout-card { padding: 1.25rem 1rem; } }

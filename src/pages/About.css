@@ -1,5 +1,5 @@
 /* ── Page ── */
-.gabout-page { max-width: 720px; margin: 0 auto; padding: 2rem 2rem 5rem; display: flex; flex-direction: column; align-items: center; font-family: 'BM HANNA Air OTF', sans-serif; }
+.gabout-page { max-width: 720px; margin: 0 auto; padding: 1rem 2rem 5rem; display: flex; flex-direction: column; align-items: center; font-family: 'BM HANNA Air OTF', sans-serif; }
 
 /* ── Header ── */
 .gabout-header { text-align: center; }
@@ -12,12 +12,30 @@
 
 /* ── Manifesto ── */
 .gabout-manifesto { text-align: center; padding: 1.25rem 1.5rem; background: #000000; border-radius: 6px; }
-.gabout-manifesto-text { font-family: 'Griffy', cursive; font-size: 1.25rem; color: #fff; margin: 0; line-height: 1.6; }
+.gabout-manifesto-text { font-family: 'Griffy', cursive; font-size: 1.25rem; font-weight: 500; color: #fff; margin: 0; line-height: 1.6; }
 .gabout-manifesto-pink { color: #ffb6cf; }
 
 /* ── Sections ── */
 .gabout-section { display: flex; flex-direction: column; gap: 0.85rem; }
-.gabout-heading { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.85rem; font-weight: bolder; letter-spacing: 0.12rem; text-transform: uppercase; color: #1a1a2e; margin: 0; padding-bottom: 0.4rem; border-bottom: 2px solid #A92E43; }
+.gabout-heading {
+  font-family: 'BM HANNA Air OTF', sans-serif;
+  font-size: 0.85rem;
+  font-weight: bolder;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: #1a1a2e;
+  margin: 0;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid #A92E43;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gabout-heading svg {
+  color: #A92E43;
+  flex-shrink: 0;
+}
 .gabout-text { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.95rem; color: #2d2d2d; line-height: 1.7; margin: 0; }
 
 /* ── Legend ── */
@@ -33,6 +51,6 @@
 .gabout-list li::marker { color: #A92E43; }
 
 /* ── Responsive ── */
-@media (max-width: 768px) { .gabout-page { padding: 1.5rem 1.5rem 5rem; } .gabout-title { font-size: 2.25rem; } .gabout-card { padding: 1.75rem; } }
-@media (max-width: 480px) { .gabout-page { padding: 1rem 1rem 4rem; } .gabout-title { font-size: 1.9rem; } .gabout-card { padding: 1.5rem 1.25rem; gap: 1.75rem; } .gabout-manifesto-text { font-size: 1.1rem; } .gabout-text { font-size: 0.9rem; } .gabout-list { font-size: 0.9rem; } }
+@media (max-width: 768px) { .gabout-page { padding: .75rem 1.5rem 5rem; } .gabout-title { font-size: 2.25rem; } .gabout-card { padding: 1.75rem; } }
+@media (max-width: 480px) { .gabout-page { padding: .50rem 1rem 4rem; } .gabout-title { font-size: 1.9rem; } .gabout-card { padding: 1.5rem 1.25rem; gap: 1.75rem; } .gabout-manifesto-text { font-size: 1.1rem; } .gabout-text { font-size: 0.9rem; } .gabout-list { font-size: 0.9rem; } }
 @media (max-width: 360px) { .gabout-title { font-size: 1.65rem; } .gabout-card { padding: 1.25rem 1rem; } .gabout-tile { width: 38px; height: 38px; font-size: 1rem; } }

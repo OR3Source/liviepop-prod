@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircleQuestionMark, Gamepad2 } from 'lucide-react';
+import { MessageCircleQuestionMark, Gamepad2, Trophy, ScrollText, AlertTriangle } from 'lucide-react';
 import './About.css';
 
 const About = () => {
@@ -14,7 +14,8 @@ const About = () => {
 
         <div className="gabout-manifesto">
           <p className="gabout-manifesto-text">
-            Can you unravel it?<br />
+            Can you unravel it? 
+            <br />
             <span className="gabout-manifesto-pink">One phrase. Every day.</span>
           </p>
         </div>
@@ -44,7 +45,7 @@ const About = () => {
         </div>
 
         <div className="gabout-section">
-          <h2 className="gabout-heading">Rules</h2>
+          <h2 className="gabout-heading"><ScrollText size={18} /> Rules</h2>
           <ul className="gabout-list">
             <li>You get <strong>23</strong> attempts to guess the phrase.</li>
             <li>A new puzzle drops every day at midnight ET.</li>
@@ -55,7 +56,7 @@ const About = () => {
         </div>
 
         <div className="gabout-section">
-          <h2 className="gabout-heading">Leaderboard</h2>
+          <h2 className="gabout-heading"><Trophy size={18} /> Leaderboard</h2>
           <p className="gabout-text">
             Every win adds to your score and streak. Players are ranked by total points, with ties broken by current streak. 
             Switch tabs to see who has the longest streaks.
@@ -63,7 +64,7 @@ const About = () => {
         </div>
 
         <div className="gabout-section">
-          <h2 className="gabout-heading">Disclaimer</h2>
+          <h2 className="gabout-heading"><AlertTriangle size={18} /> Disclaimer</h2>
           <p className="gabout-text">
             LiviePop is a fan-made game and is not affiliated with Olivia Rodrigo, her management, Geffen Records, or Interscope Records. All phrases belong to their respective owners.
           </p>

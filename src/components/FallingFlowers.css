@@ -22,11 +22,12 @@
 }
 
 .falling-flower--left {
-  /* positioned via inline style */
+  opacity: 100%;
 }
 
 .falling-flower--right {
-  /* positioned via inline style */
+ 
+  opacity: 100%;
 }
 
 @keyframes flower-fall {

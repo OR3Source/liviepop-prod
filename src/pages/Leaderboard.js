@@ -93,7 +93,7 @@ function Leaderboard() {
             </span>
             <span className="col-user">@{u.username.replace(/[<>]/g, '')}</span>
             <span className="col-points points-cell">
-              {u.points.toLocaleString()}
+              {u.points.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
             <span className="col-streak streak-cell">
               <Flame size={13} color="#A92E43" fill="#A92E43" />

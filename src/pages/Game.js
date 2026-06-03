@@ -46,10 +46,9 @@ function Game() {
     return () => clearInterval(interval)
   }, [])
 
-  const evaluateGuess = useCallback((guessStr, targetPhrase = phrase) => {
+  const evaluateGuess = useCallback((guessStr) => {
     const result = []
-    const cleanPhrase = targetPhrase.replace(/ /g, '')
-    const targetChars = cleanPhrase.split('')
+    const targetChars = phraseLetters.split('')
     const guessChars = guessStr.split('')
     const targetUsed = new Array(targetChars.length).fill(false)
     const guessUsed = new Array(guessChars.length).fill(false)
@@ -74,9 +73,9 @@ function Game() {
     }
 
     return result
-  }, [phrase])
+  }, [phraseLetters])
 
-  const rebuildStateFromGuesses = useCallback((savedGuesses, targetPhrase = phrase) => {
+  const rebuildStateFromGuesses = useCallback((savedGuesses) => {
     const rebuiltGuesses = []
     let rebuiltKeyboard = {}
     let rebuiltGameOver = false
@@ -84,7 +83,7 @@ function Game() {
 
     for (let i = 0; i < savedGuesses.length; i++) {
       const guessStr = savedGuesses[i].word
-      const evaluation = evaluateGuess(guessStr, targetPhrase)
+      const evaluation = evaluateGuess(guessStr)
       rebuiltGuesses.push({ word: guessStr, evaluation })
 
       for (let j = 0; j < guessStr.length; j++) {
@@ -102,7 +101,7 @@ function Game() {
     }
 
     return { guesses: rebuiltGuesses, keyboardStatus: rebuiltKeyboard, gameOver: rebuiltGameOver, won: rebuiltWon }
-  }, [evaluateGuess, maxGuesses, phrase])
+  }, [evaluateGuess, maxGuesses])
 
   const saveProgress = useCallback(async (state, user, pid) => {
     const guessesPayload = state.guesses.map(g => ({ word: g.word }))
@@ -126,9 +125,9 @@ function Game() {
     }
   }, [])
 
-  const applySavedGuesses = useCallback((savedGuesses, savedGuess, savedCursorPos, targetPhrase = phrase) => {
+  const applySavedGuesses = useCallback((savedGuesses, savedGuess, savedCursorPos) => {
     if (savedGuesses && Array.isArray(savedGuesses) && savedGuesses.length > 0) {
-      const rebuilt = rebuildStateFromGuesses(savedGuesses, targetPhrase)
+      const rebuilt = rebuildStateFromGuesses(savedGuesses)
       setGuesses(rebuilt.guesses)
       setKeyboardStatus(rebuilt.keyboardStatus)
       setGameOver(rebuilt.gameOver)
@@ -136,7 +135,7 @@ function Game() {
       setGuess(savedGuess || '')
       setCursorPos(savedCursorPos ?? null)
     }
-  }, [rebuildStateFromGuesses, phrase])
+  }, [rebuildStateFromGuesses])
 
   useEffect(() => {
     const fetchPuzzle = async () => {
@@ -353,7 +352,7 @@ function Game() {
         return
       }
 
-      const evaluation = evaluateGuess(cleanGuess, phrase)
+      const evaluation = evaluateGuess(cleanGuess)
       updateKeyboardStatus(cleanGuess, evaluation)
       const newGuesses = [...guesses, { word: cleanGuess, evaluation }]
       setGuesses(newGuesses)

@@ -2,7 +2,7 @@
 .profile-page { max-width: 860px; margin: 0 auto; padding: 1rem 2rem 4rem; display: flex; flex-direction: column; align-items: center; font-family: 'BM HANNA Air OTF', sans-serif; }
 
 /* ── Header ── */
-.profile-header { text-align: center; margin-top: 1rem; margin-bottom: 1.5rem; }
+.profile-header { text-align: center; margin-top: 1rem; margin-bottom: .5rem; }
 
 .profile-title { font-family: 'Griffy', cursive; font-size: 2.8rem; color: #2d2d2d; margin: 0; letter-spacing: -1px; }
 
@@ -27,7 +27,7 @@
 
 .profile-stat-label { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.12rem; text-transform: uppercase; color: #8599A8; }
 
-.profile-stat-value { font-family: 'Griffy', cursive; font-size: 1.55rem; color: #2d2d2d; line-height: 1.5; }
+.profile-stat-value { font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.55rem; color: #2d2d2d; line-height: 1.5; }
 
 .profile-stat-value.points { color: #A92E43; }
 

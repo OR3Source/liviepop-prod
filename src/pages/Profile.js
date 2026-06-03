@@ -91,7 +91,7 @@ function Profile() {
               <span className="profile-stat-label">Current Streak</span>
               <span className="profile-stat-value" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                 {profile?.current_streak || '0'}
-                <Flame size={20} color="#A92E43" />
+                <Flame size={20} color="#A92E43" fill='#A92E43'/>
               </span>
             </div>
           </div>

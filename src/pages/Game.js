@@ -353,7 +353,7 @@ function Game() {
         return
       }
 
-      const evaluation = evaluateGuess(cleanGuess)
+      const evaluation = evaluateGuess(cleanGuess, phrase)
       updateKeyboardStatus(cleanGuess, evaluation)
       const newGuesses = [...guesses, { word: cleanGuess, evaluation }]
       setGuesses(newGuesses)

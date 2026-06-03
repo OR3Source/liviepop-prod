@@ -204,9 +204,9 @@ font-size: 18px;
   color: white;
 }
 
-.game { position: relative; }
-.game-grid-area { position: relative; }
-.keyboard-anchor { position: relative; }
+.game { position: relative; z-index: 200; }
+.game-grid-area { position: relative; z-index: 200; }
+.keyboard-anchor { position: relative; z-index: 200; }
 
 .answer-grid {
   display: flex;

@@ -11,6 +11,9 @@
 /* ── Card ── */
 .contact-card { width: 100%; background: #fff; border: 3px solid #1a1a2e; border-radius: 8px; padding: 2rem; box-shadow: 6px 6px 0px #FDB1CB; display: flex; flex-direction: column; gap: 2rem; }
 
+/* ── Card Inner ── */
+.contact-card-inner { display: flex; flex-direction: column; gap: 2rem; }
+
 /* ── Intro ── */
 .contact-intro { text-align: center; }
 
@@ -55,12 +58,12 @@
 .contact-success { background: #f0fff4; border: 1.5px solid #86efac; color: #22c55e; }
 
 /* ── Submit Button ── */
-.contact-submit-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 1rem; background: #1a1a2e; color: white; border: 3px solid #1a1a2e; border-radius: 4px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+.contact-submit-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 1rem; background: #1a1a2e; color: white; border: 3px solid #1a1a2e; border-radius: 4px; font-family: 'BM HANNA Air OTF', sans-serif; font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; margin-bottom: 15px; }
 
 .contact-submit-btn:hover { background: #A92E43; border-color: #A92E43; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(169, 46, 67, 0.3); }
 
 /* ── Disclaimer ── */
-.contact-disclaimer { display: flex; align-items: flex-start; gap: 0.75rem; padding: 1rem 1.25rem; background: #fff8fb; border: 2px dashed #ecdde6; border-radius: 6px; }
+.contact-disclaimer { display: flex; align-items: flex-start; gap: 0.75rem; padding: 1rem 1.25rem; background: #fff8fb; border: 2px dashed #A92E43; border-radius: 6px; }
 
 .contact-disclaimer svg { color: #A92E43; flex-shrink: 0; margin-top: 0.1rem; }
 

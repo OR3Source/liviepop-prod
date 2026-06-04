@@ -152,21 +152,14 @@ html, body {
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
-    position: relative;
   }
 
   .landing-yarn {
     font-size: clamp(1.2rem, 6vw, 2rem);
-    position: absolute;
-    left: 0;
-    top: -0.6em;
-    margin-right: 0;
-    transform: translateX(-10%);
   }
 
   .title-main {
     font-size: clamp(1.8rem, 9vw, 3.5rem);
-    padding-left: 1.2em;
   }
 
   .title-phrase {

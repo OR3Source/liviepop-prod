@@ -26,8 +26,10 @@ function Landing() {
 
         <h1 className="landing-title">
           <span className="title-wrapper">
-            <GiYarn className="landing-yarn" />
-            <span className="title-main">Can you unravel the&nbsp;</span>
+            <span className="title-first-line">
+              <GiYarn className="landing-yarn" />
+              <span className="title-main">Can you unravel the</span>
+            </span>
             <span className="title-phrase">phrase?</span>
           </span>
         </h1>

@@ -154,8 +154,17 @@ html, body {
     text-align: center;
   }
 
+  .title-first-line {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: center;
+  }
+
   .landing-yarn {
     font-size: clamp(1.2rem, 6vw, 2rem);
+    top: -0.3em;
   }
 
   .title-main {
@@ -164,6 +173,8 @@ html, body {
 
   .title-phrase {
     font-size: clamp(2.2rem, 11vw, 4.5rem);
+    width: 100%;
+    text-align: center;
   }
 }
 

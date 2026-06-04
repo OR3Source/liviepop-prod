@@ -83,6 +83,7 @@ html, body {
   .rip-mask-container {
     max-width: 100%;
     aspect-ratio: 3 / 2;
+    margin-top: -1.5rem;
   }
 
   .rip-image {
@@ -101,6 +102,7 @@ html, body {
 
   .rip-mask-container {
     aspect-ratio: 3 / 4;
+    margin-top: -1.5rem;
   }
 
   .rip-image {

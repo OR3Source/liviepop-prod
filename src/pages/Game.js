@@ -181,7 +181,7 @@ function Game() {
                 current_guess: parsed.guess || '', cursor_pos: parsed.cursorPos ?? null, updated_at: new Date().toISOString()
               }, { onConflict: 'user_id,puzzle_id' })
             }
-          } catch (e) {}
+          } catch (e) { }
           localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
         }
 
@@ -332,7 +332,7 @@ function Game() {
         await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId])
 
   const handleDelete = useCallback(() => {
@@ -396,7 +396,7 @@ function Game() {
               gameOver={true}
               won={true}
               cursorPos={null}
-              onCellClick={() => {}}
+              onCellClick={() => { }}
             />
           </div>
         ) : (
@@ -422,8 +422,14 @@ function Game() {
             {submissionResult.status === 'completed' ? (
               <div className="win-text-wrapper">
                 <span className="win-text">YOU WON</span>
-                <span className="win-subtext">ATTEMPTS: {submissionResult.attempts}</span>
-                <span className="win-subtext">POINTS: {submissionResult.points_earned}</span>
+                <div className="win-stat">
+                  <span className="win-stat-label">Attempts</span>
+                  <span className="win-stat-value">{submissionResult.attempts}</span>
+                </div>
+                <div className="win-stat">
+                  <span className="win-stat-label">Points</span>
+                  <span className="win-stat-value">{submissionResult.points_earned}</span>
+                </div>
               </div>
             ) : (
               <div className="game-over">

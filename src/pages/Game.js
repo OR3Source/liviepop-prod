@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useAuth } from '../context/AuthContext'
 import Keyboard from '../components/Keyboard'
 import FallingFlowers from '../components/FallingFlowers'
 import Grid from '../components/Grid'
@@ -11,7 +10,6 @@ import './Game.css'
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
 
 function Game() {
-  const { user: currentUser } = useAuth()
   const [guess, setGuess] = useState('')
   const [guesses, setGuesses] = useState([])
   const [showHelp] = useState(false)
@@ -26,6 +24,7 @@ function Game() {
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
   const [submissionResult, setSubmissionResult] = useState(null)
   const [puzzleId, setPuzzleId] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null)
   const [showExpiry, setShowExpiry] = useState(false)
 
   const words = phrase ? phrase.split(' ') : []
@@ -159,9 +158,12 @@ function Game() {
       setPhrase(fetchedPhrase)
       setPuzzleId(puzzleData.puzzle_id)
 
-      if (currentUser) {
+      const { data: { user } } = await supabase.auth.getUser()
+      setCurrentUser(user ?? null)
+
+      if (user) {
         const { data: existing } = await supabase.from('submissions')
-          .select('status, attempts, points_earned').eq('user_id', currentUser.id)
+          .select('status, attempts, points_earned').eq('user_id', user.id)
           .eq('puzzle_id', puzzleData.puzzle_id).maybeSingle()
 
         if (existing) {
@@ -179,7 +181,7 @@ function Game() {
             const parsed = JSON.parse(guestSave)
             if (parsed.guesses?.length > 0) {
               await supabase.from('game_progress').upsert({
-                user_id: currentUser.id, puzzle_id: puzzleData.puzzle_id, guesses: parsed.guesses,
+                user_id: user.id, puzzle_id: puzzleData.puzzle_id, guesses: parsed.guesses,
                 current_guess: parsed.guess || '', cursor_pos: parsed.cursorPos ?? null, updated_at: new Date().toISOString()
               }, { onConflict: 'user_id,puzzle_id' })
             }
@@ -188,7 +190,7 @@ function Game() {
         }
 
         const { data: progress } = await supabase.from('game_progress')
-          .select('guesses, current_guess, cursor_pos').eq('user_id', currentUser.id)
+          .select('guesses, current_guess, cursor_pos').eq('user_id', user.id)
           .eq('puzzle_id', puzzleData.puzzle_id).maybeSingle()
 
         if (progress?.guesses?.length > 0) {
@@ -210,7 +212,7 @@ function Game() {
     }
 
     fetchPuzzle()
-  }, [currentUser])
+  }, [])
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {

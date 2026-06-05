@@ -71,6 +71,9 @@
 
 .contact-disclaimer strong { color: #1a1a2e; }
 
+/* ── Contact Poplation Lock ── */
+.contact-input--locked { background: #f5e8ed; border-color: #e8c4d0; color: #888; cursor: not-allowed; }
+
 /* ── Responsive ── */
 @media (max-width: 768px) { .contact-page { padding: .75rem 1.5rem 5rem; } .contact-title { font-size: 2.25rem; } .contact-card { padding: 0rem 1.75rem 1.75rem; } .contact-form-row { grid-template-columns: 1fr; gap: 1.25rem; } .social-link { font-size: 0.85rem; padding: 0.5rem 1rem; } }
 

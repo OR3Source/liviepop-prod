@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import './Contact.css';
 import { Mail, MessageSquare, Send, AlertTriangle, CheckCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const XIcon = ({ size = 18 }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,6 +14,19 @@ const Contact = () => {
     const form = useRef();
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
+    const [prefillName, setPrefillName] = useState('');
+    const [prefillEmail, setPrefillEmail] = useState('');
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+            const { data } = await supabase.from('users').select('username, email').eq('id', user.id).single();
+            if (data?.username) setPrefillName(data.username);
+            if (data?.email) setPrefillEmail(data.email);
+        };
+        fetchUser();
+    }, []);
 
     const sendEmail = (e) => {
         e.preventDefault();
@@ -27,6 +41,8 @@ const Contact = () => {
             () => {
                 setSubmitted(true);
                 form.current.reset();
+                setPrefillName('');
+                setPrefillEmail('');
                 setTimeout(() => setSubmitted(false), 5000);
             },
             (err) => {
@@ -79,13 +95,16 @@ const Contact = () => {
 
                         <div className="contact-form-row">
                             <div className="contact-input-group">
-                                <label className="contact-label">Name *</label>
+                                <label className="contact-label">Name / Username *</label>
                                 <input
                                     type="text"
                                     name="name"
                                     placeholder="ur name..."
                                     required
-                                    className="contact-input"
+                                    className={`contact-input${prefillName ? ' contact-input--locked' : ''}`}
+                                    value={prefillName}
+                                    onChange={(e) => setPrefillName(e.target.value)}
+                                    readOnly={!!prefillName}
                                 />
                             </div>
                             <div className="contact-input-group">
@@ -95,7 +114,10 @@ const Contact = () => {
                                     name="email"
                                     placeholder="ur email..."
                                     required
-                                    className="contact-input"
+                                    className={`contact-input${prefillEmail ? ' contact-input--locked' : ''}`}
+                                    value={prefillEmail}
+                                    onChange={(e) => setPrefillEmail(e.target.value)}
+                                    readOnly={!!prefillEmail}
                                 />
                             </div>
                         </div>

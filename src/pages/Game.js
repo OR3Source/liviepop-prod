@@ -423,11 +423,11 @@ function Game() {
               <div className="win-text-wrapper">
                 <span className="win-text">YOU WON</span>
                 <div className="win-stat">
-                  <span className="win-stat-label">Attempts</span>
+                  <span className="win-stat-label">Attempts:</span>
                   <span className="win-stat-value">{submissionResult.attempts}</span>
                 </div>
                 <div className="win-stat">
-                  <span className="win-stat-label">Points</span>
+                  <span className="win-stat-label">Points:</span>
                   <span className="win-stat-value">{submissionResult.points_earned}</span>
                 </div>
               </div>

@@ -147,12 +147,12 @@
 
 @media (max-width: 360px) {
   .grid { gap: 5px; }
-  .grid-word-group--recent .grid-cell { width: 28px; height: 28px; }
-  .grid-word-group--recent .grid-cell-letter { font-size: 12px; }
-  .grid-word-group--active .grid-cell { width: 25px; height: 25px; }
-  .grid-word-group--active .grid-cell-letter { font-size: 10px; }
-  .grid-word-group--submitted .grid-cell { width: 20px; height: 20px; }
-  .grid-word-group--submitted .grid-cell-letter { font-size: 8px; }
-  .grid-word-gap { width: 7px; }
+  .grid-word-group--recent .grid-cell { width: 34px; height: 34px; }
+  .grid-word-group--recent .grid-cell-letter { font-size: 14px; }
+  .grid-word-group--active .grid-cell { width: 30px; height: 30px; }
+  .grid-word-group--active .grid-cell-letter { font-size: 12px; }
+  .grid-word-group--submitted .grid-cell { width: 24px; height: 24px; }
+  .grid-word-group--submitted .grid-cell-letter { font-size: 10px; }
+  .grid-word-gap { width: 8px; }
   .grid-word { gap: 4px; }
 }

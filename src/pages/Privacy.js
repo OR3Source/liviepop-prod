@@ -25,8 +25,8 @@ const Privacy = () => {
           <h2 className="gabout-heading">2. Information We Collect</h2>
           <p className="gabout-text">We collect minimal information to provide core functionality:</p>
           <ul className="gabout-list">
-            <li><strong>Account Information:</strong> When you create an account, we collect your email address, username, and a password (stored securely via Firebase Authentication).</li>
-            <li><strong>Game Data:</strong> Your scores, streaks, win/loss history, and leaderboard entries are stored in Firebase Firestore to track your progress.</li>
+            <li><strong>Account Information:</strong> When you create an account, we collect your email address, username, and a password (stored securely via Supabase Authentication).</li>
+            <li><strong>Game Data:</strong> Your scores, streaks, win/loss history, and leaderboard entries are stored in Supabase Firestore to track your progress.</li>
             <li><strong>User Preferences:</strong> Your game settings and display preferences are saved to personalize your experience.</li>
             <li><strong>Technical Data:</strong> Standard server logs and Supabase analytics for site performance and security purposes.</li>
           </ul>
@@ -52,7 +52,7 @@ const Privacy = () => {
 
         <div className="gabout-section">
           <h2 className="gabout-heading">5. Cookies & Tracking</h2>
-          <p className="gabout-text">We use essential cookies to maintain your login session and remember your preferences. We do not use tracking cookies, third-party analytics (beyond Firebase's basic usage stats), or any form of behavioral advertising.</p>
+          <p className="gabout-text">We use essential cookies to maintain your login session and remember your preferences. We do not use tracking cookies, third-party analytics (beyond Supabase's basic usage stats), or any form of behavioral advertising.</p>
         </div>
 
         <div className="gabout-section">

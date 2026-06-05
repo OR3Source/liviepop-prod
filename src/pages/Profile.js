@@ -7,8 +7,8 @@ import './Profile.css';
 
 function Profile() {
   const navigate = useNavigate();
-  const { user, signOut, loading: authLoading } = useAuth();
-  const [profile, setProfile] = useState(null);
+  const { user, userData, signOut, loading: authLoading } = useAuth();
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,20 +19,20 @@ function Profile() {
       return;
     }
 
-    const fetchProfile = async () => {
+    const fetchStats = async () => {
       const { data, error } = await supabase
         .from('users')
-        .select('*')
+        .select('total_points, current_streak')
         .eq('id', user.id)
         .single();
 
       if (!error && data) {
-        setProfile(data);
+        setStats(data);
       }
       setLoading(false);
     };
 
-    fetchProfile();
+    fetchStats();
   }, [user, authLoading, navigate]);
 
   const handleLogout = async () => {
@@ -50,15 +50,15 @@ function Profile() {
     );
   }
 
-  const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  const memberSince = userData?.created_at
+    ? new Date(userData.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : '—';
 
   return (
     <div className="profile-page">
       <div className="profile-header">
         <h1 className="profile-title">
-          Hello, <span style={{ color: '#A92E43' }}>{profile?.username || 'livie'}</span>
+          Hello, <span style={{ color: '#A92E43' }}>{userData?.username || 'livie'}</span>
         </h1>
       </div>
 
@@ -68,7 +68,7 @@ function Profile() {
           <div className="profile-info">
             <div className="profile-row">
               <span className="profile-label">Username</span>
-              <span className="profile-value">{profile?.username || '—'}</span>
+              <span className="profile-value">{userData?.username || '—'}</span>
             </div>
             <div className="profile-row">
               <span className="profile-label">Email</span>
@@ -84,13 +84,13 @@ function Profile() {
             <div className="profile-stat-box">
               <span className="profile-stat-label">Total Points</span>
               <span className="profile-stat-value points">
-                {(profile?.total_points ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {(stats?.total_points ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
             <div className="profile-stat-box">
               <span className="profile-stat-label">Current Streak</span>
               <span className="profile-stat-value" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                {profile?.current_streak || '0'}
+                {stats?.current_streak || '0'}
                 <Flame size={20} color="#A92E43" fill='#A92E43'/>
               </span>
             </div>

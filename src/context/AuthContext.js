@@ -5,18 +5,29 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchUserData = async (userId) => {
+    const { data } = await supabase.from('users').select('*').eq('id', userId).single();
+    if (data) setUserData(data);
+  };
 
   useEffect(() => {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) await fetchUserData(u.id);
       setLoading(false);
     };
     getSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) await fetchUserData(u.id);
+      else setUserData(null);
       setLoading(false);
     });
 
@@ -25,36 +36,21 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') {
-        window.location.href = '/'
-      }
+      if (event === 'SIGNED_OUT') window.location.href = '/';
     });
     return () => subscription.unsubscribe();
   }, []);
 
   const sanitizeUsername = (username) => {
-    const clean = username
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9_-]/g, '')
-      .slice(0, 30);
-    
-    if (clean.length < 3) {
-      throw new Error('Username must be at least 3 characters (a-z, 0-9, _, -)');
-    }
-    
+    const clean = username.toLowerCase().trim().replace(/[^a-z0-9_-]/g, '').slice(0, 30);
+    if (clean.length < 3) throw new Error('Username must be at least 3 characters (a-z, 0-9, _, -)');
     return clean;
   };
 
   const signUp = async (email, password, username) => {
     const cleanUsername = sanitizeUsername(username);
-    
-    const { data, error } = await supabase.auth.signUp({ 
-      email, 
-      password,
-      options: {
-        data: { username: cleanUsername }
-      }
+    const { data, error } = await supabase.auth.signUp({
+      email, password, options: { data: { username: cleanUsername } }
     });
     if (error) throw error;
     return data;
@@ -69,10 +65,15 @@ export function AuthProvider({ children }) {
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setUserData(null);
+  };
+
+  const refreshUserData = async () => {
+    if (user) await fetchUserData(user.id);
   };
 
   return (
-    <AuthContext.Provider value={{ user, signUp, signIn, signOut, loading }}>
+    <AuthContext.Provider value={{ user, userData, signUp, signIn, signOut, loading, refreshUserData }}>
       {children}
     </AuthContext.Provider>
   );

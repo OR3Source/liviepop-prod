@@ -134,25 +134,25 @@
 }
 
 @media (max-width: 480px) {
-  .grid { gap: 6px; max-width: 100%; overflow-x: hidden; }
-  .grid-word-group--recent .grid-cell { width: clamp(24px, 5.5vw, 40px); height: clamp(24px, 5.5vw, 40px); }
-  .grid-word-group--recent .grid-cell-letter { font-size: clamp(10px, 2.5vw, 18px); }
-  .grid-word-group--active .grid-cell { width: clamp(22px, 5vw, 36px); height: clamp(22px, 5vw, 36px); }
-  .grid-word-group--active .grid-cell-letter { font-size: clamp(9px, 2.2vw, 14px); }
-  .grid-word-group--submitted .grid-cell { width: clamp(18px, 4vw, 28px); height: clamp(18px, 4vw, 28px); }
-  .grid-word-group--submitted .grid-cell-letter { font-size: clamp(7px, 1.8vw, 11px); }
-  .grid-word-gap { width: clamp(6px, 1.5vw, 10px); }
-  .grid-word { gap: clamp(3px, 1vw, 6px); }
+  .grid { gap: 6px; }
+  .grid-word-group--recent .grid-cell { width: 36px; height: 36px; }
+  .grid-word-group--recent .grid-cell-letter { font-size: 15px; }
+  .grid-word-group--active .grid-cell { width: 32px; height: 32px; }
+  .grid-word-group--active .grid-cell-letter { font-size: 13px; }
+  .grid-word-group--submitted .grid-cell { width: 26px; height: 26px; }
+  .grid-word-group--submitted .grid-cell-letter { font-size: 10px; }
+  .grid-word-gap { width: 10px; }
+  .grid-word { gap: 5px; }
 }
 
 @media (max-width: 360px) {
   .grid { gap: 5px; }
-  .grid-word-group--recent .grid-cell { width: clamp(20px, 4.8vw, 34px); height: clamp(20px, 4.8vw, 34px); }
-  .grid-word-group--recent .grid-cell-letter { font-size: clamp(8px, 2.2vw, 15px); }
-  .grid-word-group--active .grid-cell { width: clamp(18px, 4.5vw, 30px); height: clamp(18px, 4.5vw, 30px); }
-  .grid-word-group--active .grid-cell-letter { font-size: clamp(7px, 2vw, 12px); }
-  .grid-word-group--submitted .grid-cell { width: clamp(14px, 3.5vw, 22px); height: clamp(14px, 3.5vw, 22px); }
-  .grid-word-group--submitted .grid-cell-letter { font-size: clamp(6px, 1.5vw, 9px); }
-  .grid-word-gap { width: clamp(4px, 1.2vw, 8px); }
-  .grid-word { gap: clamp(2px, 0.8vw, 5px); }
+  .grid-word-group--recent .grid-cell { width: 28px; height: 28px; }
+  .grid-word-group--recent .grid-cell-letter { font-size: 12px; }
+  .grid-word-group--active .grid-cell { width: 25px; height: 25px; }
+  .grid-word-group--active .grid-cell-letter { font-size: 10px; }
+  .grid-word-group--submitted .grid-cell { width: 20px; height: 20px; }
+  .grid-word-group--submitted .grid-cell-letter { font-size: 8px; }
+  .grid-word-gap { width: 7px; }
+  .grid-word { gap: 4px; }
 }

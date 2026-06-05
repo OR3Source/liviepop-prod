@@ -171,7 +171,6 @@ function Game() {
           setSubmissionResult(existing)
           setGameOver(true)
           setWon(existing.status === 'completed')
-          await supabase.from('game_progress').delete().eq('user_id', user.id).eq('puzzle_id', puzzleData.puzzle_id)
           setLoading(false)
           return
         }

@@ -213,7 +213,7 @@ function Game() {
     }
 
     fetchPuzzle()
-  }, [])
+  }, [user])
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {

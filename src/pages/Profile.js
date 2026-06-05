@@ -7,38 +7,40 @@ import './Profile.css';
 
 function Profile() {
   const navigate = useNavigate();
-  const { user, userData, signOut, loading: authLoading } = useAuth();
-  const [stats, setStats] = useState(null);
-  const [statsLoading, setStatsLoading] = useState(true);
+  const { user, signOut, loading: authLoading } = useAuth();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       navigate('/login');
       return;
     }
 
-    const fetchStats = async () => {
+    const fetchProfile = async () => {
       const { data, error } = await supabase
         .from('users')
-        .select('total_points, current_streak')
+        .select('*')
         .eq('id', user.id)
         .single();
 
       if (!error && data) {
-        setStats(data);
+        setProfile(data);
       }
-      setStatsLoading(false);
+      setLoading(false);
     };
 
-    fetchStats();
-  }, [user, navigate]);
+    fetchProfile();
+  }, [user, authLoading, navigate]);
 
   const handleLogout = async () => {
     await signOut();
     navigate('/');
   };
 
-  if (authLoading || statsLoading) {
+  if (authLoading || loading) {
     return (
       <div className="profile-page" style={{ justifyContent: 'center' }}>
         <span style={{ fontFamily: '"BM HANNA Air OTF", sans-serif', fontSize: '24px' }}>
@@ -48,15 +50,15 @@ function Profile() {
     );
   }
 
-  const memberSince = userData?.created_at
-    ? new Date(userData.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  const memberSince = profile?.created_at
+    ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : '—';
 
   return (
     <div className="profile-page">
       <div className="profile-header">
         <h1 className="profile-title">
-          Hello, <span style={{ color: '#A92E43' }}>{userData?.username || 'livie'}</span>
+          Hello, <span style={{ color: '#A92E43' }}>{profile?.username || 'livie'}</span>
         </h1>
       </div>
 
@@ -66,7 +68,7 @@ function Profile() {
           <div className="profile-info">
             <div className="profile-row">
               <span className="profile-label">Username</span>
-              <span className="profile-value">{userData?.username || '—'}</span>
+              <span className="profile-value">{profile?.username || '—'}</span>
             </div>
             <div className="profile-row">
               <span className="profile-label">Email</span>
@@ -82,13 +84,13 @@ function Profile() {
             <div className="profile-stat-box">
               <span className="profile-stat-label">Total Points</span>
               <span className="profile-stat-value points">
-                {(stats?.total_points ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {(profile?.total_points ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
             <div className="profile-stat-box">
               <span className="profile-stat-label">Current Streak</span>
               <span className="profile-stat-value" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                {stats?.current_streak || '0'}
+                {profile?.current_streak || '0'}
                 <Flame size={20} color="#A92E43" fill='#A92E43'/>
               </span>
             </div>

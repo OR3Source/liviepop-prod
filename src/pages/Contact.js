@@ -16,14 +16,17 @@ const Contact = () => {
     const [error, setError] = useState('');
     const [prefillName, setPrefillName] = useState('');
     const [prefillEmail, setPrefillEmail] = useState('');
+    const [loadingUser, setLoadingUser] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-            const { data } = await supabase.from('users').select('username, email').eq('id', user.id).single();
-            if (data?.username) setPrefillName(data.username);
-            if (data?.email) setPrefillEmail(data.email);
+            if (user) {
+                const { data } = await supabase.from('users').select('username, email').eq('id', user.id).single();
+                if (data?.username) setPrefillName(data.username);
+                if (data?.email) setPrefillEmail(data.email);
+            }
+            setLoadingUser(false);
         };
         fetchUser();
     }, []);
@@ -40,9 +43,6 @@ const Contact = () => {
         ).then(
             () => {
                 setSubmitted(true);
-                form.current.reset();
-                setPrefillName('');
-                setPrefillEmail('');
                 setTimeout(() => setSubmitted(false), 5000);
             },
             (err) => {
@@ -91,77 +91,81 @@ const Contact = () => {
                         <span className="divider-line" />
                     </div>
 
-                    <form ref={form} onSubmit={sendEmail} className="contact-form">
+                    {loadingUser ? (
+                        <p style={{ fontFamily: '"BM HANNA Air OTF", sans-serif', textAlign: 'center', color: '#888' }}>Loading...</p>
+                    ) : (
+                        <form ref={form} onSubmit={sendEmail} className="contact-form">
 
-                        <div className="contact-form-row">
+                            <div className="contact-form-row">
+                                <div className="contact-input-group">
+                                    <label className="contact-label">Name / Username *</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="ur name..."
+                                        required
+                                        className={`contact-input${prefillName ? ' contact-input--locked' : ''}`}
+                                        value={prefillName}
+                                        onChange={(e) => setPrefillName(e.target.value)}
+                                        readOnly={!!prefillName}
+                                    />
+                                </div>
+                                <div className="contact-input-group">
+                                    <label className="contact-label">Email *</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="ur email..."
+                                        required
+                                        className={`contact-input${prefillEmail ? ' contact-input--locked' : ''}`}
+                                        value={prefillEmail}
+                                        onChange={(e) => setPrefillEmail(e.target.value)}
+                                        readOnly={!!prefillEmail}
+                                    />
+                                </div>
+                            </div>
+
                             <div className="contact-input-group">
-                                <label className="contact-label">Name / Username *</label>
+                                <label className="contact-label">Subject</label>
                                 <input
                                     type="text"
-                                    name="name"
-                                    placeholder="ur name..."
-                                    required
-                                    className={`contact-input${prefillName ? ' contact-input--locked' : ''}`}
-                                    value={prefillName}
-                                    onChange={(e) => setPrefillName(e.target.value)}
-                                    readOnly={!!prefillName}
+                                    name="title"
+                                    placeholder="what's this about?"
+                                    className="contact-input"
                                 />
                             </div>
+
                             <div className="contact-input-group">
-                                <label className="contact-label">Email *</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    placeholder="ur email..."
+                                <label className="contact-label">Message *</label>
+                                <textarea
+                                    name="message"
+                                    placeholder="spill ur guts..."
                                     required
-                                    className={`contact-input${prefillEmail ? ' contact-input--locked' : ''}`}
-                                    value={prefillEmail}
-                                    onChange={(e) => setPrefillEmail(e.target.value)}
-                                    readOnly={!!prefillEmail}
+                                    className="contact-textarea"
+                                    rows={5}
                                 />
                             </div>
-                        </div>
 
-                        <div className="contact-input-group">
-                            <label className="contact-label">Subject</label>
-                            <input
-                                type="text"
-                                name="title"
-                                placeholder="what's this about?"
-                                className="contact-input"
-                            />
-                        </div>
+                            {error && (
+                                <div className="contact-error">
+                                    <AlertTriangle size={14} />
+                                    <span>{error}</span>
+                                </div>
+                            )}
 
-                        <div className="contact-input-group">
-                            <label className="contact-label">Message *</label>
-                            <textarea
-                                name="message"
-                                placeholder="spill ur guts..."
-                                required
-                                className="contact-textarea"
-                                rows={5}
-                            />
-                        </div>
+                            {submitted && (
+                                <div className="contact-success">
+                                    <CheckCircle size={14} />
+                                    <span>Message sent! We'll get back to you soon.</span>
+                                </div>
+                            )}
 
-                        {error && (
-                            <div className="contact-error">
-                                <AlertTriangle size={14} />
-                                <span>{error}</span>
-                            </div>
-                        )}
-
-                        {submitted && (
-                            <div className="contact-success">
-                                <CheckCircle size={14} />
-                                <span>Message sent! We'll get back to you soon.</span>
-                            </div>
-                        )}
-
-                        <button type="submit" className="contact-submit-btn">
-                            <Send size={16} />
-                            SEND MESSAGE
-                        </button>
-                    </form>
+                            <button type="submit" className="contact-submit-btn">
+                                <Send size={16} />
+                                SEND MESSAGE
+                            </button>
+                        </form>
+                    )}
 
                     <div className="contact-disclaimer">
                         <MessageSquare size={14} />

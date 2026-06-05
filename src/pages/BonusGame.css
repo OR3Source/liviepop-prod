@@ -9,3 +9,20 @@
   text-align: center;
   width: 100%;
 }
+
+/* Win styling from Game.css - needed for BonusGame */
+.win-text-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 0; }
+
+.win-text { font-family: "BM HANNA Air OTF", sans-serif; font-size: 32px; font-weight: bold; color: #A92E43; letter-spacing: 2px; }
+
+.win-stat { display: flex; justify-content: space-between; align-items: center; background: #FDB1CB; border-radius: 12px; padding: 10px 24px; min-width: 220px; gap: 20px; }
+
+.win-stat-label { font-family: "BM HANNA Air OTF", sans-serif; font-size: 14px; color: #1a1a2e; text-transform: uppercase; letter-spacing: 1px; }
+
+.win-stat-value { font-family: "BM HANNA Air OTF", sans-serif; font-size: 22px; font-weight: bold; color: #A92E43; }
+
+@media (max-width: 480px) {
+  .win-text { font-size: 26px; }
+  .win-stat { min-width: 180px; padding: 8px 18px; }
+  .win-stat-value { font-size: 18px; }
+}

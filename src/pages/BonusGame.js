@@ -6,9 +6,7 @@ import HowToPlay from '../components/HowToPlay'
 import FallingFlowers from '../components/FallingFlowers'
 import WordErrorPopup from '../components/WordErrorPopup'
 import PuzzleExpiryPopup from '../components/PuzzleExpiryPopup'
-import heartCutout from '../assets/WINDOW2.png'
 import { supabase } from '../lib/supabase'
-import { ActivitySquare } from 'lucide-react'
 import './Game.css'
 import './BonusGame.css'
 
@@ -47,15 +45,16 @@ function BonusGame() {
       reset.setUTCHours(resetHour, 0, 0, 0)
       if (reset <= now) return
       const minsLeft = (reset - now) / 60000
-      if (minsLeft <= 5 && minsLeft > 4.8) setShowExpiry(true)
+      if (minsLeft <= 5 && minsLeft > 2) setShowExpiry(true)
     }
     const interval = setInterval(check, 10000)
     return () => clearInterval(interval)
   }, [])
 
-  const evaluateGuess = useCallback((guessStr) => {
+  const evaluateGuess = useCallback((guessStr, targetPhrase = phrase) => {
     const result = []
-    const targetChars = phraseLetters.split('')
+    const cleanPhrase = targetPhrase.replace(/ /g, '')
+    const targetChars = cleanPhrase.split('')
     const guessChars = guessStr.split('')
     const targetUsed = new Array(targetChars.length).fill(false)
     const guessUsed = new Array(guessChars.length).fill(false)
@@ -67,11 +66,10 @@ function BonusGame() {
         guessUsed[i] = true
       }
     }
+
     for (let i = 0; i < guessChars.length; i++) {
       if (guessUsed[i]) continue
-      const targetIndex = targetChars.findIndex((char, idx) =>
-        char === guessChars[i] && !targetUsed[idx]
-      )
+      const targetIndex = targetChars.findIndex((char, idx) => char === guessChars[i] && !targetUsed[idx])
       if (targetIndex !== -1) {
         result[i] = 'present'
         targetUsed[targetIndex] = true
@@ -79,10 +77,11 @@ function BonusGame() {
         result[i] = 'absent'
       }
     }
-    return result
-  }, [phraseLetters])
 
-  const rebuildStateFromGuesses = useCallback((savedGuesses) => {
+    return result
+  }, [phrase])
+
+  const rebuildStateFromGuesses = useCallback((savedGuesses, targetPhrase = phrase) => {
     const rebuiltGuesses = []
     let rebuiltKeyboard = {}
     let rebuiltGameOver = false
@@ -90,54 +89,36 @@ function BonusGame() {
 
     for (let i = 0; i < savedGuesses.length; i++) {
       const guessStr = savedGuesses[i].word
-      const evaluation = evaluateGuess(guessStr)
+      const evaluation = evaluateGuess(guessStr, targetPhrase)
       rebuiltGuesses.push({ word: guessStr, evaluation })
 
       for (let j = 0; j < guessStr.length; j++) {
         const letter = guessStr[j]
         const status = evaluation[j]
         const current = rebuiltKeyboard[letter]
-        if (
-          status === 'correct' ||
-          (status === 'present' && current !== 'correct') ||
-          (status === 'absent' && !current)
-        ) {
+        if (status === 'correct' || (status === 'present' && current !== 'correct') || (status === 'absent' && !current)) {
           rebuiltKeyboard[letter] = status
         }
       }
 
       const isWin = evaluation.every(s => s === 'correct')
-      if (isWin) {
-        rebuiltGameOver = true
-        rebuiltWon = true
-        break
-      } else if (i >= maxGuesses - 1) {
-        rebuiltGameOver = true
-        rebuiltWon = false
-        break
-      }
+      if (isWin) { rebuiltGameOver = true; rebuiltWon = true; break }
+      if (i >= maxGuesses - 1) { rebuiltGameOver = true; rebuiltWon = false; break }
     }
 
     return { guesses: rebuiltGuesses, keyboardStatus: rebuiltKeyboard, gameOver: rebuiltGameOver, won: rebuiltWon }
-  }, [evaluateGuess, maxGuesses])
+  }, [evaluateGuess, maxGuesses, phrase])
 
   const saveProgress = useCallback(async (state, user, pid) => {
     const guessesPayload = state.guesses.map(g => ({ word: g.word }))
     if (user) {
       await supabase.from('game_progress').upsert({
-        user_id: user.id,
-        puzzle_id: pid,
-        guesses: guessesPayload,
-        current_guess: state.guess,
-        cursor_pos: state.cursorPos,
-        updated_at: new Date().toISOString()
+        user_id: user.id, puzzle_id: pid, guesses: guessesPayload,
+        current_guess: state.guess, cursor_pos: state.cursorPos, updated_at: new Date().toISOString()
       }, { onConflict: 'user_id,puzzle_id' })
     } else {
       localStorage.setItem(getGuestStorageKey(pid), JSON.stringify({
-        guesses: guessesPayload,
-        guess: state.guess,
-        cursorPos: state.cursorPos,
-        savedAt: new Date().toISOString()
+        guesses: guessesPayload, guess: state.guess, cursorPos: state.cursorPos, savedAt: new Date().toISOString()
       }))
     }
   }, [])
@@ -150,9 +131,9 @@ function BonusGame() {
     }
   }, [])
 
-  const applySavedGuesses = useCallback((savedGuesses, savedGuess, savedCursorPos) => {
-    if (savedGuesses?.length > 0) {
-      const rebuilt = rebuildStateFromGuesses(savedGuesses)
+  const applySavedGuesses = useCallback((savedGuesses, savedGuess, savedCursorPos, targetPhrase = phrase) => {
+    if (savedGuesses && Array.isArray(savedGuesses) && savedGuesses.length > 0) {
+      const rebuilt = rebuildStateFromGuesses(savedGuesses, targetPhrase)
       setGuesses(rebuilt.guesses)
       setKeyboardStatus(rebuilt.keyboardStatus)
       setGameOver(rebuilt.gameOver)
@@ -160,7 +141,7 @@ function BonusGame() {
       setGuess(savedGuess || '')
       setCursorPos(savedCursorPos ?? null)
     }
-  }, [rebuildStateFromGuesses])
+  }, [rebuildStateFromGuesses, phrase])
 
   useEffect(() => {
     const fetchBonusPuzzle = async () => {
@@ -188,7 +169,8 @@ function BonusGame() {
         return
       }
 
-      setPhrase(puzzleData.phrase)
+      const fetchedPhrase = puzzleData.phrase
+      setPhrase(fetchedPhrase)
       setPuzzleId(puzzleData.puzzle_id)
 
       const { data: { user } } = await supabase.auth.getUser()
@@ -220,15 +202,11 @@ function BonusGame() {
             const parsed = JSON.parse(guestSave)
             if (parsed.guesses?.length > 0) {
               await supabase.from('game_progress').upsert({
-                user_id: user.id,
-                puzzle_id: puzzleData.puzzle_id,
-                guesses: parsed.guesses,
-                current_guess: parsed.guess || '',
-                cursor_pos: parsed.cursorPos ?? null,
-                updated_at: new Date().toISOString()
+                user_id: user.id, puzzle_id: puzzleData.puzzle_id, guesses: parsed.guesses,
+                current_guess: parsed.guess || '', cursor_pos: parsed.cursorPos ?? null, updated_at: new Date().toISOString()
               }, { onConflict: 'user_id,puzzle_id' })
             }
-          } catch (e) {}
+          } catch (e) { }
           localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
         }
 
@@ -240,7 +218,7 @@ function BonusGame() {
           .maybeSingle()
 
         if (progress?.guesses?.length > 0) {
-          applySavedGuesses(progress.guesses, progress.current_guess, progress.cursor_pos)
+          applySavedGuesses(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
         }
 
       } else {
@@ -248,7 +226,7 @@ function BonusGame() {
         if (saved) {
           try {
             const parsed = JSON.parse(saved)
-            applySavedGuesses(parsed.guesses, parsed.guess, parsed.cursorPos)
+            applySavedGuesses(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
           } catch (e) {
             localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
           }
@@ -276,14 +254,9 @@ function BonusGame() {
       if (existing) return
 
       const { error: insertError } = await supabase.from('submissions').insert({
-        user_id: user.id,
-        puzzle_id: puzzleId,
-        attempts: attemptsCount,
-        points_earned: 15,
-        is_current_day: false,
-        completed_at: new Date().toISOString(),
-        streak_bonus: 0,
-        status: 'completed'
+        user_id: user.id, puzzle_id: puzzleId, attempts: attemptsCount,
+        points_earned: 15, is_current_day: false, completed_at: new Date().toISOString(),
+        streak_bonus: 0, status: 'completed'
       })
 
       if (!insertError) {
@@ -296,19 +269,20 @@ function BonusGame() {
     }
   }, [puzzleId, clearProgress])
 
-  const checkWord = async (word) => {
+  const checkWord = useCallback(async (word) => {
     try {
-      const res = await fetch(`https://api.datamuse.com/words?sp=${word.toLowerCase()}&md=f&max=1`)
+      const clean = word.replace(/'/g, '').toLowerCase()
+      const res = await fetch(`https://api.datamuse.com/words?sp=${clean}&md=f&max=1`)
       const data = await res.json()
       if (data.length === 0) return false
-      if (data[0].word.toLowerCase() !== word.toLowerCase()) return false
+      if (data[0].word.toLowerCase() !== clean) return false
       const freq = data[0].tags?.find(t => t.startsWith('f:'))
       if (!freq) return false
       return parseFloat(freq.split(':')[1]) > 0.5
     } catch (e) {
       return true
     }
-  }
+  }, [])
 
   const validateWords = useCallback(async (guessStr) => {
     if (!phrase) return null
@@ -324,7 +298,7 @@ function BonusGame() {
       if (!isValid) return word
     }
     return null
-  }, [phrase])
+  }, [phrase, checkWord])
 
   const updateKeyboardStatus = useCallback((guessStr, evaluation) => {
     setKeyboardStatus(prev => {
@@ -333,11 +307,7 @@ function BonusGame() {
         const letter = guessStr[i]
         const status = evaluation[i]
         const current = next[letter]
-        if (
-          status === 'correct' ||
-          (status === 'present' && current !== 'correct') ||
-          (status === 'absent' && !current)
-        ) {
+        if (status === 'correct' || (status === 'present' && current !== 'correct') || (status === 'absent' && !current)) {
           next[letter] = status
         }
       }
@@ -348,6 +318,7 @@ function BonusGame() {
   const handleKeyPress = useCallback((key) => {
     if (gameOver || showHelp || loading || alreadySubmitted) return
     const pos = cursorPos ?? 0
+    if (pos >= totalLetters) return
     setGuess(prev => {
       const arr = prev.padEnd(totalLetters, ' ').split('')
       arr[pos] = key
@@ -363,10 +334,7 @@ function BonusGame() {
       const invalid = await validateWords(cleanGuess)
       if (invalid) {
         setInvalidWord(null)
-        setTimeout(() => {
-          setInvalidWord(invalid)
-          setPopupKey(prev => prev + 1)
-        }, 0)
+        setTimeout(() => { setInvalidWord(invalid); setPopupKey(prev => prev + 1) }, 0)
         return
       }
 
@@ -378,7 +346,6 @@ function BonusGame() {
       setCursorPos(null)
 
       const isWin = evaluation.every(s => s === 'correct')
-
       if (isWin) {
         setWon(true)
         setGameOver(true)
@@ -430,9 +397,7 @@ function BonusGame() {
   if (loading) {
     return (
       <div className="game" style={{ justifyContent: 'center' }}>
-        <span style={{ fontFamily: '"BM HANNA Air OTF", sans-serif', fontSize: '24px' }}>
-          Loading...
-        </span>
+        <span style={{ fontFamily: '"BM HANNA Air OTF", sans-serif', fontSize: '24px' }}>Loading...</span>
       </div>
     )
   }
@@ -465,34 +430,34 @@ function BonusGame() {
           </div>
         ) : (
           <div className="game-grid-area">
-            <Grid
-              phrase={phrase}
-              words={words}
-              currentGuess={guess}
-              guesses={guesses}
-              maxGuesses={maxGuesses}
-              gameOver={gameOver}
-              won={won}
-              cursorPos={cursorPos}
-              onCellClick={handleCellClick}
-            />
+            <div className="grid-wrapper">
+              <Grid
+                phrase={phrase}
+                words={words}
+                currentGuess={guess}
+                guesses={guesses}
+                maxGuesses={maxGuesses}
+                gameOver={gameOver}
+                won={won}
+                cursorPos={cursorPos}
+                onCellClick={handleCellClick}
+              />
+            </div>
           </div>
         )}
 
         {alreadySubmitted && submissionResult && (
           <div className="already-submitted">
             {submissionResult.status === 'completed' ? (
-              <div className="win-heart-wrapper">
-                <div className="win-heart-container">
-                  <img src={heartCutout} alt="" className="win-heart-img" />
-                  <div className="win-heart-content">
-                    <span className="win-heart-text">YOU WON</span>
-                    <span className="win-heart-subtext">
-                      <ActivitySquare size={32} color='black' fill='white' strokeWidth={3} />
-                    </span>
-                    <span className="win-heart-subtext">ATTEMPTS: {submissionResult.attempts}</span>
-                    <span className="win-heart-subtext">POINTS: {submissionResult.points_earned}</span>
-                  </div>
+              <div className="win-text-wrapper">
+                <span className="win-text">YOU WON</span>
+                <div className="win-stat">
+                  <span className="win-stat-label">Attempts:</span>
+                  <span className="win-stat-value">{submissionResult.attempts}</span>
+                </div>
+                <div className="win-stat">
+                  <span className="win-stat-label">Points:</span>
+                  <span className="win-stat-value">{submissionResult.points_earned}</span>
                 </div>
               </div>
             ) : (
@@ -504,17 +469,15 @@ function BonusGame() {
         )}
 
         {!alreadySubmitted && won && (
-          <div className="win-heart-wrapper">
-            <div className="win-heart-container">
-              <img src={heartCutout} alt="" className="win-heart-img" />
-              <div className="win-heart-content">
-                <span className="win-heart-text">YOU WON</span>
-                <span className="win-heart-subtext">
-                  <ActivitySquare size={32} color='black' fill='white' strokeWidth={3} />
-                </span>
-                <span className="win-heart-subtext">ATTEMPTS: {guesses.length}</span>
-                <span className="win-heart-subtext">+15 PTS</span>
-              </div>
+          <div className="win-text-wrapper">
+            <span className="win-text">YOU WON</span>
+            <div className="win-stat">
+              <span className="win-stat-label">Attempts:</span>
+              <span className="win-stat-value">{guesses.length}</span>
+            </div>
+            <div className="win-stat">
+              <span className="win-stat-label">Points:</span>
+              <span className="win-stat-value">15</span>
             </div>
           </div>
         )}

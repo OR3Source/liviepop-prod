@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Keyboard from '../components/Keyboard'
 import FallingFlowers from '../components/FallingFlowers'
 import Grid from '../components/Grid'
@@ -138,6 +138,11 @@ function Game() {
     }
   }, [rebuildStateFromGuesses, phrase])
 
+  const applySavedGuessesRef = useRef(applySavedGuesses)
+  useEffect(() => {
+    applySavedGuessesRef.current = applySavedGuesses
+  }, [applySavedGuesses])
+
   useEffect(() => {
     const fetchPuzzle = async () => {
       const now = new Date()
@@ -190,14 +195,14 @@ function Game() {
           .eq('puzzle_id', puzzleData.puzzle_id).maybeSingle()
 
         if (progress?.guesses?.length > 0) {
-          applySavedGuesses(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
+          applySavedGuessesRef.current(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
         }
       } else {
         const saved = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
         if (saved) {
           try {
             const parsed = JSON.parse(saved)
-            applySavedGuesses(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
+            applySavedGuessesRef.current(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
           } catch (e) {
             localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
           }
@@ -208,43 +213,42 @@ function Game() {
     }
 
     fetchPuzzle()
-  }, [applySavedGuesses])
+  }, [])
 
-  const submitWin = async (attemptsCount) => {
+  const submitWin = useCallback(async (attemptsCount) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-      const now = new Date()
-      const nyNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
-      const targetDate = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
-      const { data: puzzle, error: puzzleError } = await supabase
-        .from('puzzles').select('puzzle_id').eq('puzzle_date', targetDate).single()
-      if (puzzleError || !puzzle) return
+      if (!currentUser) return
+
       const { data: existing } = await supabase.from('submissions')
-        .select('id').eq('user_id', user.id).eq('puzzle_id', puzzle.puzzle_id).maybeSingle()
+        .select('id').eq('user_id', currentUser.id).eq('puzzle_id', puzzleId).maybeSingle()
       if (existing) return
+
       const { data: userData } = await supabase.from('users')
-        .select('current_streak, last_completed_date').eq('id', user.id).single()
-      const yesterday = new Date()
+        .select('current_streak, last_completed_date').eq('id', currentUser.id).single()
+
+      const now = new Date()
+      const yesterday = new Date(now)
       yesterday.setDate(yesterday.getDate() - 1)
       const yesterdayStr = yesterday.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+      const targetDate = now.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+
       const streakContinues = userData?.last_completed_date === yesterdayStr
       const newStreak = streakContinues ? (userData?.current_streak || 0) + 1 : 1
       const streakBonus = newStreak * 2.50
+
       const { error: insertError } = await supabase.from('submissions').insert({
-        user_id: user.id, puzzle_id: puzzle.puzzle_id, attempts: attemptsCount,
+        user_id: currentUser.id, puzzle_id: puzzleId, attempts: attemptsCount,
         points_earned: 50, is_current_day: true, completed_at: new Date().toISOString(),
         streak_bonus: streakBonus, puzzle_date: targetDate, status: 'completed'
       })
-      if (!insertError) await clearProgress(user, puzzle.puzzle_id)
+      if (!insertError) await clearProgress(currentUser, puzzleId)
     } catch (err) {
       console.error('submitWin crashed:', err)
     }
-  }
+  }, [currentUser, puzzleId, clearProgress])
 
   const checkWord = useCallback(async (word) => {
     try {
-      // strip apostrophes before validating so words like "today's" don't fail
       const clean = word.replace(/'/g, '').toLowerCase()
       const res = await fetch(`https://api.datamuse.com/words?sp=${clean}&md=f&max=1`)
       const data = await res.json()
@@ -292,7 +296,6 @@ function Game() {
   const handleKeyPress = useCallback((key) => {
     if (gameOver || showHelp || loading || alreadySubmitted) return
     const pos = cursorPos ?? 0
-    // don't allow typing past the total letter count
     if (pos >= totalLetters) return
     setGuess(prev => {
       const arr = prev.padEnd(totalLetters, ' ').split('')
@@ -332,8 +335,8 @@ function Game() {
         await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin])
 
   const handleDelete = useCallback(() => {
     if (gameOver || showHelp || loading || alreadySubmitted) return

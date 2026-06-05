@@ -76,6 +76,7 @@ function Login() {
                   placeholder="ur username..."
                   required={isSignUp}
                   maxLength={20}
+                  autoComplete="username"
                 />
               </div>
             </div>
@@ -92,6 +93,7 @@ function Login() {
                 className="login-input"
                 placeholder="ur email..."
                 required
+                autoComplete="email"
               />
             </div>
           </div>
@@ -107,6 +109,7 @@ function Login() {
                 className="login-input"
                 placeholder="ur password..."
                 required
+                autoComplete="current-password"
               />
               <button 
                 type="button"

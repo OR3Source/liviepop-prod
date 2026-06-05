@@ -5,7 +5,6 @@ import Grid from '../components/Grid'
 import WordErrorPopup from '../components/WordErrorPopup'
 import PuzzleExpiryPopup from '../components/PuzzleExpiryPopup'
 import { supabase } from '../lib/supabase'
-import { useAuth } from '../context/AuthContext'
 import './Game.css'
 
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
@@ -27,7 +26,6 @@ function Game() {
   const [puzzleId, setPuzzleId] = useState(null)
   const [currentUser, setCurrentUser] = useState(null)
   const [showExpiry, setShowExpiry] = useState(false)
-  const { user } = useAuth()
 
   const words = phrase ? phrase.split(' ') : []
   const phraseLetters = phrase ? phrase.replace(/ /g, '') : ''
@@ -160,6 +158,7 @@ function Game() {
       setPhrase(fetchedPhrase)
       setPuzzleId(puzzleData.puzzle_id)
 
+      const { data: { user } } = await supabase.auth.getUser()
       setCurrentUser(user ?? null)
 
       if (user) {
@@ -213,7 +212,7 @@ function Game() {
     }
 
     fetchPuzzle()
-  }, [user])
+  }, [])
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {

@@ -9,11 +9,9 @@ function Profile() {
   const navigate = useNavigate();
   const { user, userData, signOut, loading: authLoading } = useAuth();
   const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
-    if (authLoading) return;
-
     if (!user) {
       navigate('/login');
       return;
@@ -29,18 +27,18 @@ function Profile() {
       if (!error && data) {
         setStats(data);
       }
-      setLoading(false);
+      setStatsLoading(false);
     };
 
     fetchStats();
-  }, [user, authLoading, navigate]);
+  }, [user, navigate]);
 
   const handleLogout = async () => {
     await signOut();
     navigate('/');
   };
 
-  if (authLoading || loading) {
+  if (authLoading || statsLoading) {
     return (
       <div className="profile-page" style={{ justifyContent: 'center' }}>
         <span style={{ fontFamily: '"BM HANNA Air OTF", sans-serif', fontSize: '24px' }}>

@@ -32,22 +32,25 @@ export function AuthProvider({ children }) {
       .trim()
       .replace(/[^a-z0-9_-]/g, '')
       .slice(0, 30);
-    
+
     if (clean.length < 3) {
       throw new Error('Username must be at least 3 characters (a-z, 0-9, _, -)');
     }
-    
+
     return clean;
   };
 
   const signUp = async (email, password, username) => {
     const cleanUsername = sanitizeUsername(username);
-    
+
     const { data, error } = await supabase.auth.signUp({ 
       email, 
       password,
       options: {
-        data: { username: cleanUsername }
+        data: { 
+          username: cleanUsername,
+          full_name: cleanUsername  // ← This sets displayName in Supabase auth table
+        }
       }
     });
     if (error) throw error;

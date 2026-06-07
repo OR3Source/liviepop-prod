@@ -1,0 +1,41 @@
+name: Daily LiviePop Users Table Backup
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install pg_dump
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Run backup
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p backups/users
+          FILENAME="backups/users/users_$(date +'%Y-%m-%d').sql"
+          pg_dump "$DATABASE_URL" \
+            --table=public.users \
+            --data-only \
+            --no-owner \
+            --no-privileges \
+            --format=plain \
+            > "$FILENAME"
+
+      - name: Commit and push backup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add backups/users/
+          git diff --cached --quiet || git commit -m "chore: daily users backup $(date +'%Y-%m-%d')"
+          git push

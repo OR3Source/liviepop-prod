@@ -13,7 +13,7 @@ const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
 function Game() {
   const { user: authUser } = useAuth()
   const userRef = useRef(authUser)
-  
+
   // Keep ref in sync without causing re-renders
   useEffect(() => {
     userRef.current = authUser
@@ -343,7 +343,7 @@ function Game() {
         await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin])
 
   const handleDelete = useCallback(() => {
@@ -453,8 +453,10 @@ function Game() {
         {!alreadySubmitted && won && (
           <div className="win-text-wrapper">
             <span className="win-text">YOU WON</span>
-            <br />
-            <span className="win-subtext">ATTEMPTS: {guesses.length}</span>
+            <div className="win-stat">
+              <span className="win-stat-label">Attempts:</span>
+              <span className="win-stat-value">{guesses.length}</span>
+            </div>
           </div>
         )}
 

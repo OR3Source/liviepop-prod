@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
       options: {
         data: { 
           username: cleanUsername,
-          full_name: cleanUsername  // ← This sets displayName in Supabase auth table
+          display_name: cleanUsername  // ← This maps to the Display name column in Supabase auth
         }
       }
     });

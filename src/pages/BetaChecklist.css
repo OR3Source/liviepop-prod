@@ -252,6 +252,7 @@
 .beta-inline-link:hover {
   color: #FDB1CB;
   border-bottom-color: #FDB1CB;
+  text-decoration: none;
 }
 
 
@@ -268,8 +269,8 @@
 
 .beta-points-title {
   font-family: "Griffy", cursive;
-  font-size: 1rem;
-  color: #A92E43;
+  font-size: 1.15rem;
+  color: #000000;
   margin: 0;
   letter-spacing: 0.5px;
 }

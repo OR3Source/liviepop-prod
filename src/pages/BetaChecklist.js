@@ -58,10 +58,10 @@ const DAY_FOUR = [
   { id: 'd4-daily-q', label: 'Would you actually play this every day?' },
   { id: 'd4-competitive', label: 'Would you want this to be more competitive?' },
   { id: 'd4-prizes', label: 'Would you want to play for prizes (quarterly)?' },
-  { id: 'd4-bugs', label: 'Log your answers and any final bugs.' },
+  { id: 'd4-bugs', label: 'Log your feedback and any final bugs.' },
 ];
-const BUG_REPORT_LINK = 'https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new?template=bug_report.md';
-const FEEDBACK_LINK = 'https://discord.com/invite/YOUR_INVITE';
+const BUG_REPORT_LINK = 'https://tally.so/r/xXzRjd';
+const FEEDBACK_LINK = 'https://tally.so/r/2Eo10b';
 
 function BetaChecklist() {
   const [checked, setChecked] = useState(() => {

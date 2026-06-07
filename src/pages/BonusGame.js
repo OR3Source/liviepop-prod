@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext'
 import { getNextMidnightEST } from '../hooks/getNextMidnightEST'
 import Keyboard from '../components/Keyboard'
 import Grid from '../components/Grid'
-import HowToPlay from '../components/HowToPlay'
 import FallingFlowers from '../components/FallingFlowers'
 import WordErrorPopup from '../components/WordErrorPopup'
 import PuzzleExpiryPopup from '../components/PuzzleExpiryPopup'
@@ -51,7 +50,7 @@ function BonusGame() {
 
   const [guess, setGuess] = useState('')
   const [guesses, setGuesses] = useState([])
-  const [showHelp, setShowHelp] = useState(false)
+  const [showHelp] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const [won, setWon] = useState(false)
   const [keyboardStatus, setKeyboardStatus] = useState({})
@@ -239,9 +238,6 @@ function BonusGame() {
           setSubmissionResult(existing)
           setGameOver(true)
           setWon(existing.status === 'completed')
-          await supabase.from('game_progress').delete()
-            .eq('user_id', user.id)
-            .eq('puzzle_id', fetchedPuzzleId)
           setLoading(false)
           return
         }
@@ -287,37 +283,26 @@ function BonusGame() {
     }
 
     fetchBonusPuzzle()
-  }, [date]) // date from useParams, stable after mount
+  }, [date])
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {
-      const user = userRef.current
-      if (!user) return
+      if (!currentUser) return
 
-      const { data: existing } = await supabase
-        .from('submissions')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('puzzle_id', puzzleId)
-        .maybeSingle()
-
+      const { data: existing } = await supabase.from('submissions')
+        .select('id').eq('user_id', currentUser.id).eq('puzzle_id', puzzleId).maybeSingle()
       if (existing) return
 
       const { error: insertError } = await supabase.from('submissions').insert({
-        user_id: user.id, puzzle_id: puzzleId, attempts: attemptsCount,
+        user_id: currentUser.id, puzzle_id: puzzleId, attempts: attemptsCount,
         points_earned: 15, is_current_day: false, completed_at: new Date().toISOString(),
         streak_bonus: 0, status: 'completed'
       })
-
-      if (!insertError) {
-        await clearProgress(user, puzzleId)
-      } else {
-        console.error('Bonus submission failed:', insertError)
-      }
+      if (!insertError) await clearProgress(currentUser, puzzleId)
     } catch (err) {
-      console.error('submitWin bonus crashed:', err)
+      console.error('submitWin crashed:', err)
     }
-  }, [puzzleId, clearProgress])
+  }, [currentUser, puzzleId, clearProgress])
 
   const checkWord = useCallback(async (word) => {
     try {
@@ -407,7 +392,8 @@ function BonusGame() {
         await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
       }
     }
-  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin, validateWords])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin])
 
   const handleDelete = useCallback(() => {
     if (gameOver || showHelp || loading || alreadySubmitted) return
@@ -457,12 +443,7 @@ function BonusGame() {
       <FallingFlowers enabled={true} />
       <div className="game">
         {showExpiry && <PuzzleExpiryPopup onClose={() => setShowExpiry(false)} />}
-
-        {invalidWord && (
-          <WordErrorPopup key={popupKey} word={invalidWord} onClose={() => setInvalidWord(null)} />
-        )}
-
-        {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
+        {invalidWord && <WordErrorPopup key={popupKey} word={invalidWord} onClose={() => setInvalidWord(null)} />}
 
         {alreadySubmitted ? (
           <div className="answer-tiles">
@@ -475,7 +456,7 @@ function BonusGame() {
               gameOver={true}
               won={true}
               cursorPos={null}
-              onCellClick={() => {}}
+              onCellClick={() => { }}
             />
           </div>
         ) : (

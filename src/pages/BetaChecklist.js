@@ -10,26 +10,27 @@ const DAY_ONE = [
   { id: 'd1-bonus', label: <>Play a <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> from a previous day</> },
   { id: 'd1-profile', label: <>Check <Link to="/profile" className="beta-inline-link">profile</Link> shows correct info</> },
   { id: 'd1-leaderboard', label: <>View the <Link to="/leaderboard" className="beta-inline-link">leaderboard</Link></> },
-  { id: 'd1-points', label: (
-    <div className="beta-points-info">
-      <h3 className="beta-points-title">Points Breakdown</h3>
-      <ul className="beta-points-list">
-        <li className="beta-points-item">
-          <span className="beta-points-bullet" />
-          <span>Current day win: <span className="beta-points-value">50 pts + streak bonus (2.50× streak)</span></span>
-        </li>
-        <li className="beta-points-item">
-          <span className="beta-points-bullet" />
-          <span>Bonus win: <span className="beta-points-value">15 pts</span></span>
-        </li>
-        <li className="beta-points-item">
-          <span className="beta-points-bullet" />
-          <span>Loss: <span className="beta-points-value">0 pts</span></span>
-        </li>
-      </ul>
-    </div>
-  ) },
 ];
+
+const DayOnePoints = () => (
+  <div className="beta-points-info">
+    <h3 className="beta-points-title">Points Breakdown</h3>
+    <div className="beta-points-list">
+      <div className="beta-points-item">
+        <span className="beta-points-icon">🏆</span>
+        <span>Current day win: <span className="beta-points-value">50 pts + streak bonus (2.50× streak)</span></span>
+      </div>
+      <div className="beta-points-item">
+        <span className="beta-points-icon">🎯</span>
+        <span>Bonus win: <span className="beta-points-value">15 pts</span></span>
+      </div>
+      <div className="beta-points-item">
+        <span className="beta-points-icon">💀</span>
+        <span>Loss: <span className="beta-points-value">0 pts</span></span>
+      </div>
+    </div>
+  </div>
+);
 
 const DAY_TWO = [
   { id: 'd2-bonus-review', label: <>Review your <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> results from yesterday — they should be saved</> },
@@ -48,9 +49,12 @@ const DAY_THREE = [
 ];
 
 const DAY_FOUR = [
-  { id: 'd4-edge', label: 'Try edge cases: refresh mid-game, back button, etc.' },
-  { id: 'd4-bugs', label: 'Report any bugs or weird behavior' },
-  { id: 'd4-feedback', label: 'Send general feedback / feature requests' },
+  { id: 'd4-refresh', label: 'Refresh the page mid game. Does your progress save?' },
+  { id: 'd4-back', label: 'Hit browser back then forward. Does anything break?' },
+  { id: 'd4-mobile-keyboard', label: 'Open keyboard on mobile, close it, reopen. Any glitches?' },
+  { id: 'd4-logout-midgame', label: 'Log out while playing a puzzle. What happens?' },
+  { id: 'd4-report', label: 'Report any bugs you found from the tests above' },
+  { id: 'd4-feedback', label: 'Send one thing you liked and one thing to improve' },
 ];
 
 const BUG_REPORT_LINK = 'https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new?template=bug_report.md';
@@ -128,9 +132,10 @@ function BetaChecklist() {
 
       <div className="beta-card">
         {renderDay('Day One: Core Features', DAY_ONE)}
+        <DayOnePoints />
         {renderDay('Day Two: Extended Features', DAY_TWO)}
         {renderDay('Day Three: Cross-Device', DAY_THREE)}
-        {renderDay('Day Four: Edge Cases & Wrap Up', DAY_FOUR)}
+        {renderDay('Day Four: Stress Test', DAY_FOUR)}
       </div>
 
       <div className="beta-links">

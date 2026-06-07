@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -10,6 +10,7 @@ function Profile() {
   const { user, signOut, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const fetchedForUser = useRef(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -18,6 +19,9 @@ function Profile() {
       navigate('/login');
       return;
     }
+
+    if (fetchedForUser.current === user.id) return;
+    fetchedForUser.current = user.id;
 
     const fetchProfile = async () => {
       const { data, error } = await supabase

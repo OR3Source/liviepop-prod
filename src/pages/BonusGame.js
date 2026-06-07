@@ -177,6 +177,11 @@ function BonusGame() {
     }
   }, [rebuildStateFromGuesses, phrase])
 
+  const applySavedGuessesRef = useRef(applySavedGuesses)
+  useEffect(() => {
+    applySavedGuessesRef.current = applySavedGuesses
+  }, [applySavedGuesses])
+
   useEffect(() => {
     const fetchBonusPuzzle = async () => {
       if (!date) {
@@ -263,7 +268,7 @@ function BonusGame() {
           .maybeSingle()
 
         if (progress?.guesses?.length > 0) {
-          applySavedGuesses(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
+          applySavedGuessesRef.current(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
         }
 
       } else {
@@ -271,7 +276,7 @@ function BonusGame() {
         if (saved) {
           try {
             const parsed = JSON.parse(saved)
-            applySavedGuesses(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
+            applySavedGuessesRef.current(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
           } catch (e) {
             localStorage.removeItem(getGuestStorageKey(fetchedPuzzleId))
           }
@@ -282,7 +287,7 @@ function BonusGame() {
     }
 
     fetchBonusPuzzle()
-  }, [])
+  }, [date]) // date from useParams, stable after mount
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {

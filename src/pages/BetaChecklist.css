@@ -108,14 +108,16 @@
 }
 
 .beta-day-title {
-  font-size: 1rem;
-  font-weight: bold;
-  letter-spacing: 0.1rem;
-  text-transform: uppercase;
-  color: #A92E43;
-  margin: 0 0 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px dashed #ecdde6;
+  font-family: "Griffy", cursive;
+  font-size: 1.15rem;
+  color: #1a1a2e;
+  margin: 0 0 1rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #fff8fb 0%, #f5e8ed 100%);
+  border: 2px solid #ecdde6;
+  border-radius: 8px;
+  display: inline-block;
+  letter-spacing: 0.5px;
 }
 
 .beta-items {
@@ -241,12 +243,15 @@
 
 .beta-inline-link {
   color: #A92E43;
-  text-decoration: underline;
+  text-decoration: none;
   font-weight: bold;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .beta-inline-link:hover {
   color: #FDB1CB;
+  border-bottom-color: #FDB1CB;
 }
 
 
@@ -254,17 +259,18 @@
 .beta-points-info {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 1.25rem;
+  gap: 0.75rem;
+  padding: 1.25rem;
   background: linear-gradient(135deg, #fff8fb 0%, #f5e8ed 100%);
-  border: 2px dashed #e8c4d0;
+  border: 2px solid #e8c4d0;
   border-radius: 8px;
-  margin-top: 0.5rem;
+  margin: 1rem 0 0;
+  box-shadow: 3px 3px 0px #FDB1CB;
 }
 
 .beta-points-title {
   font-family: "Griffy", cursive;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #A92E43;
   margin: 0;
   letter-spacing: 0.5px;
@@ -273,26 +279,20 @@
 .beta-points-list {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  gap: 0.5rem;
 }
 
 .beta-points-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #1a1a2e;
   line-height: 1.5;
 }
 
-.beta-points-bullet {
-  width: 6px;
-  height: 6px;
-  background: #A92E43;
-  border-radius: 50%;
+.beta-points-icon {
+  font-size: 1rem;
   flex-shrink: 0;
 }
 

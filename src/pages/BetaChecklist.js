@@ -5,13 +5,13 @@ import { CheckCircle, Circle, Bug, MessageSquare, ExternalLink, AlertTriangle } 
 const DAY_ONE = [
   { id: 'd1-signup', label: 'Sign up for a new account' },
   { id: 'd1-login', label: 'Log in with existing account' },
-  { id: 'd1-daily', label: 'Play and complete today's puzzle (win or lose)' },
+  { id: 'd1-daily', label: "Play and complete today's puzzle (win or lose)" },
   { id: 'd1-profile', label: 'Check profile shows correct info' },
   { id: 'd1-leaderboard', label: 'View leaderboard' },
 ];
 
 const DAY_TWO = [
-  { id: 'd2-daily', label: 'Play today's puzzle again (streak should update)' },
+  { id: 'd2-daily', label: "Play today's puzzle again (streak should update)" },
   { id: 'd2-bonus', label: 'Play a bonus puzzle from a past date' },
   { id: 'd2-contact', label: 'Send a message via Contact form' },
   { id: 'd2-logout', label: 'Sign out and sign back in' },
@@ -80,7 +80,7 @@ function BetaChecklist() {
           Tester <span style={{ color: '#A92E43' }}>Checklist</span>
         </h1>
         <p className="beta-subtitle">
-          Follow each day's tasks. Check items off as you complete them.
+          Follow each day&apos;s tasks. Check items off as you complete them.
         </p>
       </div>
 
@@ -98,7 +98,7 @@ function BetaChecklist() {
         <AlertTriangle size={16} color="#A92E43" />
         <p>
           <strong>Note:</strong> Your progress saves to this browser only. 
-          If you switch devices, your checkmarks won't transfer. 
+          If you switch devices, your checkmarks won&apos;t transfer. 
           Screenshots are encouraged for bug reports!
         </p>
       </div>

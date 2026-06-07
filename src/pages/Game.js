@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { getNextMidnightEST } from '../hooks/getNextMidnightEST'
 import Keyboard from '../components/Keyboard'
 import FallingFlowers from '../components/FallingFlowers'
 import Grid from '../components/Grid'
@@ -9,12 +10,42 @@ import { supabase } from '../lib/supabase'
 import './Game.css'
 
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
+const getPuzzleCacheKey = () => {
+  const now = new Date()
+  const nyNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
+  const dateStr = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+  return `puzzle_cache_${dateStr}`
+}
+
+const getCachedPuzzle = () => {
+  try {
+    const cached = localStorage.getItem(getPuzzleCacheKey())
+    if (!cached) return null
+    const parsed = JSON.parse(cached)
+    const now = Date.now()
+    if (now >= parsed.expiresAt) {
+      localStorage.removeItem(getPuzzleCacheKey())
+      return null
+    }
+    return parsed
+  } catch (e) {
+    return null
+  }
+}
+
+const setCachedPuzzle = (phrase, puzzleId) => {
+  const cacheData = {
+    phrase,
+    puzzleId,
+    expiresAt: getNextMidnightEST().getTime()
+  }
+  localStorage.setItem(getPuzzleCacheKey(), JSON.stringify(cacheData))
+}
 
 function Game() {
   const { user: authUser } = useAuth()
   const userRef = useRef(authUser)
 
-  // Keep ref in sync without causing re-renders
   useEffect(() => {
     userRef.current = authUser
   }, [authUser])
@@ -158,14 +189,25 @@ function Game() {
       const nyNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
       const targetDate = nyNow.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
 
-      const { data: puzzleData, error: puzzleError } = await supabase
-        .from('puzzles').select('phrase, puzzle_id').eq('puzzle_date', targetDate).single()
+      const cached = getCachedPuzzle()
+      let fetchedPhrase, fetchedPuzzleId
 
-      if (puzzleError || !puzzleData) { setPhrase('ERROR HAS OCCURRED'); setLoading(false); return }
+      if (cached) {
+        fetchedPhrase = cached.phrase
+        fetchedPuzzleId = cached.puzzleId
+      } else {
+        const { data: puzzleData, error: puzzleError } = await supabase
+          .from('puzzles').select('phrase, puzzle_id').eq('puzzle_date', targetDate).single()
 
-      const fetchedPhrase = puzzleData.phrase
+        if (puzzleError || !puzzleData) { setPhrase('ERROR HAS OCCURRED'); setLoading(false); return }
+
+        fetchedPhrase = puzzleData.phrase
+        fetchedPuzzleId = puzzleData.puzzle_id
+        setCachedPuzzle(fetchedPhrase, fetchedPuzzleId)
+      }
+
       setPhrase(fetchedPhrase)
-      setPuzzleId(puzzleData.puzzle_id)
+      setPuzzleId(fetchedPuzzleId)
 
       const user = userRef.current
       setCurrentUser(user ?? null)
@@ -173,7 +215,7 @@ function Game() {
       if (user) {
         const { data: existing } = await supabase.from('submissions')
           .select('status, attempts, points_earned').eq('user_id', user.id)
-          .eq('puzzle_id', puzzleData.puzzle_id).maybeSingle()
+          .eq('puzzle_id', fetchedPuzzleId).maybeSingle()
 
         if (existing) {
           setAlreadySubmitted(true)
@@ -184,35 +226,35 @@ function Game() {
           return
         }
 
-        const guestSave = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
+        const guestSave = localStorage.getItem(getGuestStorageKey(fetchedPuzzleId))
         if (guestSave) {
           try {
             const parsed = JSON.parse(guestSave)
             if (parsed.guesses?.length > 0) {
               await supabase.from('game_progress').upsert({
-                user_id: user.id, puzzle_id: puzzleData.puzzle_id, guesses: parsed.guesses,
+                user_id: user.id, puzzle_id: fetchedPuzzleId, guesses: parsed.guesses,
                 current_guess: parsed.guess || '', cursor_pos: parsed.cursorPos ?? null, updated_at: new Date().toISOString()
               }, { onConflict: 'user_id,puzzle_id' })
             }
           } catch (e) { }
-          localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
+          localStorage.removeItem(getGuestStorageKey(fetchedPuzzleId))
         }
 
         const { data: progress } = await supabase.from('game_progress')
           .select('guesses, current_guess, cursor_pos').eq('user_id', user.id)
-          .eq('puzzle_id', puzzleData.puzzle_id).maybeSingle()
+          .eq('puzzle_id', fetchedPuzzleId).maybeSingle()
 
         if (progress?.guesses?.length > 0) {
           applySavedGuessesRef.current(progress.guesses, progress.current_guess, progress.cursor_pos, fetchedPhrase)
         }
       } else {
-        const saved = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
+        const saved = localStorage.getItem(getGuestStorageKey(fetchedPuzzleId))
         if (saved) {
           try {
             const parsed = JSON.parse(saved)
             applySavedGuessesRef.current(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
           } catch (e) {
-            localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
+            localStorage.removeItem(getGuestStorageKey(fetchedPuzzleId))
           }
         }
       }
@@ -221,7 +263,7 @@ function Game() {
     }
 
     fetchPuzzle()
-  }, []) // EMPTY dependency array - runs once on mount
+  }, [])
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {

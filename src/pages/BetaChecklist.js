@@ -10,6 +10,7 @@ const DAY_ONE = [
   { id: 'd1-bonus', label: <>Play a <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> from a previous day</> },
   { id: 'd1-profile', label: <>Check <Link to="/profile" className="beta-inline-link">profile</Link> shows correct info</> },
   { id: 'd1-leaderboard', label: <>View the <Link to="/leaderboard" className="beta-inline-link">leaderboard</Link></> },
+  { id: 'd1-share', label: 'Log any bugs you find.' },
 ];
 
 const DayOnePoints = () => (
@@ -18,7 +19,7 @@ const DayOnePoints = () => (
     <div className="beta-points-list">
       <div className="beta-points-item">
         
-        <span>Current day win: <span className="beta-points-value">50 pts + streak bonus (2.50× streak)</span></span>
+        <span>Current day win: <span className="beta-points-value">50 pts + 2.50 pts (streak bonus)</span></span>
       </div>
       <div className="beta-points-item">
         
@@ -33,30 +34,32 @@ const DayOnePoints = () => (
 );
 
 const DAY_TWO = [
-  { id: 'd2-bonus-review', label: <>Review your <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> results from yesterday — they should be saved</> },
-  { id: 'd2-daily', label: <>Play <Link to="/" className="beta-inline-link">today's puzzle</Link> and WIN (streak only updates on wins)</> },
+  { id: 'd2-bonus-review', label: <>Review your <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> results from yesterday. p.s. they should be saved</> },
+  { id: 'd2-daily', label: <>Play <Link to="/" className="beta-inline-link">today's puzzle</Link> (streak only updates on wins)</> },
   { id: 'd2-about', label: <>Read the <Link to="/about" className="beta-inline-link">About</Link> page</> },
   { id: 'd2-privacy', label: <>Read the <Link to="/privacy" className="beta-inline-link">Privacy</Link> page</> },
   { id: 'd2-contact', label: <>Send a message via the <Link to="/contact" className="beta-inline-link">Contact</Link> form</> },
   { id: 'd2-logout', label: 'Sign out and sign back in' },
+  { id: 'd2-share', label: 'Log any bugs you find.' }
 ];
 
 const DAY_THREE = [
-  { id: 'd3-mobile', label: 'Test on a mobile device (phone)' },
-  { id: 'd3-ipad', label: 'Test on a tablet (iPad, Android tablet, etc.)' },
-  { id: 'd3-desktop', label: 'Test on a desktop/laptop browser' },
-  { id: 'd3-share', label: 'Share your score / screenshot' },
+  { id: 'd3-device-1', label: 'Start a puzzle on one device but don\'t finish it.' },
+  { id: 'd3-device-2', label: 'Log in on another device. Did your progress save?' },
+  { id: 'd3-device-3', label: 'Finish the puzzle on the second device.' },
+  { id: 'd3-device-4', label: 'Log in to device one if you aren\'t already, and check if the results match.' },
+  { id: 'd3-share', label: 'Log any bugs you find.' },
 ];
 
 const DAY_FOUR = [
-  { id: 'd4-refresh', label: 'Refresh the page mid game. Does your progress save?' },
-  { id: 'd4-back', label: 'Hit browser back then forward. Does anything break?' },
-  { id: 'd4-mobile-keyboard', label: 'Open keyboard on mobile, close it, reopen. Any glitches?' },
-  { id: 'd4-logout-midgame', label: 'Log out while playing a puzzle. What happens?' },
-  { id: 'd4-report', label: 'Report any bugs you found from the tests above' },
-  { id: 'd4-feedback', label: 'Send one thing you liked and one thing to improve' },
+  { id: 'd4-daily', label: <>Complete <Link to="/" className="beta-inline-link">today's puzzle</Link></> },
+  { id: 'd4-loved', label: 'Tell me one thing you loved.' },
+  { id: 'd4-fix', label: 'Tell me one thing that annoyed you or felt off.' },
+  { id: 'd4-daily-q', label: 'Would you actually play this every day?' },
+  { id: 'd4-competitive', label: 'Would you want this to be more competitive?' },
+  { id: 'd4-prizes', label: 'Would you want to play for prizes (quarterly)?' },
+  { id: 'd4-bugs', label: 'Log your answers and any final bugs.' },
 ];
-
 const BUG_REPORT_LINK = 'https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new?template=bug_report.md';
 const FEEDBACK_LINK = 'https://discord.com/invite/YOUR_INVITE';
 
@@ -134,8 +137,8 @@ function BetaChecklist() {
         {renderDay('Day One: Core Features', DAY_ONE)}
         <DayOnePoints />
         {renderDay('Day Two: Extended Features', DAY_TWO)}
-        {renderDay('Day Three: Cross-Device', DAY_THREE)}
-        {renderDay('Day Four: Stress Test', DAY_FOUR)}
+        {renderDay('Day Three: Cross Device Testing', DAY_THREE)}
+        {renderDay('Day Four: Honesty Hurts', DAY_FOUR)}
       </div>
 
       <div className="beta-links">

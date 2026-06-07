@@ -39,7 +39,7 @@ function Game() {
   const words = phrase ? phrase.split(' ') : []
   const phraseLetters = phrase ? phrase.replace(/ /g, '') : ''
   const totalLetters = phraseLetters.length
-  const maxGuesses = 6
+  const maxGuesses = 23
 
   useEffect(() => {
     const check = () => {

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useAuth } from '../context/AuthContext'
 import Keyboard from '../components/Keyboard'
 import FallingFlowers from '../components/FallingFlowers'
 import Grid from '../components/Grid'
@@ -10,6 +11,14 @@ import './Game.css'
 const getGuestStorageKey = (puzzleId) => `wordle_state_guest_${puzzleId}`
 
 function Game() {
+  const { user: authUser } = useAuth()
+  const userRef = useRef(authUser)
+
+  // Keep ref in sync without causing re-renders
+  useEffect(() => {
+    userRef.current = authUser
+  }, [authUser])
+
   const [guess, setGuess] = useState('')
   const [guesses, setGuesses] = useState([])
   const [showHelp] = useState(false)
@@ -158,7 +167,7 @@ function Game() {
       setPhrase(fetchedPhrase)
       setPuzzleId(puzzleData.puzzle_id)
 
-      const { data: { user } } = await supabase.auth.getUser()
+      const user = userRef.current
       setCurrentUser(user ?? null)
 
       if (user) {
@@ -212,7 +221,7 @@ function Game() {
     }
 
     fetchPuzzle()
-  }, [])
+  }, []) // EMPTY dependency array - runs once on mount
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {
@@ -334,7 +343,7 @@ function Game() {
         await saveProgress({ guesses: newGuesses, guess: '', cursorPos: null }, currentUser, puzzleId)
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guess, guesses, gameOver, showHelp, loading, alreadySubmitted, evaluateGuess, updateKeyboardStatus, totalLetters, maxGuesses, saveProgress, clearProgress, currentUser, puzzleId, submitWin])
 
   const handleDelete = useCallback(() => {
@@ -444,8 +453,10 @@ function Game() {
         {!alreadySubmitted && won && (
           <div className="win-text-wrapper">
             <span className="win-text">YOU WON</span>
-            <br />
-            <span className="win-subtext">ATTEMPTS: {guesses.length}</span>
+            <div className="win-stat">
+              <span className="win-stat-label">Attempts:</span>
+              <span className="win-stat-value">{guesses.length}</span>
+            </div>
           </div>
         )}
 

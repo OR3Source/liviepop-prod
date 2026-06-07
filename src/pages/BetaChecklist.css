@@ -1,0 +1,230 @@
+.beta-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  font-family: "BM HANNA Air OTF", sans-serif;
+}
+
+.beta-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.beta-label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: #888;
+  margin: 0 0 0.5rem;
+}
+
+.beta-title {
+  font-family: "Griffy", cursive;
+  font-size: 2.5rem;
+  color: #1a1a2e;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.beta-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0.75rem 0 0;
+  line-height: 1.6;
+}
+
+.beta-progress {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.beta-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #f0e6eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.beta-progress-fill {
+  height: 100%;
+  background: #A92E43;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.beta-progress-text {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.beta-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fff8fb;
+  border: 2px dashed #e8c4d0;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.beta-disclaimer svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.beta-disclaimer p {
+  font-size: 0.82rem;
+  color: #292828;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.beta-disclaimer strong {
+  color: #1a1a2e;
+}
+
+.beta-card {
+  background: #fff;
+  border: 3px solid #1a1a2e;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 6px 6px 0px #FDB1CB;
+  margin-bottom: 2rem;
+}
+
+.beta-day {
+  margin-bottom: 2rem;
+}
+
+.beta-day:last-child {
+  margin-bottom: 0;
+}
+
+.beta-day-title {
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  color: #A92E43;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px dashed #ecdde6;
+}
+
+.beta-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.beta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #faf5f7;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+  transition: all 0.15s ease;
+}
+
+.beta-item:hover {
+  border-color: #FDB1CB;
+  background: #fff0f5;
+}
+
+.beta-item.checked {
+  background: #f5e8ed;
+  border-color: #A92E43;
+  opacity: 0.7;
+}
+
+.beta-item.checked .beta-item-label {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.beta-item-label {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.beta-links {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.beta-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.beta-link.bug {
+  background: #fff0f5;
+  border: 2px solid #A92E43;
+  color: #A92E43;
+}
+
+.beta-link.bug:hover {
+  background: #A92E43;
+  color: white;
+}
+
+.beta-link.feedback {
+  background: #f0f5ff;
+  border: 2px solid #4a90d9;
+  color: #4a90d9;
+}
+
+.beta-link.feedback:hover {
+  background: #4a90d9;
+  color: white;
+}
+
+.beta-version {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #aaa;
+  letter-spacing: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .beta-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+  .beta-title {
+    font-size: 2rem;
+  }
+  .beta-card {
+    padding: 1rem;
+  }
+  .beta-links {
+    flex-direction: column;
+  }
+}

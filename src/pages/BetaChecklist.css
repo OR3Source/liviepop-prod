@@ -124,7 +124,14 @@
   gap: 0.5rem;
 }
 
+.beta-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .beta-item {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -159,6 +166,23 @@
 .beta-item-label {
   flex: 1;
   line-height: 1.4;
+}
+
+.beta-item-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  color: #A92E43;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.beta-item-link:hover {
+  background: #FDB1CB;
+  color: white;
 }
 
 .beta-links {
@@ -212,6 +236,69 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
+
+
+.beta-inline-link {
+  color: #A92E43;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.beta-inline-link:hover {
+  color: #FDB1CB;
+}
+
+
+/* ── Points Info Box ── */
+.beta-points-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #fff8fb 0%, #f5e8ed 100%);
+  border: 2px dashed #e8c4d0;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.beta-points-title {
+  font-family: "Griffy", cursive;
+  font-size: 1rem;
+  color: #A92E43;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.beta-points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.beta-points-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #1a1a2e;
+  line-height: 1.5;
+}
+
+.beta-points-bullet {
+  width: 6px;
+  height: 6px;
+  background: #A92E43;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.beta-points-value {
+  font-weight: bold;
+  color: #A92E43;
 }
 
 @media (max-width: 480px) {

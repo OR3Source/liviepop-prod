@@ -1,26 +1,49 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './BetaChecklist.css';
 import { CheckCircle, Circle, Bug, MessageSquare, ExternalLink, AlertTriangle } from 'lucide-react';
 
 const DAY_ONE = [
-  { id: 'd1-signup', label: 'Sign up for a new account' },
-  { id: 'd1-login', label: 'Log in with existing account' },
-  { id: 'd1-daily', label: "Play and complete today's puzzle (win or lose)" },
-  { id: 'd1-profile', label: 'Check profile shows correct info' },
-  { id: 'd1-leaderboard', label: 'View leaderboard' },
+  { id: 'd1-signup', label: <>Sign up for a new account via the <Link to="/login" className="beta-inline-link">login</Link> page</> },
+  { id: 'd1-login', label: <>Log in with an existing account on the <Link to="/login" className="beta-inline-link">login</Link> page</> },
+  { id: 'd1-daily', label: <>Play and complete <Link to="/" className="beta-inline-link">today's puzzle</Link> (win or lose)</> },
+  { id: 'd1-bonus', label: <>Play a <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> from a previous day</> },
+  { id: 'd1-profile', label: <>Check <Link to="/profile" className="beta-inline-link">profile</Link> shows correct info</> },
+  { id: 'd1-leaderboard', label: <>View the <Link to="/leaderboard" className="beta-inline-link">leaderboard</Link></> },
+  { id: 'd1-points', label: (
+    <div className="beta-points-info">
+      <h3 className="beta-points-title">Points Breakdown</h3>
+      <ul className="beta-points-list">
+        <li className="beta-points-item">
+          <span className="beta-points-bullet" />
+          <span>Current day win: <span className="beta-points-value">50 pts + streak bonus (2.50× streak)</span></span>
+        </li>
+        <li className="beta-points-item">
+          <span className="beta-points-bullet" />
+          <span>Bonus win: <span className="beta-points-value">15 pts</span></span>
+        </li>
+        <li className="beta-points-item">
+          <span className="beta-points-bullet" />
+          <span>Loss: <span className="beta-points-value">0 pts</span></span>
+        </li>
+      </ul>
+    </div>
+  ) },
 ];
 
 const DAY_TWO = [
-  { id: 'd2-daily', label: "Play today's puzzle again (streak should update)" },
-  { id: 'd2-bonus', label: 'Play a bonus puzzle from a past date' },
-  { id: 'd2-contact', label: 'Send a message via Contact form' },
+  { id: 'd2-bonus-review', label: <>Review your <Link to="/bonus" className="beta-inline-link">bonus puzzle</Link> results from yesterday — they should be saved</> },
+  { id: 'd2-daily', label: <>Play <Link to="/" className="beta-inline-link">today's puzzle</Link> and WIN (streak only updates on wins)</> },
+  { id: 'd2-about', label: <>Read the <Link to="/about" className="beta-inline-link">About</Link> page</> },
+  { id: 'd2-privacy', label: <>Read the <Link to="/privacy" className="beta-inline-link">Privacy</Link> page</> },
+  { id: 'd2-contact', label: <>Send a message via the <Link to="/contact" className="beta-inline-link">Contact</Link> form</> },
   { id: 'd2-logout', label: 'Sign out and sign back in' },
 ];
 
 const DAY_THREE = [
-  { id: 'd3-mobile', label: 'Test on mobile device (iPhone/Android)' },
-  { id: 'd3-ipad', label: 'Test on iPad/tablet' },
-  { id: 'd3-desktop', label: 'Test on desktop browser' },
+  { id: 'd3-mobile', label: 'Test on a mobile device (phone)' },
+  { id: 'd3-ipad', label: 'Test on a tablet (iPad, Android tablet, etc.)' },
+  { id: 'd3-desktop', label: 'Test on a desktop/laptop browser' },
   { id: 'd3-share', label: 'Share your score / screenshot' },
 ];
 

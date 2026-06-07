@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import './Contact.css';
 import { Mail, MessageSquare, Send, AlertTriangle, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { useAuth } from '../context/AuthContext';
 
 const XIcon = ({ size = 18 }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,19 +17,17 @@ const Contact = () => {
     const [prefillName, setPrefillName] = useState('');
     const [prefillEmail, setPrefillEmail] = useState('');
     const [loadingUser, setLoadingUser] = useState(true);
+    const { user: authUser } = useAuth();
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { data } = await supabase.from('users').select('username, email').eq('id', user.id).single();
-                if (data?.username) setPrefillName(data.username);
-                if (data?.email) setPrefillEmail(data.email);
-            }
-            setLoadingUser(false);
-        };
-        fetchUser();
-    }, []);
+        if (authUser) {
+            const displayName = authUser.user_metadata?.display_name || authUser.user_metadata?.username || '';
+            const email = authUser.email || '';
+            if (displayName) setPrefillName(displayName);
+            if (email) setPrefillEmail(email);
+        }
+        setLoadingUser(false);
+    }, [authUser]);
 
     const sendEmail = (e) => {
         e.preventDefault();

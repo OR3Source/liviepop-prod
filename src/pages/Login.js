@@ -46,16 +46,17 @@ function Login() {
 
       <div className="login-card">
         <div className="login-tabs">
-          <button 
+          <button
             className={`login-tab ${!isSignUp ? 'active' : ''}`}
             onClick={() => setIsSignUp(false)}
           >
             <ArrowRight size={18} />
             Sign In
           </button>
-          <button 
-            className={`login-tab ${isSignUp ? 'active' : ''}`}
-            onClick={() => setIsSignUp(true)}
+          <button
+            className="login-tab"
+            disabled
+            style={{ opacity: 0.4, cursor: 'not-allowed' }}
           >
             <UserPlus size={18} />
             Sign Up
@@ -111,7 +112,7 @@ function Login() {
                 required
                 autoComplete="current-password"
               />
-              <button 
+              <button
                 type="button"
                 className="toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
@@ -136,7 +137,12 @@ function Login() {
 
         <p className="login-switch">
           {isSignUp ? 'already have an account?' : 'not a member yet?'}{' '}
-          <button className="switch-btn" onClick={() => setIsSignUp(!isSignUp)}>
+          <button
+            className="switch-btn"
+            onClick={() => setIsSignUp(!isSignUp)}
+            disabled
+            style={{ opacity: 0.4, cursor: 'not-allowed' }}
+          >
             {isSignUp ? 'Sign in' : 'Join now'}
           </button>
         </p>

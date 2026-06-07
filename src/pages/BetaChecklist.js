@@ -17,15 +17,15 @@ const DayOnePoints = () => (
     <h3 className="beta-points-title">Points Breakdown</h3>
     <div className="beta-points-list">
       <div className="beta-points-item">
-        <span className="beta-points-icon">🏆</span>
+        
         <span>Current day win: <span className="beta-points-value">50 pts + streak bonus (2.50× streak)</span></span>
       </div>
       <div className="beta-points-item">
-        <span className="beta-points-icon">🎯</span>
+        
         <span>Bonus win: <span className="beta-points-value">15 pts</span></span>
       </div>
       <div className="beta-points-item">
-        <span className="beta-points-icon">💀</span>
+        
         <span>Loss: <span className="beta-points-value">0 pts</span></span>
       </div>
     </div>

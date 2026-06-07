@@ -1,5 +1,7 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { getNextMidnightEST } from '../hooks/getNextMidnightEST'
 import Keyboard from '../components/Keyboard'
 import Grid from '../components/Grid'
 import HowToPlay from '../components/HowToPlay'
@@ -11,9 +13,41 @@ import './Game.css'
 import './BonusGame.css'
 
 const getGuestStorageKey = (puzzleId) => `wordle_bonus_guest_${puzzleId}`
+const getPuzzleCacheKey = (date) => `bonus_puzzle_cache_${date}`
+
+const getCachedPuzzle = (date) => {
+  try {
+    const cached = localStorage.getItem(getPuzzleCacheKey(date))
+    if (!cached) return null
+    const parsed = JSON.parse(cached)
+    const now = Date.now()
+    if (now >= parsed.expiresAt) {
+      localStorage.removeItem(getPuzzleCacheKey(date))
+      return null
+    }
+    return parsed
+  } catch (e) {
+    return null
+  }
+}
+
+const setCachedPuzzle = (date, phrase, puzzleId) => {
+  const cacheData = {
+    phrase,
+    puzzleId,
+    expiresAt: getNextMidnightEST().getTime()
+  }
+  localStorage.setItem(getPuzzleCacheKey(date), JSON.stringify(cacheData))
+}
 
 function BonusGame() {
   const { date } = useParams()
+  const { user: authUser } = useAuth()
+  const userRef = useRef(authUser)
+
+  useEffect(() => {
+    userRef.current = authUser
+  }, [authUser])
 
   const [guess, setGuess] = useState('')
   const [guesses, setGuesses] = useState([])
@@ -151,29 +185,40 @@ function BonusGame() {
         return
       }
 
-      const { data: puzzleData, error: puzzleError } = await supabase
-        .from('puzzles')
-        .select('phrase, puzzle_id, is_bonus')
-        .eq('puzzle_date', date)
-        .single()
+      const cached = getCachedPuzzle(date)
+      let fetchedPhrase, fetchedPuzzleId
 
-      if (puzzleError || !puzzleData) {
-        setPhrase('NO BONUS PUZZLE')
-        setLoading(false)
-        return
+      if (cached) {
+        fetchedPhrase = cached.phrase
+        fetchedPuzzleId = cached.puzzleId
+      } else {
+        const { data: puzzleData, error: puzzleError } = await supabase
+          .from('puzzles')
+          .select('phrase, puzzle_id, is_bonus')
+          .eq('puzzle_date', date)
+          .single()
+
+        if (puzzleError || !puzzleData) {
+          setPhrase('NO BONUS PUZZLE')
+          setLoading(false)
+          return
+        }
+
+        if (!puzzleData.is_bonus) {
+          setPhrase('NO BONUS PUZZLE')
+          setLoading(false)
+          return
+        }
+
+        fetchedPhrase = puzzleData.phrase
+        fetchedPuzzleId = puzzleData.puzzle_id
+        setCachedPuzzle(date, fetchedPhrase, fetchedPuzzleId)
       }
 
-      if (!puzzleData.is_bonus) {
-        setPhrase('NO BONUS PUZZLE')
-        setLoading(false)
-        return
-      }
-
-      const fetchedPhrase = puzzleData.phrase
       setPhrase(fetchedPhrase)
-      setPuzzleId(puzzleData.puzzle_id)
+      setPuzzleId(fetchedPuzzleId)
 
-      const { data: { user } } = await supabase.auth.getUser()
+      const user = userRef.current
       setCurrentUser(user ?? null)
 
       if (user) {
@@ -181,7 +226,7 @@ function BonusGame() {
           .from('submissions')
           .select('status, attempts, points_earned')
           .eq('user_id', user.id)
-          .eq('puzzle_id', puzzleData.puzzle_id)
+          .eq('puzzle_id', fetchedPuzzleId)
           .maybeSingle()
 
         if (existing) {
@@ -191,30 +236,30 @@ function BonusGame() {
           setWon(existing.status === 'completed')
           await supabase.from('game_progress').delete()
             .eq('user_id', user.id)
-            .eq('puzzle_id', puzzleData.puzzle_id)
+            .eq('puzzle_id', fetchedPuzzleId)
           setLoading(false)
           return
         }
 
-        const guestSave = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
+        const guestSave = localStorage.getItem(getGuestStorageKey(fetchedPuzzleId))
         if (guestSave) {
           try {
             const parsed = JSON.parse(guestSave)
             if (parsed.guesses?.length > 0) {
               await supabase.from('game_progress').upsert({
-                user_id: user.id, puzzle_id: puzzleData.puzzle_id, guesses: parsed.guesses,
+                user_id: user.id, puzzle_id: fetchedPuzzleId, guesses: parsed.guesses,
                 current_guess: parsed.guess || '', cursor_pos: parsed.cursorPos ?? null, updated_at: new Date().toISOString()
               }, { onConflict: 'user_id,puzzle_id' })
             }
           } catch (e) { }
-          localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
+          localStorage.removeItem(getGuestStorageKey(fetchedPuzzleId))
         }
 
         const { data: progress } = await supabase
           .from('game_progress')
           .select('guesses, current_guess, cursor_pos')
           .eq('user_id', user.id)
-          .eq('puzzle_id', puzzleData.puzzle_id)
+          .eq('puzzle_id', fetchedPuzzleId)
           .maybeSingle()
 
         if (progress?.guesses?.length > 0) {
@@ -222,13 +267,13 @@ function BonusGame() {
         }
 
       } else {
-        const saved = localStorage.getItem(getGuestStorageKey(puzzleData.puzzle_id))
+        const saved = localStorage.getItem(getGuestStorageKey(fetchedPuzzleId))
         if (saved) {
           try {
             const parsed = JSON.parse(saved)
             applySavedGuesses(parsed.guesses, parsed.guess, parsed.cursorPos, fetchedPhrase)
           } catch (e) {
-            localStorage.removeItem(getGuestStorageKey(puzzleData.puzzle_id))
+            localStorage.removeItem(getGuestStorageKey(fetchedPuzzleId))
           }
         }
       }
@@ -237,11 +282,11 @@ function BonusGame() {
     }
 
     fetchBonusPuzzle()
-  }, [date, applySavedGuesses])
+  }, [])
 
   const submitWin = useCallback(async (attemptsCount) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const user = userRef.current
       if (!user) return
 
       const { data: existing } = await supabase
@@ -474,10 +519,6 @@ function BonusGame() {
             <div className="win-stat">
               <span className="win-stat-label">Attempts:</span>
               <span className="win-stat-value">{guesses.length}</span>
-            </div>
-            <div className="win-stat">
-              <span className="win-stat-label">Points:</span>
-              <span className="win-stat-value">15</span>
             </div>
           </div>
         )}

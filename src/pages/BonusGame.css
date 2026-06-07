@@ -10,7 +10,10 @@
   width: 100%;
 }
 
-/* Win styling from Game.css - needed for BonusGame */
+
+/* ── Already Submitted / Win State ── */
+.already-submitted { display: flex; flex-direction: column; align-items: center; width: 100%; }
+
 .win-text-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 0; }
 
 .win-text { font-family: "BM HANNA Air OTF", sans-serif; font-size: 32px; font-weight: bold; color: #A92E43; letter-spacing: 2px; }
@@ -25,4 +28,10 @@
   .win-text { font-size: 26px; }
   .win-stat { min-width: 180px; padding: 8px 18px; }
   .win-stat-value { font-size: 18px; }
+}
+@media (max-width: 360px) {
+.answer-tiles
+{
+  padding-top: 0;
+}
 }

@@ -20,7 +20,7 @@ jobs:
 
       - name: Run backup
         env:
-          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DATABASE_URL: ${{ vars.SUPABASE_DB_URL }}
         run: |
           mkdir -p backups/users
           FILENAME="backups/users/users_$(date +'%Y-%m-%d').sql"

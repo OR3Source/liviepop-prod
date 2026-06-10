@@ -54,9 +54,8 @@ function Login() {
             Sign In
           </button>
           <button
-            className="login-tab"
-            disabled
-            style={{ opacity: 0.4, cursor: 'not-allowed' }}
+            className={`login-tab ${isSignUp ? 'active' : ''}`}
+            onClick={() => setIsSignUp(true)}
           >
             <UserPlus size={18} />
             Sign Up
@@ -140,8 +139,6 @@ function Login() {
           <button
             className="switch-btn"
             onClick={() => setIsSignUp(!isSignUp)}
-            disabled
-            style={{ opacity: 0.4, cursor: 'not-allowed' }}
           >
             {isSignUp ? 'Sign in' : 'Join now'}
           </button>
